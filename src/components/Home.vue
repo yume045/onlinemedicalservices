@@ -55,6 +55,10 @@
                     </p>
               <b-button href="#" variant="primary">Go somewhere</b-button>
         </b-card>
+          <div class="box content" :key="key" v-for="(subadd, key) in subadds">
+          <h1>{{subadds}}</h1><br>
+          {{subadd.add1}}
+        </div>
     </div>
   </div>
 </div>
@@ -69,7 +73,8 @@ export default {
   name: 'Home',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      subadds: ''
     }
   },
   computed: {

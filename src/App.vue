@@ -25,7 +25,7 @@
     </ul>
   </div>
       <a class="nav-link disabled " href="/#/Login" v-if="!Checklogin">เข้าสู่ระบบ</a>
-      <a class="nav-link disabled " href="/#/Login" v-if="Checklogin">{{this.users}}</a>
+      <a class="nav-link disabled " v-if="Checklogin">{{this.users}}</a>
       <a class="nav-link disabled " v-if="Checklogin" v-on:click="logoutWeb">ออกจากระบบ</a>
       <a class="nav-link disabled " href="/#/Register" v-if="!Checklogin">สมัครสมาชิก</a>
     </nav>
