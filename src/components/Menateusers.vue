@@ -2,37 +2,31 @@
   <div class="hello">
       <table class="table table-hover">
   <thead>
+    <div>
     <tr>
       <th scope="col">#</th>
       <th scope="col">First</th>
       <th scope="col">Last</th>
       <th scope="col">Handle</th>
     </tr>
+    </div>
   </thead>
   <tbody>
+    <div>
     <tr>
       <th scope="row">1</th>
       <td>Mark</td>
       <td>Otto</td>
       <td>@mdo</td>
     </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>@twitter</td>
-    </tr>
+    </div>
   </tbody>
 </table>
   </div>
 </template>
 
 <script>
+import firebase from 'firebase'
 export default {
   name: 'Home',
   data () {
@@ -47,6 +41,13 @@ export default {
   },
   mounted () {
     console.log(this.user)
+    const dbRefObject = firebase.database().ref().child('User')
+    console.log(dbRefObject)
+    dbRefObject.on('value', snap => {
+      this.users = snap.val()
+      console.log('boom')
+      console.log(this.users)
+    })
   }
 }
 </script>
