@@ -45,7 +45,6 @@ export default {
     console.log(dbRefObject)
     dbRefObject.on('value', snap => {
       this.users = snap.val()
-      console.log('boom')
       console.log(this.users)
     })
   }

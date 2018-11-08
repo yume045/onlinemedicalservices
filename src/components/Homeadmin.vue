@@ -20,7 +20,7 @@
 </div><br><br>
 <div style="margin-left:35%;">
   <b-nav-form>
-        <h1>{{this.users}}</h1>
+
     </b-nav-form>
     </div>
     </div>

@@ -79,7 +79,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      users: 'user/user'
+      users: 'user/user',
+      Checklogin: 'user/isLoggedIn',
+      permission: 'user/Per'
     })
   },
   isLoggedIn () {
