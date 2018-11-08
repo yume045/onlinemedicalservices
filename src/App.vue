@@ -22,6 +22,9 @@
       <li class="nav-item">
         <a class="nav-link disabled" href="/#/Menateusers" v-if="Checklogin && permission === 3">จัดการข้อมูลผู้ใช้</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="/#/ManageDoctor" v-if="Checklogin && permission === 3">จัดการข้อมูลแพทย์</a>
+      </li>
     </ul>
   </div>
       <a class="nav-link disabled " href="/#/Login" v-if="!Checklogin">เข้าสู่ระบบ</a>
