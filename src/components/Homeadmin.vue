@@ -1,5 +1,8 @@
 <template>
   <div class="hello">
+<body>
+</body>
+
   <div>
 </div><br><br>
 <div style="margin-left:35%;">
@@ -7,16 +10,7 @@
         <h1>{{this.users}}</h1>
     </b-nav-form>
     </div>
-        <form action="">
-            <div class="columns">
-                <br>
-            </div>
-                <div class="container">
-                    <div class="row">
-                    </div>
-                </div>
-        </form>
-  </div>
+    </div>
 </template>
 
 <script>
