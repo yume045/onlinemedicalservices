@@ -8,13 +8,12 @@
               <textarea type="text" id="form22" class="md-textarea form-control" rows="3" v-model="add1"></textarea><br>
               <input type="text" name="" id="" class="md-textarea form-control" v-model="addpicture">
             <br>
-            <button class="btn btn-primary" @click="insertHomeadmin ()">Add</button>
+            <button class="btn btn-primary" @click="insertHomeadmin ()">เพิ่มข้อมูล</button>
             </div>
           </div>
         </div> <br>
-          <div class="box content" :key="key" v-for="(subadd, key) in subadds">
-          <h1>{{subadd.add}}</h1><br>
-              {{subadd.add1}}
+        <div class="row">
+          <div class="column is-one-third" :key="key" v-for="(subadd, key) in subadds">
               <div class="col-sm">
                   <b-card  title=""
                     img-src v-bind:src="subadd.addpicture"
@@ -24,7 +23,7 @@
                     style="max-width: 20rem;margin-left:0%;"
                     class="mb-2" >
                       <p class="card-text">
-                        <img v-bind:src="subadd.addpicture" style="width: 400px; height: 400px;">
+                        <img v-bind:src="subadd.addpicture" style="width: 250px; height: 250px;">
                       </p>
                       <p class="card-text">
                         {{subadd.add}}
@@ -32,9 +31,10 @@
                       <p class="card-text">
                         {{subadd.add1}}
                       </p>
-              <b-button href="#" variant="primary">Go somewhere</b-button>
+              <b-button href="#" variant="primary">อ่านเพิ่มเติม</b-button>
         </b-card>
-    </div>
+          </div>
+        </div>
         </div>
       </section>
   <div>
