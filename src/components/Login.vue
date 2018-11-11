@@ -72,6 +72,9 @@ export default {
           if (this.hasprofile.Permistion === 3) {
             this.$router.push('/Homeadmin')
             alert('Successfully sign in')
+          } if (this.hasprofile.Permistion === 2) {
+            this.$router.push('/Question')
+            alert('Successfully sign in')
           } else {
             this.$router.push({path: '/'})
             alert('Successfully sign n')

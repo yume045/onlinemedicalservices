@@ -79,9 +79,20 @@
                             </div>
                         </form>
                     </div>
-                      <div class="box content" :key="key" v-for="(subquestion, key) in subquestions">
-                        {{subquestion.question}}
+                    <diV :key="key" v-for="(subquestion, key) in subquestions">
+                      <div v-if="updateKey === key" class="box content">
+                        <div class="box content">
+                          <input type="text" v-model="updatequestion">
+                        </div>
+                        <button class="btn btn-primary ">Comment</button>
                     </div>
+                      <div v-else class="box content">
+                        <div class="box content">
+                          <p class="lead">{{subquestion.question}}</p>
+                        </div>
+                        <button class="btn btn-primary " @click="Setupdate (key)">Comment</button>
+                    </div>
+                    </diV>
                   </div>
                 </div>
             </section>
@@ -97,9 +108,11 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
+      updatekey: '',
       question: '',
       subquestions: '',
-      picture: ''
+      picture: '',
+      updatequestion: ''
     }
   },
   methods: {
@@ -109,6 +122,18 @@ export default {
       })
       questionRef.push(tmp)
       this.question = ''
+    },
+    Setupdate (key) {
+      this.updatekey = key
+      console.log(this.updatekey)
+      console.log(key)
+    },
+    Update (questiupdatequestion, key) {
+      questionRef.child(key).update({
+        questiupdatequestion: questiupdatequestion
+      })
+      this.updateKey = ''
+      this.questiupdatequestion = ''
     }
   },
   mounted () {

@@ -36,9 +36,29 @@
                         </b-col>
                       </b-row>
                       <b-row class="my-1">
+                        <b-col sm="3"><label for="input-default">เพศ:</label></b-col>
+                        <b-col sm="9">
+                            <input class="form-check-input" name ="gen" type="radio" value="ชาย" id="gen" v-model="gen">
+                            <label class="form-check-label">
+                              ชาย
+                            </label>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input class="form-check-input" name = "gen" type="radio" value="หญิง" id="gen" v-model="gen">
+                            <label class="form-check-label">
+                              หญิง
+                            </label>
+                        </b-col>
+                      </b-row>
+                      <b-row class="my-1">
                         <b-col sm="3"><label for="input-default">วัน/เดือน/ปี:</label></b-col>
                         <b-col sm="9">
                           <b-form-input id="input-default" type="date" placeholder="" v-model="day"></b-form-input>
+                        </b-col>
+                      </b-row>
+                      <b-row class="my-1">
+                        <b-col sm="3"><label for="input-default">น้ำหนัก:</label></b-col>
+                        <b-col sm="9">
+                          <b-form-input id="input-default" type="number" min=0 placeholder="" v-model="weight"></b-form-input>
                         </b-col>
                       </b-row>
                       <b-row class="my-1">
@@ -56,7 +76,7 @@
                       <b-row class="my-1">
                         <b-col sm="3"><label for="input-default">ที่อยู่:</label></b-col>
                         <b-col sm="9">
-                          <b-form-input id="input-default" type="text" placeholder="" v-model="address"></b-form-input>
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"  v-model="address"></textarea>
                         </b-col>
                       </b-row>
                       <b-row class="my-1">
@@ -101,7 +121,9 @@ export default {
       idpeople: '',
       name: '',
       sername: '',
+      gen: '',
       day: '',
+      weight: '',
       height: '',
       bloodtype: '',
       address: '',
@@ -120,7 +142,9 @@ export default {
         idpeople: this.idpeople,
         name: this.name,
         sername: this.sername,
+        gen: this.gen,
         day: this.day,
+        weight: this.weight,
         height: this.height,
         bloodtype: this.bloodtype,
         address: this.address,
@@ -136,7 +160,9 @@ export default {
       this.idpeople = ''
       this.name = ''
       this.sername = ''
+      this.gen = ''
       this.day = ''
+      this.weight = ''
       this.height = ''
       this.bloodtype = ''
       this.address = ''
