@@ -80,7 +80,6 @@
 import firebase from 'firebase'
 var database = firebase.database()
 var DocRef = database.ref('/User')
-var AdminRef = database.ref('/all')
 export default {
   name: 'ManageDoctor',
   data () {
