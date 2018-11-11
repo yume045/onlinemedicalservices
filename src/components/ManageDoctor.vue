@@ -52,6 +52,26 @@
                   </b-container>
                 </div>
           </form>
+    <table class="table">
+  <thead class="thead-dark">
+    <div>
+      <th scope="col">ชื่อแพทย์</th>
+      <th scope="col">นามสกุลแพทย์</th>
+      <th scope="col">อายุ</th>
+      <th scope="col">ความชำนานการทางการแพทย์</th>
+      <th scope="col">ประวัติเบื้องต้นของแพทย์</th>
+  </div>
+  </thead>
+    <tr :key="keys" v-for="(user, keys) in users">
+      <div :key="key" v-for="(user, key) in user">
+      <th>{{user}}</th>
+      <th>{{user.sernamedoc}}</th>
+      <th>{{user.age}}</th>
+      <th>{{user.option}}</th>
+      <th>{{user.story}}</th>
+    </div>
+    </tr>
+</table>
   </div>
 </template>
 
@@ -60,9 +80,9 @@
 import firebase from 'firebase'
 var database = firebase.database()
 var DocRef = database.ref('/User')
-
+var AdminRef = database.ref('/all')
 export default {
-  name: 'HelloWorld',
+  name: 'ManageDoctor',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
@@ -73,7 +93,8 @@ export default {
       age: '',
       option: '',
       story: '',
-      Permistion: ''
+      Permistion: '',
+      users: {}
     }
   },
   methods: {
@@ -98,6 +119,20 @@ export default {
       this.story = ''
       this.Permistion = ''
     }
+  },
+  computed: {
+    user () {
+      return this.$store.getters.user
+    }
+  },
+  mounted () {
+    console.log(this.user)
+    const dbRefObject = firebase.database().ref().child('User')
+    console.log(dbRefObject)
+    dbRefObject.on('value', snap => {
+      this.users = snap.val()
+      console.log(this.users)
+    })
   }
 }
 </script>
