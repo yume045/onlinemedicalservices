@@ -1,13 +1,25 @@
 <template>
   <div class="hello">
-  <div>
-</div><br><br>
 <div style="margin-left:35%;">
-  <b-nav-form>
-        <b-form-input style="margin-left:0%; width:50%;" size="sm" class="mr-sm-2" type="text" placeholder="Search"/>
-        <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-      </b-nav-form>
+<div class="row justify-content-center">
+                        <div class="col-12 col-md-10 col-lg-8">
+                            <form class="card card-sm">
+                                <div class="card-body row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <i class="fas fa-search h4 text-body"></i>
+                                    </div>
+                                    <div class="col">
+                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords">
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="btn btn-lg btn-success" type="submit">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
     </div>
+<<<<<<< HEAD
 <form action="">
       <div class="container">
   <div class="row">
@@ -26,16 +38,52 @@
         </b-card>
     </div>
   </div>
+=======
+<div>
+  <br>
 </div>
-    </form>
-  </div>
+  <form action="">
+    <div class="container">
+      <div class="row">
+          <div class="column is-one-third" :key="key" v-for="(subadd, key) in subadds">
+              <div class="col-sm">
+                  <b-card  title=""
+                    img-src v-bind:src="subadd.addpicture"
+                    img-alt="Image"
+                    img-top
+                    tag="article"
+                    style="max-width: 20rem;margin-left:0%;"
+                    class="mb-2" >
+                      <p class="card-text">
+                        <img v-bind:src="subadd.addpicture" style="width: 250px; height: 250px;">
+                      </p>
+                      <p class="card-text">
+                        {{subadd.add}}
+                      </p>
+                      <p class="card-text">
+                        {{subadd.add1}}
+                      </p>
+              <b-button href="#" variant="primary">Go somewhere</b-button>
+        </b-card>
+            </div>
+        </div>
+      </div>
+    </div>
+  </form>
+>>>>>>> 8c8d826236585f84c0c210d3994223b4f2d0c017
+</div>
 </template>
 
 <script>
+import firebase from 'firebase'
 import { mapGetters } from 'vuex'
+var database = firebase.database()
+var homeadminRef = database.ref('/Homeadmin')
 console.log(this.isLoggedIn)
 export default {
   name: 'Home',
+  subadds: '',
+  addpicture: '',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
@@ -56,8 +104,10 @@ export default {
     return this.$store.getters.user
   },
   mounted () {
-    console.log(this.isLoggedIn)
-    console.log(this.user)
+    homeadminRef.on('value', snap => {
+      this.subadds = snap.val()
+      console.log(this.subadds)
+    })
   }
 }
 </script>
@@ -77,5 +127,14 @@ li {
 }
 a {
   color: #42b983;
+}
+.form-control-borderless {
+    border: none;
+}
+
+.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
 }
 </style>

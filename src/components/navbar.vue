@@ -14,7 +14,7 @@
         <a class="nav-link" href="/#/" v-if="!Checklogin">หน้าหลัก</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/#/Homeadmin" v-if="Checklogin && permission === 3">Homeadmin</a>
+        <a class="nav-link" href="/#/Homeadmin" v-if="Checklogin && permission === 3">หน้าหลัก</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/#/Question" v-if="Checklogin && permission === 1">ปรึกษาแพทย์</a>
@@ -29,7 +29,7 @@
         <a class="nav-link disabled" href="/#/Menateusers" v-if="Checklogin && permission === 3">จัดการข้อมูลผู้ใช้</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled" href="/#/ManageDoctor" v-if="Checklogin && permission === 3">จัดการข้อมูลแพทย์</a>
+        <a class="nav-link disabled" href="/#/ManageDoctor" v-if="Checklogin && permission === 3">เพิ่มข้อมูลแพทย์</a>
       </li>
     </ul>
   </div>
