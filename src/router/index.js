@@ -8,6 +8,7 @@ import Medicine from '@/components/Medicine'
 import Homeadmin from '@/components/Homeadmin'
 import Menateusers from '@/components/Menateusers'
 import ManageDoctor from '@/components/ManageDoctor'
+import Manage from '@/components/Manage'
 Vue.use(Router)
 
 export default new Router({
@@ -51,6 +52,11 @@ export default new Router({
       path: '/ManageDoctor',
       name: 'ManageDoctor',
       component: ManageDoctor
+    },
+    {
+      path: '/Manage',
+      name: 'Manage',
+      component: Manage
     }
   ]
 })

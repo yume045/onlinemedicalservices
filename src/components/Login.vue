@@ -71,13 +71,13 @@ export default {
           this.signIn({userSet, Per})
           if (this.hasprofile.Permistion === 3) {
             this.$router.push('/Homeadmin')
-            alert('Successfully sign in')
+            alert('welcome back 3')
           } if (this.hasprofile.Permistion === 2) {
             this.$router.push('/Question')
-            alert('Successfully sign in')
-          } else {
-            this.$router.push({path: '/'})
-            alert('Successfully sign n')
+            alert('welcome back 2')
+          } if (this.hasprofile.Permistion === 1) {
+            this.$router.push('/Question')
+            alert('welcome back 1')
           }
         }
         //  else alert('Username Or Password incorrect')

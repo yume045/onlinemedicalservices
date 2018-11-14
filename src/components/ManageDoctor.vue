@@ -52,26 +52,6 @@
                   </b-container>
                 </div>
           </form>
-    <table class="table">
-  <thead class="thead-dark">
-    <div>
-      <th scope="col">ชื่อแพทย์</th>
-      <th scope="col">นามสกุลแพทย์</th>
-      <th scope="col">อายุ</th>
-      <th scope="col">ความชำนานการทางการแพทย์</th>
-      <th scope="col">ประวัติเบื้องต้นของแพทย์</th>
-  </div>
-  </thead>
-    <tr :key="keys" v-for="(user, keys) in users">
-      <div :key="key" v-for="(user, key) in user">
-      <th>{{user}}</th>
-      <th>{{user.sernamedoc}}</th>
-      <th>{{user.age}}</th>
-      <th>{{user.option}}</th>
-      <th>{{user.story}}</th>
-    </div>
-    </tr>
-</table>
   </div>
 </template>
 
@@ -80,6 +60,7 @@
 import firebase from 'firebase'
 var database = firebase.database()
 var DocRef = database.ref('/User')
+var DocRef2 = database.ref('/Manage')
 export default {
   name: 'ManageDoctor',
   data () {
@@ -109,6 +90,7 @@ export default {
         Permistion: this.Permistion = 2
       })
       DocRef.child(this.username).push(tmp)
+      DocRef2.child('Doctor').push(tmp)
       this.username = ''
       this.password = ''
       this.usernamedoc = ''

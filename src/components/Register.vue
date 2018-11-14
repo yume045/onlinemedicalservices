@@ -110,6 +110,7 @@
 import firebase from 'firebase'
 var database = firebase.database()
 var UserRef = database.ref('/User')
+var Manage = database.ref('/Manage')
 
 export default {
   name: 'HelloWorld',
@@ -155,6 +156,7 @@ export default {
         Permistion: this.Permistion = 1
       })
       UserRef.child(this.username).push(tmp)
+      Manage.child('Users').push(tmp)
       this.username = ''
       this.password = ''
       this.idpeople = ''

@@ -18,8 +18,7 @@
       <td><th scope="col">โรคประจำตัว</th></td>
   </div>
   </thead>
-    <tr :key="keys" v-for="(user, keys) in users">
-      <div :key="key" v-for="(user, key) in user">
+    <tr :key="key" v-for="(user, key) in users">
       <div v-if="updateKey === key">
         <input type="text" v-model="updateName" placeholder="ชื่อ">
         <input type="text" v-model="updatesurName" placeholder="นามสุกล">
@@ -29,16 +28,14 @@
         <input type="text" v-model="updateNumberphone" placeholder="เบอร์โทร">
         <textarea type="text" v-model="updateMedical" placeholder="ยาที่แพ้"></textarea>
         <textarea type="text" v-model="updateDisease" placeholder="โรคประจำตัว"></textarea>
-        <div :key="Manage" v-for="(Muser, Manage) in Musers">
         <button class="btn btn-success" @click="Update(updateDisease, updateMedical, updateNumberphone, updateAddress, updateWeight, updateHeight, updatesurName, updateName, keys ,key, Manage)">บันทึก</button>
       </div>
-      </div>
-      <div v-else-if="user.Permistion === 1">
+      <div v-else>
       <td><th>{{user.HN}}</th></td>
       <td><th>{{user.name}}</th></td>
       <td><th>{{user.sername}}</th></td>
-      <td><th>{{user.gen}}</th></td>
       <td><th>{{user.idpeople}}</th></td>
+      <td><th>{{user.gen}}</th></td>
       <td><th>{{user.day}}</th></td>
       <td><th>{{user.weight}}</th></td>
       <td><th>{{user.height}}</th></td>
@@ -47,9 +44,8 @@
       <td><th>{{user.numberphone}}</th></td>
       <td><th>{{user.medical}}</th></td>
       <td><th>{{user.disease}}</th></td>
-      <th><button class="btn btn-danger" @click="deleteUser (keys)">X</button></th>
+      <th><button class="btn btn-danger" @click="deleteUser (key)">X</button></th>
       <th><button class="btn btn-warning" @click="SetUpdate (key, user.name, user.sername, user.weight, user.height, user.address, user.numberphone, user.medical, user.disease)">U</button></th>
-      </div>
       </div>
     </tr>
     <br>
@@ -62,25 +58,23 @@
       <td><th scope="col">ประวัติเบื้องต้นของแพทย์</th></td>
   </div>
   </thead>
-      <tr :key="keyss" v-for="(user, keyss) in users">
-        <div :key="keyy" v-for="(user, keyy) in user">
-        <div v-if="updateKey1 === keyy">
+      <tr :key="key" v-for="(doctor, key) in doctors">
+        <div v-if="updateKey1 === key">
           <input type="text" v-model="updateusernamedoc" placeholder="ชื่อแพทย์">
           <input type="text" v-model="updatesernamedoc" placeholder="นามสกุลแพทย์">
           <input type="text" v-model="updateage" placeholder="อายุ">
           <input type="text" v-model="updateoption" placeholder="ความชำนานการทางการแพทย์">
           <textarea type="text" v-model="updatestory" placeholder="ประวัติเบื้องต้นของแพทย์"></textarea>
-          <button class="btn btn-success" @click="Update2(updateusernamedoc, updatesernamedoc, updateage, updatestory, updateoption, keyss ,keyy)">บันทึก</button>
+          <button class="btn btn-success">บันทึก</button>
         </div>
-        <div v-else-if="user.Permistion === 2">
-        <td><th>{{user.usernamedoc}}</th></td>
-        <td><th>{{user.sernamedoc}}</th></td>
-        <td><th>{{user.age}}</th></td>
-        <td><th>{{user.option}}</th></td>
-        <td><th>{{user.story}}</th></td>
-        <th><button class="btn btn-danger" @click="deleteUser2 (keyss)">X</button></th>
-        <th><button class="btn btn-warning" @click="SetUpdate2 (keyy, user.usernamedoc, user.sernamedoc, user.age, user.story, user.option)">U</button></th>
-        </div>
+        <div v-else>
+        <td><th>{{doctor.usernamedoc}}</th></td>
+        <td><th>{{doctor.sernamedoc}}</th></td>
+        <td><th>{{doctor.age}}</th></td>
+        <td><th>{{doctor.option}}</th></td>
+        <td><th>{{doctor.story}}</th></td>
+        <th><button class="btn btn-danger">X</button></th>
+        <th><button class="btn btn-warning">U</button></th>
         </div>
       </tr>
 </table>
@@ -90,10 +84,9 @@
 <script>
 import firebase from 'firebase'
 var database = firebase.database()
-var manageuserRef = database.ref('/User')
-var dbM = firebase.database().ref().child('Manage').child('Users')
+var manageuser = database.ref('/Manage')
 export default {
-  name: 'Home',
+  name: 'Manage',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
@@ -114,32 +107,29 @@ export default {
       updateage: '',
       updatestory: '',
       updateoption: '',
-      Musers: {}
+      Musers: {},
+      doctors: {}
     }
   },
   computed: {
-    user () {
-      return this.$store.getters.user
-    }
   },
   mounted () {
-    console.log(this.user)
-    const dbRefObject = firebase.database().ref().child('User')
+    const dbRefObject = firebase.database().ref().child('Manage').child('Users')
     console.log(dbRefObject)
     dbRefObject.on('value', snap => {
       this.users = snap.val()
       console.log(this.users)
     })
-    const dbUsers = firebase.database().ref().child('Manage').child('Users')
-    console.log(dbUsers)
-    dbUsers.on('value', snap => {
-      this.Musers = snap.val()
-      console.log(this.Musers)
+    const dbRefObject2 = firebase.database().ref().child('Manage').child('Doctor')
+    console.log(dbRefObject2)
+    dbRefObject2.on('value', snap => {
+      this.doctors = snap.val()
+      console.log(this.doctors)
     })
   },
   methods: {
-    deleteUser (keys) {
-      manageuserRef.child(keys).remove()
+    deleteUser (key) {
+      manageuser.child(key).remove()
     },
     SetUpdate (key, name, sername, weight, height, address, numberphone, medical, disease) {
       this.updateKey = key
@@ -153,7 +143,7 @@ export default {
       this.updateDisease = disease
     },
     Update (disease, medical, numberphone, address, height, weight, sername, name, keys, key, Manage) {
-      manageuserRef.child(keys).child(key).update({
+      manageuser.child('Users').child(key).update({
         name: name,
         sername: sername,
         weight: weight,
@@ -163,7 +153,7 @@ export default {
         medical: medical,
         disease: disease
       })
-      dbM.child(Manage).update({
+      manageuser.child(key).update({
         name: name,
         sername: sername,
         weight: weight,
@@ -184,7 +174,7 @@ export default {
       this.updateDisease = ''
     },
     deleteUser2 (keyss) {
-      manageuserRef.child(keyss).remove()
+      manageuser.child(keyss).remove()
     },
     SetUpdate2 (keyy, usernamedoc, sernamedoc, age, story, option) {
       this.updateKey1 = keyy
@@ -195,7 +185,7 @@ export default {
       this.updateoption = option
     },
     Update2 (usernamedoc, sernamedoc, age, story, option, keyss, keyy) {
-      manageuserRef.child(keyss).child(keyy).update({
+      manageuser.child(keyss).child(keyy).update({
         usernamedoc: usernamedoc,
         sernamedoc: sernamedoc,
         age: age,
