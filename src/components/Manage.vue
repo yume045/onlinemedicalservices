@@ -48,7 +48,9 @@
       <th><button class="btn btn-warning" @click="SetUpdate (key, user.name, user.sername, user.weight, user.height, user.address, user.numberphone, user.medical, user.disease)">U</button></th>
       </div>
     </tr>
+    </table>
     <br>
+    <table class="table table-hover">
     <thead class="">
     <div>
       <td><th scope="col">ชื่อแพทย์</th></td>
@@ -65,7 +67,7 @@
           <input type="text" v-model="updateage" placeholder="อายุ">
           <input type="text" v-model="updateoption" placeholder="ความชำนานการทางการแพทย์">
           <textarea type="text" v-model="updatestory" placeholder="ประวัติเบื้องต้นของแพทย์"></textarea>
-          <button class="btn btn-success">บันทึก</button>
+          <button class="btn btn-success"  @click="Update2(key, updateusernamedoc, updatesernamedoc, updateage, updateoption, updatestory)">บันทึก</button>
         </div>
         <div v-else>
         <td><th>{{doctor.usernamedoc}}</th></td>
@@ -73,8 +75,8 @@
         <td><th>{{doctor.age}}</th></td>
         <td><th>{{doctor.option}}</th></td>
         <td><th>{{doctor.story}}</th></td>
-        <th><button class="btn btn-danger">X</button></th>
-        <th><button class="btn btn-warning">U</button></th>
+        <th><button class="btn btn-danger" @click="deleteUser2 (key)">X</button></th>
+        <th><button class="btn btn-warning" @click="SetUpdate2 (key, doctor.usernamedoc, doctor.sernamedoc, doctor.age, doctor.option, doctor.story)">U</button></th>
         </div>
       </tr>
 </table>
@@ -128,8 +130,8 @@ export default {
     })
   },
   methods: {
-    deleteUser (keys) {
-      manageuser.child(keys).remove()
+    deleteUser (key) {
+      manageuser.child('Users').child(key).remove()
     },
     SetUpdate (key, name, sername, weight, height, address, numberphone, medical, disease) {
       this.updateKey = key
@@ -153,16 +155,6 @@ export default {
         medical: medical,
         disease: disease
       })
-      manageuser.child(key).update({
-        name: name,
-        sername: sername,
-        weight: weight,
-        height: height,
-        address: address,
-        numberphone: numberphone,
-        medical: medical,
-        disease: disease
-      })
       this.updateKey = ''
       this.updateName = ''
       this.updatesurName = ''
@@ -173,32 +165,31 @@ export default {
       this.updateMedical = ''
       this.updateDisease = ''
     },
-    deleteUser2 (keyss) {
-      manageuser.child(keyss).remove()
+    deleteUser2 (key) {
+      manageuser.child('Doctor').child(key).remove()
     },
-    SetUpdate2 (keyy, usernamedoc, sernamedoc, age, story, option) {
-      this.updateKey1 = keyy
+    SetUpdate2 (key, usernamedoc, sernamedoc, age, option, story) {
+      this.updateKey1 = key
       this.updateusernamedoc = usernamedoc
       this.updatesernamedoc = sernamedoc
       this.updateage = age
-      this.updatestory = story
       this.updateoption = option
+      this.updatestory = story
     },
-    Update2 (usernamedoc, sernamedoc, age, story, option, keyss, keyy) {
-      manageuser.child(keyss).child(keyy).update({
+    Update2 (key, usernamedoc, sernamedoc, age, option, story) {
+      manageuser.child('Doctor').child(key).update({
         usernamedoc: usernamedoc,
         sernamedoc: sernamedoc,
         age: age,
-        story: story,
-        option: option
+        option: option,
+        story: story
       })
       this.updateKey1 = ''
-      this.updatepassword = ''
       this.updateusernamedoc = ''
       this.updatesernamedoc = ''
       this.updateage = ''
-      this.updatestory = ''
       this.updateoption = ''
+      this.updatestory = ''
     }
   }
 }

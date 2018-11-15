@@ -5,7 +5,7 @@
                     <h3 class="title has-text-grey">Login</h3>
                     <div class="box">
                         <figure class="avatar">
-                            <img src="https://media1.tenor.com/images/f217536789f9643c9fcd8bd0c5c3434f/tenor.gif?itemid=11533002">
+                            <img src="https://image.flaticon.com/icons/svg/119/119070.svg">
                         </figure>
                         <form>
                             <div class="field">
