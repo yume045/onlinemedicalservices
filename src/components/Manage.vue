@@ -44,7 +44,7 @@
       <td><th>{{user.numberphone}}</th></td>
       <td><th>{{user.medical}}</th></td>
       <td><th>{{user.disease}}</th></td>
-      <th><button class="btn btn-danger" @click="deleteUser (key)">X</button></th>
+      <th><button class="btn btn-danger" @click="deleteUser (keys)">X</button></th>
       <th><button class="btn btn-warning" @click="SetUpdate (key, user.name, user.sername, user.weight, user.height, user.address, user.numberphone, user.medical, user.disease)">U</button></th>
       </div>
     </tr>
@@ -128,8 +128,8 @@ export default {
     })
   },
   methods: {
-    deleteUser (key) {
-      manageuser.child(key).remove()
+    deleteUser (keys) {
+      manageuser.child(keys).remove()
     },
     SetUpdate (key, name, sername, weight, height, address, numberphone, medical, disease) {
       this.updateKey = key
@@ -143,7 +143,7 @@ export default {
       this.updateDisease = disease
     },
     Update (disease, medical, numberphone, address, height, weight, sername, name, keys, key, Manage) {
-      manageuser.child('Users').child(key).update({
+      manageuser.child('Users').update({
         name: name,
         sername: sername,
         weight: weight,

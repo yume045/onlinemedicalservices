@@ -79,20 +79,26 @@
                             </div>
                         </form>
                     </div>
+                    <b-card>
                     <diV :key="key" v-for="(subquestion, key) in subquestions">
-                      <div v-if="updateKey === key" class="box content">
+                      {{key}}
+                      <diV :key="key" v-for="(subquestion, key) in subquestion">
+                      <div v-if="updatekey === key" class="box content">
                         <div class="box content">
-                          <input type="text" v-model="updatequestion">
+                          <input type="text" v-model="updatequestion"><br>
+                        <button class="btn btn-primary" @click="Updatesub(key, updatequestion)">Save</button>
                         </div>
-                        <button class="btn btn-primary ">Comment</button>
                     </div>
-                      <div v-else class="box content">
+                     <div v-else class="box content">
                         <div class="box content">
-                          <p class="lead">{{subquestion.question}}</p>
+                          {{subquestion.question}}
+                          <div></div>
+                        <button class="btn btn-primary" @click="Setupdate(key, subquestion.question)">Comment</button><br>
                         </div>
-                        <button class="btn btn-primary " @click="Setupdate (key)">Comment</button>
                     </div>
+                      </diV>
                     </diV>
+                    </b-card>
                   </div>
                 </div>
             </section>
@@ -100,6 +106,7 @@
 </template>
 <script>
 import firebase from 'firebase'
+import { mapGetters } from 'vuex'
 var database = firebase.database()
 var questionRef = database.ref('/Question')
 
@@ -112,28 +119,37 @@ export default {
       question: '',
       subquestions: '',
       picture: '',
-      updatequestion: ''
+      updatequestion: '',
+      user: {}
     }
+  },
+  computed: {
+    ...mapGetters({
+      users: 'user/user',
+      Checklogin: 'user/isLoggedIn',
+      permission: 'user/Per'
+    })
   },
   methods: {
     insertQuestion () {
       let tmp = ({
         question: this.question
       })
-      questionRef.push(tmp)
+      questionRef.child(this.question).push(tmp)
       this.question = ''
     },
-    Setupdate (key) {
+    Setupdate (key, subquestion) {
       this.updatekey = key
+      this.updatequestion = subquestion
       console.log(this.updatekey)
       console.log(key)
     },
-    Update (questiupdatequestion, key) {
+    Updatesub (key, updatequestion) {
       questionRef.child(key).update({
-        questiupdatequestion: questiupdatequestion
+        question: updatequestion
       })
-      this.updateKey = ''
-      this.questiupdatequestion = ''
+      this.updatekey = ''
+      this.updatequestion = ''
     }
   },
   mounted () {
@@ -147,89 +163,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-html,body {
-  font-family: 'Open Sans', serif;
-  background: #F2F6FA;
-}
-footer {
-  background-color: #F2F6FA !important;
-}
-.topNav {
-  border-top: 5px solid #3498DB;
-}
-.topNav .container {
-  border-bottom: 1px solid #E6EAEE;
-}
-.container .columns {
-  margin: 3rem 0;
-}
-.navbar-menu .navbar-item {
-  padding: 0 2rem;
-}
-aside.menu {
-  padding-top: 3rem;
-}
-aside.menu .menu-list {
-  line-height: 1.5;
-}
-aside.menu .menu-label {
-  padding-left: 10px;
-  font-weight: 700;
-}
-.button.is-primary.is-alt {
-  background: #00c6ff;
-  background: -webkit-linear-gradient(to bottom, #0072ff, #00c6ff);
-  background: linear-gradient(to bottom, #0072ff, #00c6ff);
-  font-weight: 700;
-  font-size: 14px;
-  height: 3rem;
-  line-height: 2.8;
-}
-.media-left img {
-  border-radius: 50%;
-}
-.media-content p {
-  font-size: 14px;
-  line-height: 2.3;
-  font-weight: 700;
-  color: #8F99A3;
-}
-article.post {
-  margin: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #E6EAEE;
-}
-article.post:last-child {
-  padding-bottom: 0;
-  border-bottom: none;
-}
-.menu-list li{
-  padding: 5px;
-}
-.modal-backdrop {
-  position: inherit;
-}
-.file-field.medium .file-path-wrapper {
-  height: 3rem; }
-  .file-field.medium .file-path-wrapper .file-path {
-    height: 2.8rem; }
-
-.file-field.big-2 .file-path-wrapper {
-  height: 3.7rem; }
-  .file-field.big-2 .file-path-wrapper .file-path {
-    height: 3.5rem; }
 </style>
