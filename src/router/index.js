@@ -6,7 +6,6 @@ import Login from '@/components/Login'
 import Question from '@/components/Question'
 import Medicine from '@/components/Medicine'
 import Homeadmin from '@/components/Homeadmin'
-import Menateusers from '@/components/Menateusers'
 import ManageDoctor from '@/components/ManageDoctor'
 import Manage from '@/components/Manage'
 Vue.use(Router)
@@ -42,11 +41,6 @@ export default new Router({
       path: '/Homeadmin',
       name: 'Homeadmin',
       component: Homeadmin
-    },
-    {
-      path: '/Menateusers',
-      name: 'Menateusers',
-      component: Menateusers
     },
     {
       path: '/ManageDoctor',

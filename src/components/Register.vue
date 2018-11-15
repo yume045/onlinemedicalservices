@@ -52,7 +52,7 @@
                       <b-row class="my-1">
                         <b-col sm="3"><label for="input-default">วัน/เดือน/ปี:</label></b-col>
                         <b-col sm="9">
-                          <b-form-input id="input-default" type="date" placeholder="" v-model="day"></b-form-input>
+                          <b-form-input id="input-default" type="date" placeholder="วัน/เดือน/ปี" v-model="day"></b-form-input>
                         </b-col>
                       </b-row>
                       <b-row class="my-1">
