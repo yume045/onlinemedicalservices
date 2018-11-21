@@ -11,6 +11,7 @@ import Manage from '@/components/Manage'
 import Editprofile from '@/components/Editprofile'
 import news from '@/components/news'
 import ManagePharmacist from '@/components/ManagePharmacist'
+import ManageOption from '@/components/ManageOption'
 Vue.use(Router)
 
 export default new Router({
@@ -69,6 +70,11 @@ export default new Router({
       path: '/ManagePharmacist',
       name: 'ManagePharmacist',
       component: ManagePharmacist
+    },
+    {
+      path: '/ManageOption',
+      name: 'ManageOption',
+      component: ManageOption
     }
   ]
 })

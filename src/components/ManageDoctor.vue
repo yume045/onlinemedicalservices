@@ -35,19 +35,19 @@
                                 <b-form-input id="input-default" type="text" min=0 placeholder="" v-model="age"></b-form-input>
                                 </b-col>
                             </b-row>
-                                <b-row class="my-1">
-                                    <b-col sm="3"><label for="input-default">ความชำนานการทางการแพทย์:</label></b-col>
-                                    <b-col sm="9">
-                                    <b-form-input id="input-default" type="text" min=0 placeholder="" v-model="option"></b-form-input>
-                                    </b-col>
-                                </b-row>
+                                <div>
+                                  <select class="form-control form-control-lg" v-model="option" >
+                                  <option :value="null" disabled>-- เลือกแผนก --</option>
+                                  <option v-for="(Ops, key) in Op" :key="Op[key]" :value="Ops.addOption" >{{Ops.addOption}}</option>
+                                </select>
+                                </div>
                                     <b-row class="my-1">
                                         <b-col sm="3"><label for="input-default">ประวัติเบื้องต้นของแพทย์:</label></b-col>
                                         <b-col sm="9">
                                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="story"></textarea>
                                         </b-col>
                                     </b-row>
-                      <router-link to="/Login"><b-button type="submit" variant="primary" class="btn btn-outline-primary" @click="insertDoctor ()">สมัครสมาชิก</b-button></router-link>
+                      <b-button type="submit" variant="primary" class="btn btn-outline-primary" @click="insertDoctor ">สมัครสมาชิก</b-button>
                       <b-button type="reset" variant="danger" class="btn btn-outline-danger">ยกเลิก</b-button>
                   </b-container>
                 </div>
@@ -71,10 +71,13 @@ export default {
       usernamedoc: '',
       sernamedoc: '',
       age: '',
-      option: '',
+      option: null,
       story: '',
       Permistion: '',
-      users: {}
+      seletetion: null,
+      users: {},
+      Op: ''
+
     }
   },
   methods: {
@@ -87,8 +90,10 @@ export default {
         age: this.age,
         option: this.option,
         story: this.story,
+        seletetion: this.seletetion,
         Permistion: this.Permistion = 2
       })
+      console.log(tmp)
       DocRef.child(this.username).push(tmp)
       DocRef2.child('Doctor').push(tmp)
       this.username = ''
@@ -99,6 +104,7 @@ export default {
       this.option = ''
       this.story = ''
       this.Permistion = ''
+      this.seletetion = ''
     }
   },
   computed: {
@@ -113,6 +119,11 @@ export default {
     dbRefObject.on('value', snap => {
       this.users = snap.val()
       console.log(this.users)
+    })
+    const dbRefObject2 = firebase.database().ref().child('Manageoption')
+    console.log(dbRefObject2)
+    dbRefObject2.on('value', snap => {
+      this.Op = snap.val()
     })
   }
 }
@@ -140,5 +151,8 @@ button {
 input {
   font-family:'Abel', sans-serif,'Mitr', sans-serif;
   font-size: 14px;
+}
+.tag {
+  cursor: pointer;
 }
 </style>
