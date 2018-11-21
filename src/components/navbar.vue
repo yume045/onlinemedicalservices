@@ -31,6 +31,9 @@
       <li class="nav-item">
         <a class="nav-link disabled" href="/#/ManageDoctor" v-if="Checklogin && permission === 3">เพิ่มข้อมูลแพทย์</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="/#/ManagePharmacist" v-if="Checklogin && permission === 3">เพิ่มข้อมูลเภสัชกร</a>
+      </li>
     </ul>
   </div>
       <a class="nav-link disabled " href="/#/Login" v-if="!Checklogin">เข้าสู่ระบบ</a>
@@ -49,7 +52,7 @@ var config = {
   authDomain: 'online-medical.firebaseapp.com',
   databaseURL: 'https://online-medical.firebaseio.com',
   projectId: 'online-medical',
-  storageBucket: '',
+  storageBucket: 'online-medical.appspot.com',
   messagingSenderId: '273486925918'
 }
 firebase.initializeApp(config)

@@ -9,6 +9,8 @@ import Homeadmin from '@/components/Homeadmin'
 import ManageDoctor from '@/components/ManageDoctor'
 import Manage from '@/components/Manage'
 import Editprofile from '@/components/Editprofile'
+import news from '@/components/news'
+import ManagePharmacist from '@/components/ManagePharmacist'
 Vue.use(Router)
 
 export default new Router({
@@ -57,6 +59,16 @@ export default new Router({
       path: '/Editprofile',
       name: 'Editprofile',
       component: Editprofile
+    },
+    {
+      path: '/news',
+      name: 'news',
+      component: news
+    },
+    {
+      path: '/ManagePharmacist',
+      name: 'ManagePharmacist',
+      component: ManagePharmacist
     }
   ]
 })

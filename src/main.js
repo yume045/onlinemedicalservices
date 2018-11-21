@@ -6,10 +6,13 @@ import router from './router'
 import Vuex from 'vuex'
 import store from './store'
 import BootstrapVue from 'bootstrap-vue'
+import Buefy from 'buefy'
+import 'buefy/dist/buefy.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 Vue.use(Vuex)
+Vue.use(Buefy)
 
 Vue.config.productionTip = false
 

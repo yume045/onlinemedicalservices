@@ -1,5 +1,7 @@
 <template>
-<div>
+<div class="center">
+  <div>
+  <label for=""><h1>ผู้ป่วย</h1></label>
     <table class="table table-hover">
   <thead class="">
     <div>
@@ -22,13 +24,16 @@
       <div v-if="updateKey === key">
         <input type="text" v-model="updateName" placeholder="ชื่อ">
         <input type="text" v-model="updatesurName" placeholder="นามสุกล">
+        <input type="text" v-model="updateid" placeholder="รหัสบัตรประชาชน">
+        <input type="date" v-model="updateday" placeholder="วัน/เดือน/ปีเกิด">
         <input type="text" v-model="updateWeight" placeholder="น้ำหนัก">
         <input type="text" v-model="updateHeight" placeholder="ส่วนสูง">
+        <input type="text" v-model="updatebloodtype" placeholder="กรุ๊ปเลือด">
         <input type="text" v-model="updateAddress" placeholder="ที่อยู่">
         <input type="text" v-model="updateNumberphone" placeholder="เบอร์โทร">
         <textarea type="text" v-model="updateMedical" placeholder="ยาที่แพ้"></textarea>
         <textarea type="text" v-model="updateDisease" placeholder="โรคประจำตัว"></textarea>
-        <button class="btn btn-success" @click="Update(updateDisease, updateMedical, updateNumberphone, updateAddress, updateWeight, updateHeight, updatesurName, updateName, keys ,key, Manage)">บันทึก</button>
+        <button class="btn btn-success" @click="Update(updateDisease, updateMedical, updateNumberphone, updateAddress, updatebloodtype, updateWeight, updateHeight, updateday, updateid, updatesurName, updateName, keys ,key, Manage)">บันทึก</button>
       </div>
       <div v-else>
       <td><th>{{user.HN}}</th></td>
@@ -45,41 +50,75 @@
       <td><th>{{user.medical}}</th></td>
       <td><th>{{user.disease}}</th></td>
       <th><button class="btn btn-danger" @click="deleteUser (key)">X</button></th>
-      <th><button class="btn btn-warning" @click="SetUpdate (key, user.name, user.sername, user.weight, user.height, user.address, user.numberphone, user.medical, user.disease)">U</button></th>
+      <th><button class="btn btn-warning" @click="SetUpdate (key, user.name, user.sername, user.idpeople, user.day, user.weight, user.height, user.bloodtype, user.address, user.numberphone, user.medical, user.disease)">U</button></th>
       </div>
     </tr>
     </table>
     <br>
+    <label for=""><h1>แพทย์</h1></label>
     <table class="table table-hover">
-    <thead class="">
-    <div>
-      <td><th scope="col">ชื่อแพทย์</th></td>
-      <td><th scope="col">นามสกุลแพทย์</th></td>
-      <td><th scope="col">อายุ</th></td>
-      <td><th scope="col">ความชำนานการทางการแพทย์</th></td>
-      <td><th scope="col">ประวัติเบื้องต้นของแพทย์</th></td>
-  </div>
-  </thead>
-      <tr :key="key" v-for="(doctor, key) in doctors">
-        <div v-if="updateKey1 === key">
-          <input type="text" v-model="updateusernamedoc" placeholder="ชื่อแพทย์">
-          <input type="text" v-model="updatesernamedoc" placeholder="นามสกุลแพทย์">
-          <input type="text" v-model="updateage" placeholder="อายุ">
-          <input type="text" v-model="updateoption" placeholder="ความชำนานการทางการแพทย์">
-          <textarea type="text" v-model="updatestory" placeholder="ประวัติเบื้องต้นของแพทย์"></textarea>
-          <button class="btn btn-success"  @click="Update2(key, updateusernamedoc, updatesernamedoc, updateage, updateoption, updatestory)">บันทึก</button>
+      <thead class="">
+        <div>
+          <td><th scope="col">ชื่อแพทย์</th></td>
+          <td><th scope="col">นามสกุลแพทย์</th></td>
+          <td><th scope="col">อายุ</th></td>
+          <td><th scope="col">ความชำนานการทางการแพทย์</th></td>
+          <td><th scope="col">ประวัติเบื้องต้นของแพทย์</th></td>
         </div>
-        <div v-else>
-        <td><th>{{doctor.usernamedoc}}</th></td>
-        <td><th>{{doctor.sernamedoc}}</th></td>
-        <td><th>{{doctor.age}}</th></td>
-        <td><th>{{doctor.option}}</th></td>
-        <td><th>{{doctor.story}}</th></td>
-        <th><button class="btn btn-danger" @click="deleteUser2 (key)">X</button></th>
-        <th><button class="btn btn-warning" @click="SetUpdate2 (key, doctor.usernamedoc, doctor.sernamedoc, doctor.age, doctor.option, doctor.story)">U</button></th>
-        </div>
-      </tr>
+      </thead>
+        <tr :key="key" v-for="(doctor, key) in doctors">
+            <div v-if="updateKey1 === key">
+              <input type="text" v-model="updateusernamedoc" placeholder="ชื่อแพทย์">
+              <input type="text" v-model="updatesernamedoc" placeholder="นามสกุลแพทย์">
+              <input type="text" v-model="updateage" placeholder="อายุ">
+              <input type="text" v-model="updateoption" placeholder="ความชำนานการทางการแพทย์">
+              <textarea type="text" v-model="updatestory" placeholder="ประวัติเบื้องต้นของแพทย์"></textarea>
+              <button class="btn btn-success"  @click="Update2(key, updateusernamedoc, updatesernamedoc, updateage, updateoption, updatestory)">บันทึก</button>
+            </div>
+              <div v-else>
+                <td><th>{{doctor.usernamedoc}}</th></td>
+                <td><th>{{doctor.sernamedoc}}</th></td>
+                <td><th>{{doctor.age}}</th></td>
+                <td><th>{{doctor.option}}</th></td>
+                <td><th>{{doctor.story}}</th></td>
+                <th><button class="btn btn-danger" @click="deleteUser2 (key)">X</button></th>
+                <th><button class="btn btn-warning" @click="SetUpdate2 (key, doctor.usernamedoc, doctor.sernamedoc, doctor.age, doctor.option, doctor.story)">U</button></th>
+              </div>
+        </tr>
 </table>
+<br>
+  <label for=""><h1>เภสัชกร</h1></label>
+    <table class="table table-hover">
+      <thead class="">
+        <div>
+          <td><th scope="col">ชื่อเภสัชกร</th></td>
+          <td><th scope="col">นามสกุลเภสัชกร</th></td>
+          <td><th scope="col">อายุ</th></td>
+          <td><th scope="col">ความชำนานการทางเภสัชกร</th></td>
+          <td><th scope="col">ประวัติเบื้องต้นของเภสัชกร</th></td>
+        </div>
+      </thead>
+        <tr :key="key" v-for="(pharma, key) in pharmas">
+          <div v-if="updateKey2 === key">
+            <input type="text" v-model="updateusernamephar" placeholder="ชื่อเภสัชกร">
+            <input type="text" v-model="updatesernamephar" placeholder="นามสกุลเภสัชกร">
+            <input type="text" v-model="updateage2" placeholder="อายุ">
+            <input type="text" v-model="updateoption2" placeholder="ความชำนานการทางเภสัชกร">
+            <textarea type="text" v-model="updatestory2" placeholder="ประวัติเบื้องต้นของเภสัชกร"></textarea>
+            <button class="btn btn-success" @click="Update3(key, updateusernamephar, updatesernamephar, updateage2, updateoption2, updatestory2)">บันทึก</button>
+          </div>
+            <div v-else>
+              <td><th>{{pharma.usernamephar}}</th></td>
+              <td><th>{{pharma.sernamephar}}</th></td>
+              <td><th>{{pharma.age}}</th></td>
+              <td><th>{{pharma.option}}</th></td>
+              <td><th>{{pharma.story}}</th></td>
+              <th><button class="btn btn-danger"  @click="deleteUser3 (key)">X</button></th>
+              <th><button class="btn btn-warning" @click="SetUpdate3 (key, pharma.usernamephar, pharma.sernamephar, pharma.age, pharma.option, pharma.story)">U</button></th>
+            </div>
+        </tr>
+  </table>
+</div>
 </div>
 </template>
 
@@ -110,7 +149,17 @@ export default {
       updatestory: '',
       updateoption: '',
       Musers: {},
-      doctors: {}
+      doctors: {},
+      pharmas: {},
+      updateKey2: '',
+      updateid: '',
+      updateday: '',
+      updatebloodtype: '',
+      updateusernamephar: '',
+      updatesernamephar: '',
+      updateage2: '',
+      updateoption2: '',
+      updatestory2: ''
     }
   },
   computed: {
@@ -128,28 +177,40 @@ export default {
       this.doctors = snap.val()
       console.log(this.doctors)
     })
+    const dbRefObject3 = firebase.database().ref().child('Manage').child('Pharmacist')
+    console.log(dbRefObject3)
+    dbRefObject3.on('value', snap => {
+      this.pharmas = snap.val()
+      console.log(this.pharmas)
+    })
   },
   methods: {
     deleteUser (key) {
       manageuser.child('Users').child(key).remove()
     },
-    SetUpdate (key, name, sername, weight, height, address, numberphone, medical, disease) {
+    SetUpdate (key, name, sername, idpeople, day, weight, height, bloodtype, address, numberphone, medical, disease) {
       this.updateKey = key
       this.updateName = name
       this.updatesurName = sername
+      this.updateid = idpeople
+      this.updateday = day
       this.updateWeight = weight
       this.updateHeight = height
+      this.updatebloodtype = bloodtype
       this.updateAddress = address
       this.updateNumberphone = numberphone
       this.updateMedical = medical
       this.updateDisease = disease
     },
-    Update (disease, medical, numberphone, address, height, weight, sername, name, keys, key, Manage) {
+    Update (disease, medical, numberphone, address, bloodtype, height, weight, day, idpeople, sername, name, keys, key, Manage) {
       manageuser.child('Users').child(key).update({
         name: name,
         sername: sername,
+        idpeople: idpeople,
+        day: day,
         weight: weight,
         height: height,
+        bloodtype: bloodtype,
         address: address,
         numberphone: numberphone,
         medical: medical,
@@ -158,8 +219,11 @@ export default {
       this.updateKey = ''
       this.updateName = ''
       this.updatesurName = ''
+      this.updateid = ''
+      this.updateday = ''
       this.updateWeight = ''
       this.updateHeight = ''
+      this.updatebloodtype = ''
       this.updateAddress = ''
       this.updateNumberphone = ''
       this.updateMedical = ''
@@ -190,6 +254,32 @@ export default {
       this.updateage = ''
       this.updateoption = ''
       this.updatestory = ''
+    },
+    deleteUser3 (key) {
+      manageuser.child('Pharmacist').child(key).remove()
+    },
+    SetUpdate3 (key, usernamephar, sernamephar, age, option, story) {
+      this.updateKey2 = key
+      this.updateusernamephar = usernamephar
+      this.updatesernamephar = sernamephar
+      this.updateage2 = age
+      this.updateoption2 = option
+      this.updatestory2 = story
+    },
+    Update3 (key, usernamephar, sernamephar, age, option, story) {
+      manageuser.child('Pharmacist').child(key).update({
+        usernamephar: usernamephar,
+        sernamephar: sernamephar,
+        age: age,
+        option: option,
+        story: story
+      })
+      this.updateKey2 = ''
+      this.updateusernamephar = ''
+      this.updatesernamephar = ''
+      this.updateage2 = ''
+      this.updateoption2 = ''
+      this.updatestory2 = ''
     }
   }
 }

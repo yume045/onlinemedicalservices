@@ -55,6 +55,11 @@
                <div class="col-md-9">
                   <div class="profile-content">
                     <div :key="key" v-for="(user, key) in user">
+                      <div v-if="updateKey1 === key">
+                        <input type="text" v-model="updateAddress" placeholder="ที่อยู่">
+                        <button class="btn btn-success" @click="Update(key, updateAddress)">บันทึก</button>
+                      </div>
+                      <div v-else>
                     หมายเลขHN: {{user.HN}}<hr>
                     ชื่อ: {{user.name}}<hr>
                    นามสกุล: {{user.sername}}<hr>
@@ -63,11 +68,12 @@
                    วันเดือนปีเกิด: {{user.day}}<hr>
                    ส่วนสูง: {{user.height}}<hr>
                    น้ำหนัก: {{user.weight}}<hr>
-                   ที่อยู่: {{user.address}}<hr>
+                   ที่อยู่: {{user.address}} <button class="btn btn-warning" @click="Setupdate (key, user.address)">U</button><hr>
                    กรุ๊ปเลือด: {{user.bloodtype}}<hr>
                    โรคประจำตัว: {{user.disease}}<hr>
                    ยาที่แพ้: {{user.medical}}<hr>
                    เบอร์โทรศัพท์: {{user.numberphone}}<hr>
+                   </div>
                     </div>
                   </div>
                </div>
@@ -77,11 +83,15 @@
 <script>
 import firebase from 'firebase'
 import { mapGetters } from 'vuex'
+var database = firebase.database()
+var editprofile = database.ref('/User')
 export default {
   name: 'Editprofile',
   data () {
     return {
-      user: {}
+      user: {},
+      updateAddress: '',
+      updateKey1: ''
     }
   },
   computed: {
@@ -96,6 +106,23 @@ export default {
     dbRefObject.on('value', snap => {
       this.user = snap.val()
     })
+  },
+  methods: {
+    Setupdate (key, address) {
+      console.log(key)
+      console.log(address)
+      this.updateKey1 = key
+      this.updateAddress = address
+    },
+    Update (key, address) {
+      console.log(address)
+      editprofile.child(this.users).child(key).update({
+        address: address
+      })
+      this.updateKey1 = ''
+      this.updateAddress = ''
+      console.log(this.updateKey1)
+    }
   }
 }
 </script>

@@ -43,7 +43,7 @@
                       <p class="card-text">
                         {{subadd.add1}}
                       </p>
-              <b-button href="#" variant="primary" class="btn btn-outline-info">อ่านเพิ่มเติม</b-button>
+              <b-button href="/#/news" variant="primary" class="button is-medium is-info">อ่านเพิ่มเติม</b-button>
         </b-card>
             </div>
         </div>

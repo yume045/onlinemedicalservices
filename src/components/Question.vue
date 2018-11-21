@@ -5,9 +5,6 @@
   <div class="container">
     <div class="navbar-menu">
       <div class="navbar-start">
-        <a class="navbar-item is-active">ดูคำถามทั้งหมด</a>
-        <a class="navbar-item">ดูเฉพาะคำถามที่มีคำตอบทั้งหมด</a>
-        <a class="navbar-item">ดูเฉพาะคำถามที่ยังไม่มีคำตอบทั้งหมด</a>
         </div>
         <div class="navbar-end">
           <div class="navbar-item">
@@ -53,52 +50,71 @@
                       Tags
                       </p>
                       <ul class="menu-list">
-                        <li><span class="menu-label">Dashboard</span></li><br>
-                        <li><span class="menu-label">Customers</span></li><br>
-                        <li><span class="menu-label">Authentication</span></li><br>
-                        <li><span class="menu-label">Payments</span></li><br>
-                        <li><span class="menu-label">Transfers</span></li><br>
-                        <li><span class="menu-label">Balance</span></li><br>
-                        <li><span class="menu-label">Question</span></li>
+                        <li><span class="menu-label"><a class="navbar-item is-active">ดูคำถามทั้งหมด</a></span></li><br>
+                        <li><span class="menu-label"><a class="navbar-item">ดูเฉพาะคำถามที่มีคำตอบทั้งหมด</a></span></li><br>
+                        <li><span class="menu-label"><a class="navbar-item">ดูเฉพาะคำถามที่ยังไม่มีคำตอบทั้งหมด</a></span></li><br>
                       </ul>
                   </aside>
                 </div>
                 <div class="column is-9">
+                   <!-- <textarea type="text"  rows="3" v-model="data.question"></textarea>
+                   <button class="btn btn-primary " @click="insertQuestion()">send</button> -->
                     <div class="box content">
                       <div class="md-form amber-textarea active-amber-textarea">
                         <i class="fa fa-pencil prefix"></i>
-                        <textarea type="text" id="form22" class="md-textarea form-control" rows="3" v-model="question"></textarea>
+                        <textarea type="text" id="form22" class="md-textarea form-control" rows="3" v-model="data.question"></textarea>
                         <label for="form22"></label>
                       </div>
-                        <form class="md-form">
-                            <div class="file-field">
-                                <div class="btn btn-primary float-left">
-                                    <input type="file" multiple>
-                                </div>
-                                <button class="btn btn-primary " @click="insertQuestion ()">send</button>
+                      <div class="control">
+                          <input type="file" name="resume" @change="onFileChange($event.target.files[0])">
+                      </div>
+                          <button class="btn btn-primary " @click="insertQuestion (users)">send</button>
+                    </div>
+                        <!--<diV :key="key" v-for="(subquestion, key) in subquestions">-->
+                      <div class="box" :key="key" v-for="(subquestion, key) in subquestions">
+                          <article class="media">
+                            <div class="media-left">
+                              <figure class="image is-64x64">
+                                <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
+                              </figure>
                             </div>
-                        </form>
-                    </div>
-                    <b-card>
-                    <diV :key="key" v-for="(subquestion, key) in subquestions">
-                      {{key}}
-                      <diV :key="key" v-for="(subquestion, key) in subquestion">
-                      <div v-if="updatekey === key" class="box content">
-                        <div class="box content">
-                          <input type="text" v-model="updatequestion"><br>
-                        <button class="btn btn-primary" @click="Updatesub(key, updatequestion)">Save</button>
-                        </div>
-                    </div>
-                     <div v-else class="box content">
-                        <div class="box content">
-                          {{subquestion.question}}
-                          <div></div>
-                        <button class="btn btn-primary" @click="Setupdate(key, subquestion.question)">Comment</button><br>
-                        </div>
-                    </div>
-                      </diV>
-                    </diV>
-                    </b-card>
+                            <div class="media-content">
+                              <div class="content">
+                                <p>
+                                  <strong>{{subquestion.users}}</strong>
+                                  <br>
+                                  {{subquestion.question}}
+                                </p>
+                              </div>
+                            </div>
+                          </article>
+                          <article class="media">
+                            <div class="media-left">
+                              <figure class="image is-64x64">
+                                <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
+                              </figure>
+                            </div>
+                            <div class="media-content">
+                              <div class="content" :key="key1" v-for="(ans, key1) in subquestion.ans">
+                                <p>
+                                  <strong>{{ans.name}}</strong>
+                                  <br>
+                                  {{ans.ans}}
+                                </p>
+                              </div>
+                                <div v-if = "comment === key">
+                                  <input type="text" class="input is-hovered" v-model="ans">
+                                  <div class="control">
+                                    <button class="button is-info" @click="insert_ans (key,users)"><b-icon icon="check"></b-icon><span>ตอบกลับ</span></button>
+                                  </div>
+                                </div>
+                                  <div v-else>
+                                    <button class="btn btn-primary" @click="sw (key)">ตอบกลับ</button>
+                                  </div>
+                            </div>
+                          </article>
+                          </div>
+                        <!--</div>-->
                   </div>
                 </div>
             </section>
@@ -109,18 +125,25 @@ import firebase from 'firebase'
 import { mapGetters } from 'vuex'
 var database = firebase.database()
 var questionRef = database.ref('/Question')
-
 export default {
   name: 'HelloWorld',
   data () {
     return {
+      data: {
+        question: '',
+        image: '',
+        users: ''
+      },
+      ans: '',
       msg: 'Welcome to Your Vue.js App',
       updatekey: '',
       question: '',
       subquestions: '',
       picture: '',
       updatequestion: '',
-      user: {}
+      user: {},
+      img: [],
+      comment: ''
     }
   },
   computed: {
@@ -131,12 +154,35 @@ export default {
     })
   },
   methods: {
-    insertQuestion () {
-      let tmp = ({
-        question: this.question
-      })
-      questionRef.child(this.question).push(tmp)
-      this.question = ''
+    onFileChange (fileImg) {
+      this.dataImg = fileImg
+    },
+    createImage () {
+      const storageRef = firebase.storage().ref('image/' + this.dataImg.name.toLowerCase().split(' ').join('-'))
+      const uploadTask = storageRef.put(this.dataImg)
+      return uploadTask
+    },
+    sw  (key) {
+      this.comment = key
+    },
+    insert_ans (key, users) {
+      var data = {
+        ans: this.ans,
+        name: users
+      }
+      questionRef.child(key + '/ans/').push(data)
+      this.comment = ''
+    },
+    async insertQuestion (users) {
+      this.data.users = users
+      questionRef.push(this.data)
+      let urlsImg = await this.createImage()
+      firebase.database.ref('img').push(urlsImg.downloadURL)
+      // let tmp = ({
+      //   question: this.question
+      // })
+      // questionRef.child(this.question).push(tmp)
+      // this.question = ''
     },
     Setupdate (key, subquestion) {
       this.updatekey = key
@@ -155,7 +201,6 @@ export default {
   mounted () {
     questionRef.on('value', snap => {
       this.subquestions = snap.val()
-      console.log(this.subquestions)
     })
   }
 }
