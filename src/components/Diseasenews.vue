@@ -10,11 +10,11 @@
 import firebase from 'firebase'
 import { mapGetters } from 'vuex'
 var database = firebase.database()
-var newsRef = database.ref('/Homeadmin')
-var newsRef1 = database.ref('/Homeadmin')
+var diseaseadminRef = database.ref('/Diseaseadmin')
+var diseaseadminRef1 = database.ref('/Diseaseadmin')
 console.log(this.isLoggedIn)
 export default {
-  name: 'Home',
+  name: 'Diseasenews',
   subadds: '',
   addpicture: '',
   add: '',
@@ -35,12 +35,12 @@ export default {
     })
   },
   mounted () {
-    newsRef.on('value', snap => {
+    diseaseadminRef.on('value', snap => {
       this.subadds = snap.val()
       console.log(this.subadds)
     })
-    const newsRef2 = newsRef1.orderByChild('add').equalTo(this.selectNews)
-    newsRef2.on('child_added', snap => {
+    const diseaseadminRef2 = diseaseadminRef1.orderByChild('adddisease').equalTo(this.selectNews)
+    diseaseadminRef2.on('child_added', snap => {
       this.news = snap.val()
       console.log(this.news)
     })

@@ -4,7 +4,7 @@ const state = {
   password: null,
   profile: null,
   getuser: null,
-  selectShop: null,
+  selectNews: null,
   added: [],
   Per: null
 }
@@ -20,6 +20,9 @@ const getters = {
   Per: state => {
     console.log('2222')
     return state.Per
+  },
+  selectNews: state => {
+    return state.selectNews
   }
 }
 
@@ -28,6 +31,10 @@ const mutations = {
     state.user = payload.userSet
     state.Per = payload.Per
     console.log(payload.Per)
+  },
+  selectNews: (state, payload) => {
+    state.selectNews = payload
+    console.log(state.selectNews)
   }
 }
 
@@ -37,6 +44,9 @@ const actions = {
   },
   logout: ({commit}, payload) => {
     commit('setUser', payload)
+  },
+  selectNews: ({commit}, payload) => {
+    commit('selectNews', payload)
   }
 }
 

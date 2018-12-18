@@ -3,26 +3,33 @@
   <div>
 </div><br><br>
     <b-container fluid style="width:35%;">
+      <div class="level-right" style="margin-right:30%;">
     <b-row class="my-1">
         <b-col sm="3"><label for="input-default">ชื่อแผนก:</label></b-col>
         <b-col sm="9">
         <b-form-input id="input-default" type="text" min=0 placeholder="" v-model="addOption"></b-form-input>
     </b-col>
     </b-row><br>
-        <b-button type="submit" variant="primary" class="btn btn-outline-primary" @click="insertOption()">เพิ่มแผนก</b-button>
+      <div class="level-item">
+        <p class=""><a class="button is-primary" @click="insertOption()">เพิ่มแผนก</a></p>
+        </div>
+      </div>
     </b-container><br>
     <b-container>
-        <b-row class="text-center">
+        <b-row class="box">
          <b-col><label for="input-default">แผนก</label></b-col>
         </b-row>
-        <div>
+        <div class="">
           <div :key="key" v-for="(show, key) in shows">
             <div v-if="updateKey === key">
-            <b-form-input id="input-default" type="text" v-model="updateoption" placeholder="ชื่อแผนก"></b-form-input>
+            <b-form-input id="input-default" type="text" v-model="updateoption" placeholder="ชื่อแผนก"></b-form-input><br>
             <b-button type="submit" variant="primary" class="btn btn-success"  @click="updateop(key, updateoption)">บันทึก</b-button>
             </div>
-          <div v-else>
-            {{show.addOption}}&nbsp;&nbsp;
+          <div v-else><hr>
+              <b-table-column label="First Name">
+                {{show.addOption}}&nbsp;&nbsp;
+              </b-table-column>
+              <div class="level-right"></div>
             <b-button type="submit" variant="primary" class="btn btn-danger"  @click="deleteop(key)">x</b-button>
             <b-button type="submit" variant="primary" class="btn btn-warning" @click="setupdate(key, show.addOption)">u</b-button>
           </div>

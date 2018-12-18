@@ -6,49 +6,29 @@
     <div class="navbar-menu">
       <div class="navbar-start">
         </div>
-        <div class="navbar-end">
           <div class="navbar-item">
-            <input class="input" type="search" placeholder="Search forum...">
-            </div>
+                      <div class="row justify-content-center">
+                            <form class="card card-sm">
+                                <div class="card-body row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <i class="fas fa-search h4 text-body"></i>
+                                    </div>
+                                    <div class="col">
+                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords">
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="btn btn-lg btn-success" type="submit">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
             </div>
             </div>
             </div>
             <section class="container">
               <div class="columns">
                 <div class="column is-3">
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">New Post</button>
-                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <form>
-                            <div class="form-group">
-                              <label for="recipient-name" class="col-form-label">Recipient:</label>
-                              <input type="text" class="form-control" id="recipient-name">
-                            </div>
-                            <div class="form-group">
-                              <label for="message-text" class="col-form-label">Message:</label>
-                              <textarea class="form-control" id="message-text"></textarea>
-                            </div>
-                          </form>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary">Send message</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                   <aside class="menu">
-                    <p class="menu-label">
-                      Tags
-                      </p>
                       <ul class="menu-list">
                         <li><span class="menu-label"><a class="navbar-item is-active">ดูคำถามทั้งหมด</a></span></li><br>
                         <li><span class="menu-label"><a class="navbar-item">ดูเฉพาะคำถามที่มีคำตอบทั้งหมด</a></span></li><br>

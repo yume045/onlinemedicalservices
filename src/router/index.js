@@ -12,6 +12,11 @@ import Editprofile from '@/components/Editprofile'
 import news from '@/components/news'
 import ManagePharmacist from '@/components/ManagePharmacist'
 import ManageOption from '@/components/ManageOption'
+import Medicenadmin from '@/components/Medicenadmin'
+import Diseaseadmin from '@/components/Diseaseadmin'
+import Disease from '@/components/Disease'
+import Diseasenews from '@/components/Diseasenews'
+import Medicnews from '@/components/Medicnews'
 Vue.use(Router)
 
 export default new Router({
@@ -75,6 +80,31 @@ export default new Router({
       path: '/ManageOption',
       name: 'ManageOption',
       component: ManageOption
+    },
+    {
+      path: '/Medicenadmin',
+      name: 'Medicenadmin',
+      component: Medicenadmin
+    },
+    {
+      path: '/Diseaseadmin',
+      name: 'Diseaseadmin',
+      component: Diseaseadmin
+    },
+    {
+      path: '/Disease',
+      name: 'Disease',
+      component: Disease
+    },
+    {
+      path: '/Medicnews',
+      name: 'Medicnews',
+      component: Medicnews
+    },
+    {
+      path: '/Diseasenews',
+      name: 'Diseasenews',
+      component: Diseasenews
     }
   ]
 })

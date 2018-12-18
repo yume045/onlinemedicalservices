@@ -1,152 +1,355 @@
-<!--<template>
-<div>
-<b-container class="bv-example-row">
-      <b-row class="text-center">
-          <b-col></b-col>
-          <b-col cols="12">
-            <b-card title="ผู้ป่วย"
-                    sub-title="">
-                  <b-container fluid>
-      <!-- User Interface controls -->
-      <!--<b-row>
-        <b-col md="6" class="my-1">
-          <b-form-group horizontal label="Filter" class="mb-0">
-            <b-input-group>
-              <b-form-input v-model="filter" placeholder="Type to Search" />
-              <b-input-group-append>
-                <b-btn :disabled="!filter" @click="filter = ''">Clear</b-btn>
-              </b-input-group-append>
-            </b-input-group>
-          </b-form-group>
-        </b-col>
-        <b-col md="6" class="my-1">
-          <b-form-group horizontal label="Per page" class="mb-0">
-            <b-form-select :options="pageOptions" v-model="perPage" />
-          </b-form-group>
-        </b-col>
-      </b-row>
-
-      <!-- Main table element -->
-      <!--<b-table show-empty
-              stacked="md"
-              :items="items"
-              :fields="fields"
-              :current-page="currentPage"
-              :per-page="perPage"
-              :filter="filter"
-              :sort-by.sync="sortBy"
-              :sort-desc.sync="sortDesc"
-              :sort-direction="sortDirection"
-              @filtered="onFiltered"
-      >
-        <template slot="name" slot-scope="row">{{row.value.first}} {{row.value.last}}</template>
-        <template slot="isActive" slot-scope="row">{{row.value?'Yes :)':'No :('}}</template>
-        <template slot="actions" slot-scope="row">
-          <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
-          <!--<b-button size="sm" @click.stop="info(row.item, row.index, $event.target)" class="mr-1">
-            Info modal
-          </b-button>
-          <b-button size="sm" @click.stop="row.toggleDetails">
-            {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
-          </b-button>
-        </template>
-        <template slot="row-details" slot-scope="row">
-          <b-card>
-            <ul>
-              <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value}}</li>
-            </ul>
-          </b-card>
-        </template>
-      </b-table>
-
-      <!-- Info modal -->
-      <!--<b-modal id="modalInfo" @hide="resetModal" :title="modalInfo.title" ok-only>
-        <pre>{{ modalInfo.content }}</pre>
-      </b-modal>
-
-    </b-container>
-          </b-card>
-        </b-col>
-        <b-col></b-col>
-    </b-row>
-</b-container>
+<template>
+<div class="center">
+    <div style="margin-left:35%;">
+                      <div class="row justify-content-center">
+                        <div class="col-12 col-md-10 col-lg-8">
+                            <form class="card card-sm">
+                                <div class="card-body row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <i class="fas fa-search h4 text-body"></i>
+                                    </div>
+                                    <div class="col">
+                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords" v-model="search">
+                                    </div>
+                                    <div>
+                                    <select class="form-control form-control-lg" v-model="see">
+                                      <option value="name">ชื่อ</option>
+                                      <option value="sernaem">นามสกุล</option>
+                                      <option value="idpeople">รหัสบัตรประชาชน</option>
+                                      <option value="gen">เพศ</option>
+                                      <option value="HN">HNnumber</option>
+                                      <option value="bloodtype">กรุ๊ปเลือด</option>
+                                      <option value="medical">ยาที่แพ้</option>
+                                      <option value="disease">โรคประจำตัว</option>
+                                    </select>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="btn btn-lg btn-success" type="submit" @click="searchNow(search, see)">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div><br>
+          <div v-if="searchuser !== ''">
+            <div class="box">
+              {{searchuser.HN}} {{searchuser.name}} {{searchuser.sername}} {{searchuser.idpeople}} {{searchuser.gen}}
+              {{searchuser.day}} {{searchuser.weight}} {{searchuser.height}} {{searchuser.bloodtype}} {{searchuser.address}}
+              {{searchuser.numberphone}} {{searchuser.medical}} {{searchuser.disease}}
+            </div>
+          </div>
+    </div><br><br>
+  <div>
+  <label for=""><h1>ผู้ป่วย</h1></label>
+    <table class="table table-hover">
+  <thead class="">
+    <div>
+      <td><th scope="col">Hospital Number</th></td>
+      <td><th scope="col">ชื่อ</th></td>
+      <td><th scope="col">นามสกุล</th></td>
+      <td><th scope="col">รหัสประชาชน</th></td>
+      <td><th scope="col">เพศ</th></td>
+      <td><th scope="col">วัน/เดือน/ปี</th></td>
+      <td><th scope="col">น้ำหนัก</th></td>
+      <td><th scope="col">ส่วนสูง</th></td>
+      <td><th scope="col">กรุ๊ปเลือด</th></td>
+      <td><th scope="col">ที่อยู่</th></td>
+      <td><th scope="col">เบอร์โทร</th></td>
+      <td><th scope="col">ยาที่แพ้</th></td>
+      <td><th scope="col">โรคประจำตัว</th></td>
+  </div>
+  </thead>
+    <tr :key="key" v-for="(user, key) in users">
+      <div v-if="updateKey === key">
+        <input type="text" v-model="updateName" placeholder="ชื่อ">
+        <input type="text" v-model="updatesurName" placeholder="นามสุกล">
+        <input type="text" v-model="updateid" placeholder="รหัสบัตรประชาชน">
+        <input type="date" v-model="updateday" placeholder="วัน/เดือน/ปีเกิด">
+        <input type="text" v-model="updateWeight" placeholder="น้ำหนัก">
+        <input type="text" v-model="updateHeight" placeholder="ส่วนสูง">
+        <input type="text" v-model="updatebloodtype" placeholder="กรุ๊ปเลือด">
+        <input type="text" v-model="updateAddress" placeholder="ที่อยู่">
+        <input type="text" v-model="updateNumberphone" placeholder="เบอร์โทร">
+        <textarea type="text" v-model="updateMedical" placeholder="ยาที่แพ้"></textarea>
+        <textarea type="text" v-model="updateDisease" placeholder="โรคประจำตัว"></textarea>
+        <button class="btn btn-success" @click="Update(updateDisease, updateMedical, updateNumberphone, updateAddress, updatebloodtype, updateWeight, updateHeight, updateday, updateid, updatesurName, updateName, keys ,key, Manage)">บันทึก</button>
+      </div>
+      <div v-else>
+      <td><th>{{user.HN}}</th></td>
+      <td><th>{{user.name}}</th></td>
+      <td><th>{{user.sername}}</th></td>
+      <td><th>{{user.idpeople}}</th></td>
+      <td><th>{{user.gen}}</th></td>
+      <td><th>{{user.day}}</th></td>
+      <td><th>{{user.weight}}</th></td>
+      <td><th>{{user.height}}</th></td>
+      <td><th>{{user.bloodtype}}</th></td>
+      <td><th>{{user.address}}</th></td>
+      <td><th>{{user.numberphone}}</th></td>
+      <td><th>{{user.medical}}</th></td>
+      <td><th>{{user.disease}}</th></td>
+      <th><button class="btn btn-danger" @click="deleteUser (key)">X</button></th>
+      <th><button class="btn btn-warning" @click="SetUpdate (key, user.name, user.sername, user.idpeople, user.day, user.weight, user.height, user.bloodtype, user.address, user.numberphone, user.medical, user.disease)">U</button></th>
+      </div>
+    </tr>
+    </table>
+    <br>
+    <label for=""><h1>แพทย์</h1></label>
+    <table class="table table-hover">
+      <thead class="">
+        <div>
+          <td><th scope="col">ชื่อแพทย์</th></td>
+          <td><th scope="col">นามสกุลแพทย์</th></td>
+          <td><th scope="col">อายุ</th></td>
+          <td><th scope="col">ความชำนานการทางการแพทย์</th></td>
+          <td><th scope="col">ประวัติเบื้องต้นของแพทย์</th></td>
+        </div>
+      </thead>
+        <tr :key="key" v-for="(doctor, key) in doctors">
+            <div v-if="updateKey1 === key">
+              <input type="text" v-model="updateusernamedoc" placeholder="ชื่อแพทย์">
+              <input type="text" v-model="updatesernamedoc" placeholder="นามสกุลแพทย์">
+              <input type="text" v-model="updateage" placeholder="อายุ">
+              <input type="text" v-model="updateoption" placeholder="ความชำนานการทางการแพทย์">
+              <textarea type="text" v-model="updatestory" placeholder="ประวัติเบื้องต้นของแพทย์"></textarea>
+              <button class="btn btn-success"  @click="Update2(key, updateusernamedoc, updatesernamedoc, updateage, updateoption, updatestory)">บันทึก</button>
+            </div>
+              <div v-else>
+                <td><th>{{doctor.usernamedoc}}</th></td>
+                <td><th>{{doctor.sernamedoc}}</th></td>
+                <td><th>{{doctor.age}}</th></td>
+                <td><th>{{doctor.option}}</th></td>
+                <td><th>{{doctor.story}}</th></td>
+                <th><button class="btn btn-danger" @click="deleteUser2 (key)">X</button></th>
+                <th><button class="btn btn-warning" @click="SetUpdate2 (key, doctor.usernamedoc, doctor.sernamedoc, doctor.age, doctor.option, doctor.story)">U</button></th>
+              </div>
+        </tr>
+</table>
+<br>
+  <label for=""><h1>เภสัชกร</h1></label>
+    <table class="table table-hover">
+      <thead class="">
+        <div>
+          <td><th scope="col">ชื่อเภสัชกร</th></td>
+          <td><th scope="col">นามสกุลเภสัชกร</th></td>
+          <td><th scope="col">อายุ</th></td>
+          <td><th scope="col">ความชำนานการทางเภสัชกร</th></td>
+          <td><th scope="col">ประวัติเบื้องต้นของเภสัชกร</th></td>
+        </div>
+      </thead>
+        <tr :key="key" v-for="(pharma, key) in pharmas">
+          <div v-if="updateKey2 === key">
+            <input type="text" v-model="updateusernamephar" placeholder="ชื่อเภสัชกร">
+            <input type="text" v-model="updatesernamephar" placeholder="นามสกุลเภสัชกร">
+            <input type="text" v-model="updateage2" placeholder="อายุ">
+            <input type="text" v-model="updateoption2" placeholder="ความชำนานการทางเภสัชกร">
+            <textarea type="text" v-model="updatestory2" placeholder="ประวัติเบื้องต้นของเภสัชกร"></textarea>
+            <button class="btn btn-success" @click="Update3(key, updateusernamephar, updatesernamephar, updateage2, updateoption2, updatestory2)">บันทึก</button>
+          </div>
+            <div v-else>
+              <td><th>{{pharma.usernamephar}}</th></td>
+              <td><th>{{pharma.sernamephar}}</th></td>
+              <td><th>{{pharma.age}}</th></td>
+              <td><th>{{pharma.option}}</th></td>
+              <td><th>{{pharma.story}}</th></td>
+              <th><button class="btn btn-danger"  @click="deleteUser3 (key)">X</button></th>
+              <th><button class="btn btn-warning" @click="SetUpdate3 (key, pharma.usernamephar, pharma.sernamephar, pharma.age, pharma.option, pharma.story)">U</button></th>
+            </div>
+        </tr>
+  </table>
+</div>
 </div>
 </template>
+
 <script>
-/*const items = [
-  { isActive: true, age: 40, name: { first: 'Dickerson', last: 'Macdonald' } },
-  { isActive: false, age: 21, name: { first: 'Larsen', last: 'Shaw' } },
-  {
-    isActive: false,
-    age: 9,
-    name: { first: 'Mini', last: 'Navarro' },
-    _rowVariant: 'success'
-  },
-  { isActive: false, age: 89, name: { first: 'Geneva', last: 'Wilson' } },
-  { isActive: true, age: 38, name: { first: 'Jami', last: 'Carney' } },
-  { isActive: false, age: 27, name: { first: 'Essie', last: 'Dunlap' } },
-  { isActive: true, age: 40, name: { first: 'Thor', last: 'Macdonald' } },
-  {
-    isActive: true,
-    age: 87,
-    name: { first: 'Larsen', last: 'Shaw' },
-    _cellVariants: { age: 'danger', isActive: 'warning' }
-  },
-  { isActive: false, age: 26, name: { first: 'Mitzi', last: 'Navarro' } },
-  { isActive: false, age: 22, name: { first: 'Genevieve', last: 'Wilson' } },
-  { isActive: true, age: 38, name: { first: 'John', last: 'Carney' } },
-  { isActive: false, age: 29, name: { first: 'Dick', last: 'Dunlap' } }*/
-]
-/*import firebase from 'firebase'
-import { log } from 'util';
+import firebase from 'firebase'
+var database = firebase.database()
+var manageuser = database.ref('/Manage')
+var manageRef1 = database.ref('/Manage')
 export default {
+  name: 'Manage',
   data () {
     return {
-      show_userr: '',
-      items: items,
-      fields: [
-        { key: 'name', label: 'Person Full name', sortable: true, sortDirection: 'desc' },
-        { key: 'age', label: 'Person age', sortable: true, 'class': 'text-center' },
-        { key: 'isActive', label: 'is Active' },
-        { key: 'actions', label: 'Actions' }
-      ],
-      currentPage: 1,
-      perPage: 5,
-      totalRows: items.length,
-      pageOptions: [ 5, 10, 15 ],
-      sortBy: null,
-      sortDesc: false,
-      sortDirection: 'asc',
-      filter: null,
-      modalInfo: { title: '', content: '' }
+      msg: 'Welcome to Your Vue.js App',
+      users: {},
+      updateKey: '',
+      updateName: '',
+      updatesurName: '',
+      updateWeight: '',
+      updateHeight: '',
+      updateAddress: '',
+      updateNumberphone: '',
+      updateMedical: '',
+      updateDisease: '',
+      updateKey1: '',
+      updatepassword: '',
+      updateusernamedoc: '',
+      updatesernamedoc: '',
+      updateage: '',
+      updatestory: '',
+      updateoption: '',
+      Musers: {},
+      doctors: {},
+      pharmas: {},
+      updateKey2: '',
+      updateid: '',
+      updateday: '',
+      updatebloodtype: '',
+      updateusernamephar: '',
+      updatesernamephar: '',
+      updateage2: '',
+      updateoption2: '',
+      updatestory2: '',
+      search: '',
+      searchuser: '',
+      see: '',
+      test: {}
     }
   },
   computed: {
-    sortOptions () {
-      // Create an options list from our fields
-      return this.fields
-        .filter(f => f.sortable)
-        .map(f => { return { text: f.label, value: f.key } })
-    }
   },
-  created: function () {
-    this.pullData()
+  mounted () {
+    const dbRefObject = firebase.database().ref().child('Manage').child('Users')
+    console.log(dbRefObject)
+    dbRefObject.on('value', snap => {
+      this.users = snap.val()
+      console.log(this.users)
+    })
+    const dbRefObject2 = firebase.database().ref().child('Manage').child('Doctor')
+    console.log(dbRefObject2)
+    dbRefObject2.on('value', snap => {
+      this.doctors = snap.val()
+      console.log(this.doctors)
+    })
+    const dbRefObject3 = firebase.database().ref().child('Manage').child('Pharmacist')
+    console.log(dbRefObject3)
+    dbRefObject3.on('value', snap => {
+      this.pharmas = snap.val()
+      console.log(this.pharmas)
+    })
   },
   methods: {
-    pullData () {
-      let that = this
-      var name = []
-      firebase.database().ref('User').once('value').then(function (snapshot) {
-        that.show_userr = snapshot.val()
-        for (var variable in that.show_userr) {
-          firebase.database().ref('User/' + variable).once('value').then(function (snapshot) {
-               that.show_user =  snapshot.val()
-               console.log(data.Permistion)
-          })
-          // console.log(variable);
-        }
+    deleteUser (key) {
+      manageuser.child('Users').child(key).remove()
+    },
+    SetUpdate (key, name, sername, idpeople, day, weight, height, bloodtype, address, numberphone, medical, disease) {
+      this.updateKey = key
+      this.updateName = name
+      this.updatesurName = sername
+      this.updateid = idpeople
+      this.updateday = day
+      this.updateWeight = weight
+      this.updateHeight = height
+      this.updatebloodtype = bloodtype
+      this.updateAddress = address
+      this.updateNumberphone = numberphone
+      this.updateMedical = medical
+      this.updateDisease = disease
+    },
+    Update (disease, medical, numberphone, address, bloodtype, height, weight, day, idpeople, sername, name, keys, key, Manage) {
+      manageuser.child('Users').child(key).update({
+        name: name,
+        sername: sername,
+        idpeople: idpeople,
+        day: day,
+        weight: weight,
+        height: height,
+        bloodtype: bloodtype,
+        address: address,
+        numberphone: numberphone,
+        medical: medical,
+        disease: disease
+      })
+      this.updateKey = ''
+      this.updateName = ''
+      this.updatesurName = ''
+      this.updateid = ''
+      this.updateday = ''
+      this.updateWeight = ''
+      this.updateHeight = ''
+      this.updatebloodtype = ''
+      this.updateAddress = ''
+      this.updateNumberphone = ''
+      this.updateMedical = ''
+      this.updateDisease = ''
+    },
+    deleteUser2 (key) {
+      manageuser.child('Doctor').child(key).remove()
+    },
+    SetUpdate2 (key, usernamedoc, sernamedoc, age, option, story) {
+      this.updateKey1 = key
+      this.updateusernamedoc = usernamedoc
+      this.updatesernamedoc = sernamedoc
+      this.updateage = age
+      this.updateoption = option
+      this.updatestory = story
+    },
+    Update2 (key, usernamedoc, sernamedoc, age, option, story) {
+      manageuser.child('Doctor').child(key).update({
+        usernamedoc: usernamedoc,
+        sernamedoc: sernamedoc,
+        age: age,
+        option: option,
+        story: story
+      })
+      this.updateKey1 = ''
+      this.updateusernamedoc = ''
+      this.updatesernamedoc = ''
+      this.updateage = ''
+      this.updateoption = ''
+      this.updatestory = ''
+    },
+    deleteUser3 (key) {
+      manageuser.child('Pharmacist').child(key).remove()
+    },
+    SetUpdate3 (key, usernamephar, sernamephar, age, option, story) {
+      this.updateKey2 = key
+      this.updateusernamephar = usernamephar
+      this.updatesernamephar = sernamephar
+      this.updateage2 = age
+      this.updateoption2 = option
+      this.updatestory2 = story
+    },
+    Update3 (key, usernamephar, sernamephar, age, option, story) {
+      manageuser.child('Pharmacist').child(key).update({
+        usernamephar: usernamephar,
+        sernamephar: sernamephar,
+        age: age,
+        option: option,
+        story: story
+      })
+      this.updateKey2 = ''
+      this.updateusernamephar = ''
+      this.updatesernamephar = ''
+      this.updateage2 = ''
+      this.updateoption2 = ''
+      this.updatestory2 = ''
+    },
+    searchNow (search, see) {
+      this.searchuser = ''
+      const manageRef2 = manageRef1.child('Users').orderByChild(this.see).equalTo(this.search)
+      manageRef2.on('child_added', snap => {
+        this.searchuser = snap.val()
+        console.log(this.searchuser)
       })
     }
   }
-}*/
+}
 </script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+h1, h2 {
+  font-weight: normal;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+a {
+  color: #42b983;
+}
+</style>

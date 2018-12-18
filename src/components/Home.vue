@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
 <div style="margin-left:35%;">
-<div class="row justify-content-center">
+                      <div class="row justify-content-center">
                         <div class="col-12 col-md-10 col-lg-8">
                             <form class="card card-sm">
                                 <div class="card-body row no-gutters align-items-center">
@@ -9,15 +9,16 @@
                                         <i class="fas fa-search h4 text-body"></i>
                                     </div>
                                     <div class="col">
-                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords">
+                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords" v-model="search">
                                     </div>
                                     <div class="col-auto">
-                                        <button class="btn btn-lg btn-success" type="submit">Search</button>
+                                        <button class="btn btn-lg btn-success" type="submit" @click="searchNow(search)">Search</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
+          <div v-if="news !== ''">{{news}}</div>
     </div>
 <div>
   <br>
@@ -38,12 +39,12 @@
                         <img v-bind:src="subadd.addpicture" style="width: 250px; height: 250px;">
                       </p>
                       <p class="card-text">
-                        {{subadd.add}}
+                        {{subadd.add.slice(0, 50)}}
                       </p>
                       <p class="card-text">
-                        {{subadd.add1}}
+                        {{subadd.add1.slice(0, 50)}}
                       </p>
-              <b-button href="/#/news" variant="primary" class="button is-medium is-info">อ่านเพิ่มเติม</b-button>
+              <b-button @click="select(subadd.add)" variant="primary" class="button is-medium is-info">อ่านเพิ่มเติม</b-button>
         </b-card>
             </div>
         </div>
@@ -55,9 +56,10 @@
 
 <script>
 import firebase from 'firebase'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 var database = firebase.database()
 var homeadminRef = database.ref('/Homeadmin')
+var newsRef1 = database.ref('/Homeadmin')
 console.log(this.isLoggedIn)
 export default {
   name: 'Home',
@@ -66,7 +68,9 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      subadds: ''
+      subadds: '',
+      search: '',
+      news: ''
     }
   },
   computed: {
@@ -87,6 +91,23 @@ export default {
       this.subadds = snap.val()
       console.log(this.subadds)
     })
+  },
+  methods: {
+    ...mapActions({
+      selectNews: 'user/selectNews'
+    }),
+    select (subadd) {
+      this.selectNews(subadd)
+      this.$router.push('/news')
+    },
+    searchNow (search) {
+      this.news = ''
+      const newsRef2 = newsRef1.orderByChild('add').equalTo(this.search)
+      newsRef2.on('child_added', snap => {
+        this.news = snap.val()
+        console.log(this.news)
+      })
+    }
   }
 }
 </script>

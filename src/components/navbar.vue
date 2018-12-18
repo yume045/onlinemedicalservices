@@ -37,6 +37,12 @@
       <li class="nav-item">
         <a class="nav-link disabled" href="/#/ManageOption" v-if="Checklogin && permission === 3">จัดการแผนกของแพทย์</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="/#/Medicenadmin" v-if="Checklogin && permission === 3">เพิ่มข้อมูลยา</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="/#/Diseaseadmin" v-if="Checklogin && permission === 3">เพิ่มข้อมูลโรค</a>
+      </li>
     </ul>
   </div>
       <a class="nav-link disabled " href="/#/Login" v-if="!Checklogin">เข้าสู่ระบบ</a>
