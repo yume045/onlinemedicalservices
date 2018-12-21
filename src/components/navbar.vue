@@ -80,7 +80,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      logout: 'user/logout'
+      logout: 'user/logout',
+      load: 'user/load'
     }),
     logoutWeb () {
       const userSet = null
@@ -88,6 +89,9 @@ export default {
       this.logout({userSet, per})
       this.$router.push('/login')
     }
+  },
+  created () {
+    this.load()
   }
 }
 </script>

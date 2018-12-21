@@ -19,12 +19,6 @@
                                     <input class="input is-medium" type="password" placeholder="รหัสผ่าน" v-model="password">
                                 </div>
                             </div>
-                            <div class="field">
-                                <label class="checkbox">
-                  <input type="checkbox">
-                 จดจำรหัสผ่าน
-                </label>
-                            </div>
                             <button class="button is-block is-info is-large is-fullwidth" v-on:click="loginWeb()">เข้าสู่ระบบ</button>
                         </form>
                     </div>

@@ -9,34 +9,12 @@
                                         <i class="fas fa-search h4 text-body"></i>
                                     </div>
                                     <div class="col">
-                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords" v-model="search">
-                                    </div>
-                                    <div>
-                                    <select class="form-control form-control-lg" v-model="see">
-                                      <option value="name">ชื่อ</option>
-                                      <option value="sernaem">นามสกุล</option>
-                                      <option value="idpeople">รหัสบัตรประชาชน</option>
-                                      <option value="gen">เพศ</option>
-                                      <option value="HN">HNnumber</option>
-                                      <option value="bloodtype">กรุ๊ปเลือด</option>
-                                      <option value="medical">ยาที่แพ้</option>
-                                      <option value="disease">โรคประจำตัว</option>
-                                    </select>
-                                    </div>
-                                    <div class="col-auto">
-                                        <button class="btn btn-lg btn-success" type="submit" @click="searchNow(search, see)">Search</button>
+                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords" v-model="search" @input="filter(search)">
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div><br>
-          <div v-if="searchuser !== ''">
-            <div class="box">
-              {{searchuser.HN}} {{searchuser.name}} {{searchuser.sername}} {{searchuser.idpeople}} {{searchuser.gen}}
-              {{searchuser.day}} {{searchuser.weight}} {{searchuser.height}} {{searchuser.bloodtype}} {{searchuser.address}}
-              {{searchuser.numberphone}} {{searchuser.medical}} {{searchuser.disease}}
-            </div>
-          </div>
     </div><br><br>
   <div>
   <label for=""><h1>ผู้ป่วย</h1></label>
@@ -58,7 +36,7 @@
       <td><th scope="col">โรคประจำตัว</th></td>
   </div>
   </thead>
-    <tr :key="key" v-for="(user, key) in users">
+    <tr :key="key" v-for="(user, key) in users" v-if="!showData.length > 0">
       <div v-if="updateKey === key">
         <input type="text" v-model="updateName" placeholder="ชื่อ">
         <input type="text" v-model="updatesurName" placeholder="นามสุกล">
@@ -71,7 +49,7 @@
         <input type="text" v-model="updateNumberphone" placeholder="เบอร์โทร">
         <textarea type="text" v-model="updateMedical" placeholder="ยาที่แพ้"></textarea>
         <textarea type="text" v-model="updateDisease" placeholder="โรคประจำตัว"></textarea>
-        <button class="btn btn-success" @click="Update(updateDisease, updateMedical, updateNumberphone, updateAddress, updatebloodtype, updateWeight, updateHeight, updateday, updateid, updatesurName, updateName, keys ,key, Manage)">บันทึก</button>
+        <button class="btn btn-success" @click="Update(updateDisease, updateMedical, updateNumberphone, updateAddress, updatebloodtype, updateWeight, updateHeight, updateday, updateid, updatesurName, updateName, keys ,user.key, Manage)">บันทึก</button>
       </div>
       <div v-else>
       <td><th>{{user.HN}}</th></td>
@@ -87,7 +65,40 @@
       <td><th>{{user.numberphone}}</th></td>
       <td><th>{{user.medical}}</th></td>
       <td><th>{{user.disease}}</th></td>
-      <th><button class="btn btn-danger" @click="deleteUser (key)">X</button></th>
+      <th><button class="btn btn-danger" @click="deleteUser (user.key)">X</button></th>
+      <th><button class="btn btn-warning" @click="SetUpdate (key, user.name, user.sername, user.idpeople, user.day, user.weight, user.height, user.bloodtype, user.address, user.numberphone, user.medical, user.disease)">U</button></th>
+      </div>
+    </tr>
+    <tr :key="key" v-for="(user, key) in showData" v-if="showData.length > 0">
+      <div v-if="updateKey === key">
+        <input type="text" v-model="updateName" placeholder="ชื่อ">
+        <input type="text" v-model="updatesurName" placeholder="นามสุกล">
+        <input type="text" v-model="updateid" placeholder="รหัสบัตรประชาชน">
+        <input type="date" v-model="updateday" placeholder="วัน/เดือน/ปีเกิด">
+        <input type="text" v-model="updateWeight" placeholder="น้ำหนัก">
+        <input type="text" v-model="updateHeight" placeholder="ส่วนสูง">
+        <input type="text" v-model="updatebloodtype" placeholder="กรุ๊ปเลือด">
+        <input type="text" v-model="updateAddress" placeholder="ที่อยู่">
+        <input type="text" v-model="updateNumberphone" placeholder="เบอร์โทร">
+        <textarea type="text" v-model="updateMedical" placeholder="ยาที่แพ้"></textarea>
+        <textarea type="text" v-model="updateDisease" placeholder="โรคประจำตัว"></textarea>
+        <button class="btn btn-success" @click="Update(updateDisease, updateMedical, updateNumberphone, updateAddress, updatebloodtype, updateWeight, updateHeight, updateday, updateid, updatesurName, updateName, keys ,user.key, Manage)">บันทึก</button>
+      </div>
+      <div v-else>
+      <td><th>{{user.HN}}</th></td>
+      <td><th>{{user.name}}</th></td>
+      <td><th>{{user.sername}}</th></td>
+      <td><th>{{user.idpeople}}</th></td>
+      <td><th>{{user.gen}}</th></td>
+      <td><th>{{user.day}}</th></td>
+      <td><th>{{user.weight}}</th></td>
+      <td><th>{{user.height}}</th></td>
+      <td><th>{{user.bloodtype}}</th></td>
+      <td><th>{{user.address}}</th></td>
+      <td><th>{{user.numberphone}}</th></td>
+      <td><th>{{user.medical}}</th></td>
+      <td><th>{{user.disease}}</th></td>
+      <th><button class="btn btn-danger" @click="deleteUser (user.key)">X</button></th>
       <th><button class="btn btn-warning" @click="SetUpdate (key, user.name, user.sername, user.idpeople, user.day, user.weight, user.height, user.bloodtype, user.address, user.numberphone, user.medical, user.disease)">U</button></th>
       </div>
     </tr>
@@ -164,7 +175,6 @@
 import firebase from 'firebase'
 var database = firebase.database()
 var manageuser = database.ref('/Manage')
-var manageRef1 = database.ref('/Manage')
 export default {
   name: 'Manage',
   data () {
@@ -201,8 +211,8 @@ export default {
       updatestory2: '',
       search: '',
       searchuser: '',
-      see: '',
-      test: {}
+      countuser: 0,
+      showData: []
     }
   },
   computed: {
@@ -211,7 +221,14 @@ export default {
     const dbRefObject = firebase.database().ref().child('Manage').child('Users')
     console.log(dbRefObject)
     dbRefObject.on('value', snap => {
-      this.users = snap.val()
+      var data = []
+      snap.forEach(ss => {
+        var item = ss.val()
+        item.key = ss.key
+        data.push(item)
+        this.countuser = snap.numChildren()
+      })
+      this.users = data
       console.log(this.users)
     })
     const dbRefObject2 = firebase.database().ref().child('Manage').child('Doctor')
@@ -228,6 +245,26 @@ export default {
     })
   },
   methods: {
+    filter (Search) {
+      if (Search.length > 0) {
+        this.showData = this.users.filter(
+          (user) => {
+            if (user.name.toString().indexOf(Search) >= 0 ||
+              user.sername.toString().indexOf(Search) >= 0 ||
+              user.gen.toString().indexOf(Search) >= 0 ||
+              user.idpeople.toString().indexOf(Search) >= 0 ||
+              user.bloodtype.toString().indexOf(Search) >= 0 ||
+              user.medical.toString().indexOf(Search) >= 0 ||
+              user.disease.toString().indexOf(Search) >= 0 ||
+              user.HN.toString().indexOf(Search) >= 0) {
+              return user
+            }
+          }
+        )
+      } else {
+        this.showData = []
+      }
+    },
     deleteUser (key) {
       manageuser.child('Users').child(key).remove()
     },
@@ -323,14 +360,6 @@ export default {
       this.updateage2 = ''
       this.updateoption2 = ''
       this.updatestory2 = ''
-    },
-    searchNow (search, see) {
-      this.searchuser = ''
-      const manageRef2 = manageRef1.child('Users').orderByChild(this.see).equalTo(this.search)
-      manageRef2.on('child_added', snap => {
-        this.searchuser = snap.val()
-        console.log(this.searchuser)
-      })
     }
   }
 }

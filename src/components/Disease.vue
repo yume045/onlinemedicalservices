@@ -9,7 +9,7 @@
                                         <i class="fas fa-search h4 text-body"></i>
                                     </div>
                                     <div class="col">
-                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords">
+                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords"  v-model="search" @input="filter(search)">
                                     </div>
                                     <div class="col-auto">
                                         <button class="btn btn-lg btn-success" type="submit">Search</button>
@@ -25,7 +25,33 @@
   <form action="">
     <div class="container">
       <div class="row">
-          <div class="column is-one-third" :key="key" v-for="(subadddisease, key) in subadds">
+          <div class="column is-one-third" :key="key" v-for="(subadddisease, key) in subadds"  v-if="!showData.length > 0">
+                <div class="col-sm">
+                    <b-card  title=""
+                        img-src v-bind:src="subadddisease.addpicturedisease"
+                        img-alt="Image"
+                        img-top
+                        tag="article"
+                        style="max-width: 20rem;margin-left:0%;"
+                        class="mb-2" >
+                        <p class="card-text">
+                        <img v-bind:src="subadddisease.addpicturedisease" style="width: 250px; height: 250px;">
+                        </p>
+                        <p class="card-text">
+                        {{subadddisease.adddisease.slice(0, 50)}}
+                        </p>
+                        <p class="card-text">
+                        {{subadddisease.adddisease2.slice(0, 50)}}
+                        </p>
+                        <b-button @click="selectDis(subadddisease.adddisease)" variant="primary" class="btn btn-outline-info">อ่านเพิ่มเติม</b-button>
+                    </b-card>
+                </div>
+            </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+          <div class="column is-one-third" :key="key" v-for="(subadddisease, key) in showData" v-if="showData.length > 0">
                 <div class="col-sm">
                     <b-card  title=""
                         img-src v-bind:src="subadddisease.addpicturedisease"
@@ -68,7 +94,9 @@ export default {
       addpicturedisease: '',
       subadddiseases: '',
       adddisease: '',
-      adddisease2: ''
+      adddisease2: '',
+      showData: [],
+      search: ''
     }
   },
   methods: {
@@ -89,11 +117,31 @@ export default {
     selectDis (adddisease) {
       this.selectNews(adddisease)
       this.$router.push('/Diseasenews')
+    },
+    filter (Search) {
+      if (Search.length > 0) {
+        this.showData = this.subadds.filter(
+          (user) => {
+            if (user.adddisease.toString().indexOf(Search) >= 0 ||
+              user.adddisease2.toString().indexOf(Search) >= 0) {
+              return user
+            }
+          }
+        )
+      } else {
+        this.showData = []
+      }
     }
   },
   mounted () {
     diseaseadminRef.on('value', snap => {
-      this.subadds = snap.val()
+      var data = []
+      snap.forEach(ss => {
+        var item = ss.val()
+        item.key = ss.key
+        data.push(item)
+      })
+      this.subadds = data
       console.log(this.subadds)
     })
   },

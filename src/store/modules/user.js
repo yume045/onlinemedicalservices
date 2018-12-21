@@ -35,18 +35,36 @@ const mutations = {
   selectNews: (state, payload) => {
     state.selectNews = payload
     console.log(state.selectNews)
+  },
+  LOAD (state, {user, permission, selectShop}) {
+    state.user = user
+  },
+  logout: (state) => {
+    state.user = null
   }
 }
 
 const actions = {
-  signIn: ({commit}, payload) => {
+  signIn: ({commit, dispatch}, payload) => {
     commit('setUser', payload)
+    dispatch('save')
   },
-  logout: ({commit}, payload) => {
+  logout: ({commit, dispatch}, payload) => {
     commit('setUser', payload)
+    dispatch('save')
   },
   selectNews: ({commit}, payload) => {
     commit('selectNews', payload)
+  },
+  save ({state}) {
+    localStorage.setItem('user', JSON.stringify(state.user))
+  },
+  load ({commit}) {
+    let Getuser = localStorage.getItem('user')
+    if (Getuser !== 'null') {
+      let user = JSON.parse(Getuser)
+      commit('LOAD', {user})
+    }
   }
 }
 
