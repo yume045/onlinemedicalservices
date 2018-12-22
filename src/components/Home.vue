@@ -9,10 +9,7 @@
                                         <i class="fas fa-search h4 text-body"></i>
                                     </div>
                                     <div class="col">
-                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords" v-model="search">
-                                    </div>
-                                    <div class="col-auto">
-                                        <button class="btn btn-lg btn-success" type="submit" @click="searchNow(search)">Search</button>
+                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords" v-model="search" @input="filter(search)">
                                     </div>
                                 </div>
                             </form>
@@ -26,7 +23,35 @@
   <form action="">
     <div class="container">
       <div class="row">
-          <div class="column is-one-third" :key="key" v-for="(subadd, key) in subadds">
+          <div class="column is-one-third" :key="key" v-for="(subadd, key) in subadds"  v-if="!showData.length > 0">
+              <div class="col-sm">
+                  <b-card  title=""
+                    img-src v-bind:src="subadd.addpicture"
+                    img-alt="Image"
+                    img-top
+                    tag="article"
+                    style="max-width: 20rem;margin-left:0%;"
+                    class="mb-2" >
+                      <p class="card-text">
+                        <img v-bind:src="subadd.addpicture" style="width: 250px; height: 250px;">
+                      </p>
+                      <p class="card-text">
+                        {{subadd.add.slice(0, 50)}}
+                      </p>
+                      <p class="card-text">
+                        {{subadd.add1.slice(0, 50)}}
+                      </p>
+              <b-button @click="select(subadd.add)" variant="primary" class="button is-medium is-info">อ่านเพิ่มเติม</b-button>
+        </b-card>
+            </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <form action="">
+    <div class="container">
+      <div class="row">
+          <div class="column is-one-third" :key="key" v-for="(subadd, key) in showData" v-if="showData.length > 0">
               <div class="col-sm">
                   <b-card  title=""
                     img-src v-bind:src="subadd.addpicture"
@@ -59,7 +84,6 @@ import firebase from 'firebase'
 import { mapGetters, mapActions } from 'vuex'
 var database = firebase.database()
 var homeadminRef = database.ref('/Homeadmin')
-var newsRef1 = database.ref('/Homeadmin')
 console.log(this.isLoggedIn)
 export default {
   name: 'Home',
@@ -70,7 +94,8 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       subadds: '',
       search: '',
-      news: ''
+      news: '',
+      showData: []
     }
   },
   computed: {
@@ -88,7 +113,13 @@ export default {
   },
   mounted () {
     homeadminRef.on('value', snap => {
-      this.subadds = snap.val()
+      var data = []
+      snap.forEach(ss => {
+        var item = ss.val()
+        item.key = ss.key
+        data.push(item)
+      })
+      this.subadds = data
       console.log(this.subadds)
     })
   },
@@ -100,13 +131,18 @@ export default {
       this.selectNews(subadd)
       this.$router.push('/news')
     },
-    searchNow (search) {
-      this.news = ''
-      const newsRef2 = newsRef1.orderByChild('add').equalTo(this.search)
-      newsRef2.on('child_added', snap => {
-        this.news = snap.val()
-        console.log(this.news)
-      })
+    filter (Search) {
+      if (Search.length > 0) {
+        this.showData = this.subadds.filter(
+          (user) => {
+            if (user.add.toString().indexOf(Search) >= 0) {
+              return user
+            }
+          }
+        )
+      } else {
+        this.showData = []
+      }
     }
   }
 }

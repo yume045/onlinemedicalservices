@@ -11,7 +11,7 @@
     </b-col>
     </b-row><br>
       <div class="level-item">
-        <p class=""><a class="button is-primary" @click="insertOption()">เพิ่มแผนก</a></p>
+        <p class=""><a class="btn btn-success"  @click="insertOption()">เพิ่มแผนก</a></p>
         </div>
       </div>
     </b-container><br>

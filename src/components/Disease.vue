@@ -12,12 +12,16 @@
                                         <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords"  v-model="search" @input="filter(search)">
                                     </div>
                                     <div class="col-auto">
-                                        <button class="btn btn-lg btn-success" type="submit">Search</button>
+                                        <button class="btn btn-lg btn-success" type="submit" @click="insertUser ()">ค้นหา</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
+                    <label> คำถามยอดนิยม </label>
+                     <div :key="key" v-for="(hit, key) in show">
+                       {{hit.search}}
+                        </div>
     </div>
 <div>
   <br>
@@ -84,6 +88,7 @@ import firebase from 'firebase'
 import { mapGetters, mapActions } from 'vuex'
 var database = firebase.database()
 var diseaseadminRef = database.ref('/Diseaseadmin')
+var diseaseadminRef1 = database.ref('/Poppulardisease')
 export default {
   name: 'Disease',
   data () {
@@ -96,7 +101,8 @@ export default {
       adddisease: '',
       adddisease2: '',
       showData: [],
-      search: ''
+      search: '',
+      show: ''
     }
   },
   methods: {
@@ -123,13 +129,35 @@ export default {
         this.showData = this.subadds.filter(
           (user) => {
             if (user.adddisease.toString().indexOf(Search) >= 0 ||
-              user.adddisease2.toString().indexOf(Search) >= 0) {
+              user.type.toString().indexOf(Search) >= 0) {
               return user
             }
           }
         )
       } else {
         this.showData = []
+      }
+    },
+    insertUser () {
+      let getkey = ''
+      let getsearch = ''
+      const dbReflist = diseaseadminRef1.orderByChild('search').equalTo(this.search)
+      dbReflist.on('child_added', snap => {
+        getsearch = snap.val()
+        getkey = snap.key
+        console.log(getsearch)
+      })
+      if (getsearch === '') {
+        console.log('showif')
+        let tmp = ({
+          search: this.search,
+          count: 1
+        })
+        diseaseadminRef1.push(tmp)
+        this.search = ''
+      } else {
+        let update = getsearch.count + 1
+        diseaseadminRef1.child(getkey).child('count').set(update)
       }
     }
   },
@@ -143,6 +171,10 @@ export default {
       })
       this.subadds = data
       console.log(this.subadds)
+    })
+    diseaseadminRef1.orderByChild('count').limitToLast(5).on('value', snap => {
+      this.show = snap.val()
+      console.log(this.show)
     })
   },
   computed: {

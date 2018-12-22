@@ -8,6 +8,30 @@
                         <div class="box content">
                             <input type="text" id="form21" class="md-textarea form-control" rows="3" v-model="adddisease"><br>
                             <textarea type="text" id="form22" class="md-textarea form-control" rows="3" v-model="adddisease2"></textarea><br>
+                            <select v-model="type">
+                              <option disabled value="">เลือกหมวดหมู่ของโรค</option>
+                              <option value="กายภาพ">กายภาพ</option>
+                              <option value="ระบบทางเดินหายใจ">ระบบทางเดินหายใจ</option>
+                              <option value="โรคกระดูก">โรคกระดูก</option>
+                              <option value="โรคตา ">โรคตา </option>
+                              <option value="โรคต่อมไร้ท่อ ">โรคต่อมไร้ท่อ </option>
+                              <option value="โรคติดต่อเพศสัมพันธ์ ">โรคติดต่อเพศสัมพันธ์ </option>
+                              <option value="โรคระบประสาท ">โรคระบประสาท </option>
+                              <option value="โรคหูคอจมูก ">โรคหูคอจมูก </option>
+                              <option value="จิตเวช ">จิตเวช </option>
+                              <option value="ระบบย่อยอาหาร ">ระบบย่อยอาหาร </option>
+                              <option value="โรคกล้ามเนื้อ ">โรคกล้ามเนื้อ </option>
+                              <option value="โรคทางพันธุกรรม ">โรคทางพันธุกรรม </option>
+                              <option value="โรคผิวหนัง  ">โรคผิวหนัง  </option>
+                              <option value="โรคระบาด  ">โรคระบาด  </option>
+                              <option value="มะเร็ง  ">มะเร็ง  </option>
+                              <option value="สูตินรีเวช  ">สูตินรีเวช  </option>
+                              <option value="โรคตับ  ">โรคตับ  </option>
+                              <option value="โรคติดเชื้อ   ">โรคติดเชื้อ   </option>
+                              <option value="โรคทางเดินอาหาร   ">โรคทางเดินอาหาร   </option>
+                              <option value="โรคระบบขับถ่าย   ">โรคระบบขับถ่าย   </option>
+                              <option value="โรคหัวใจและหลอดเลือด   ">โรคหัวใจและหลอดเลือด   </option>
+                            </select>
                             <input type="text" name="" id="" class="md-textarea form-control" v-model="addpicturedisease">
                             <br>
                             <button class="btn btn-primary" @click="insertDisease ()">เพิ่มข้อมูล</button>
@@ -63,7 +87,8 @@ export default {
       adddisease: '',
       adddisease2: '',
       subadddisease: '',
-      addpicturedisease: ''
+      addpicturedisease: '',
+      type: ''
     }
   },
   methods: {
@@ -71,12 +96,14 @@ export default {
       let tmp = ({
         adddisease: this.adddisease,
         adddisease2: this.adddisease2,
-        addpicturedisease: this.addpicturedisease
+        addpicturedisease: this.addpicturedisease,
+        type: this.type
       })
       diseaseadminRef.push(tmp)
       this.adddisease = ''
       this.adddisease2 = ''
       this.addpicturedisease = ''
+      this.type = ''
     }
   },
   mounted () {

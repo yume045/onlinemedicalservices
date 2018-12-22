@@ -18,6 +18,7 @@
                             </form>
                         </div>
                     </div>
+                    <label> คำถามยอดนิยม </label>
                      <div :key="key" v-for="(hit, key) in show">
                        {{hit.search}}
                         </div>
