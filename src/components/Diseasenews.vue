@@ -1,8 +1,19 @@
 <template>
   <div class="jumbotron jumbotron-fluid">
-  <div class="container" :key="key" v-for="(board, key) in news">
-    <h1 class="display-4">{{board}}</h1>
+  <div class="tile is-ancestor">
+  <div class="tile is-3 is-vertical is-parent">
+    <div class="tile is-child box">
+      <p class="title">{{news.adddisease}}</p>
+      <img v-bind:src= "news.addpicturedisease">
+    </div>
   </div>
+  <div class="tile is-parent">
+    <div class="tile is-child box">
+      <p class="title">ข้อมูลเพิ่มเติม</p>
+      <p>{{news.adddisease2}}</p>
+    </div>
+  </div>
+</div>
 </div>
 </template>
 
