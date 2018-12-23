@@ -17,7 +17,6 @@
                                         <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords"  v-model="search" @input="filter(search)">
                                     </div>
                                     <div class="col-auto">
-                                        <button class="btn btn-lg btn-success" type="submit">ค้นหา</button>
                                     </div>
                                 </div>
                             </form>
@@ -33,6 +32,14 @@
                         <li><span class="menu-label"><a class="navbar-item is-active">ดูคำถามทั้งหมด</a></span></li><br>
                         <li><span class="menu-label"><a class="navbar-item">ดูเฉพาะคำถามที่มีคำตอบทั้งหมด</a></span></li><br>
                         <li><span class="menu-label"><a class="navbar-item">ดูเฉพาะคำถามที่ยังไม่มีคำตอบทั้งหมด</a></span></li><br>
+                        <label> คำถามยอดนิยม </label>
+                        <div :key="key" v-for="(hit, key) in show">
+                          {{hit.question}}
+                        </div>
+                        <label> คำถามจากผู้ป่วยท่านอื่น </label>
+                        <div :key="key" v-for="(subquestion, key) in subquestions">
+                          {{subquestion.question}}
+                        </div>
                       </ul>
                   </aside>
                 </div>
@@ -48,7 +55,7 @@
                       <div class="control">
                           <input type="file" name="resume" @change="onFileChange($event.target.files[0])">
                       </div>
-                          <button class="btn btn-primary " @click="insertQuestion (users)">send</button>
+                          <button class="btn btn-primary " @click="insertQuestion (users)">ส่งคำถาม</button>
                     </div>
                         <!--<diV :key="key" v-for="(subquestion, key) in subquestions">-->
                       <div class="box" :key="key" v-for="(subquestion, key) in subquestions" v-if="!showData.length > 0">
@@ -155,6 +162,7 @@ import { mapGetters } from 'vuex'
 var database = firebase.database()
 var questionRef = database.ref('/Question')
 var storageRef = firebase.storage().ref()
+var questionRef1 = database.ref('/Popularquesttion')
 export default {
   name: 'HelloWorld',
   data () {
@@ -175,7 +183,9 @@ export default {
       img: [],
       comment: '',
       search: '',
-      showData: []
+      showData: [],
+      count: '',
+      show: ''
     }
   },
   computed: {
@@ -211,12 +221,27 @@ export default {
       this.data.users = users
       this.data.pic = this.dataImg.name
       questionRef.push(this.data)
-      // database.ref('/img').push(urlsImg.downloadURL)
-      // let tmp = ({
-      //   question: this.question
-      // })
-      // questionRef.child(this.question).push(tmp)
-      // this.question = ''
+      //
+      let getkey = ''
+      let getsearch = ''
+      const dbReflist = questionRef1.orderByChild('question').equalTo(this.data.question)
+      dbReflist.on('child_added', snap => {
+        getsearch = snap.val()
+        getkey = snap.key
+        console.log(getsearch)
+      })
+      if (getsearch === '') {
+        console.log('showif')
+        let tmp = ({
+          question: this.data.question,
+          count: 1
+        })
+        questionRef1.push(tmp)
+        this.search = ''
+      } else {
+        let update = getsearch.count + 1
+        questionRef1.child(getkey).child('count').set(update)
+      }
     },
     Setupdate (key, subquestion) {
       this.updatekey = key
@@ -255,6 +280,10 @@ export default {
       })
       this.subquestions = data
       console.log(this.subquestions)
+    })
+    questionRef1.orderByChild('count').limitToLast(5).on('value', snap => {
+      this.show = snap.val()
+      console.log(this.show)
     })
   }
 }

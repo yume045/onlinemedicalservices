@@ -18,10 +18,10 @@
                             </form>
                         </div>
                     </div>
-                    <label> คำถามยอดนิยม </label>
+                    <label> คำค้นหายอดนิยม </label>
                      <div :key="key" v-for="(hit, key) in show">
                        {{hit.search}}
-                        </div>
+                      </div>
     </div>
 <div>
   <br>
