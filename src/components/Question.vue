@@ -14,10 +14,10 @@
                                         <i class="fas fa-search h4 text-body"></i>
                                     </div>
                                     <div class="col">
-                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords">
+                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords"  v-model="search" @input="filter(search)">
                                     </div>
                                     <div class="col-auto">
-                                        <button class="btn btn-lg btn-success" type="submit">Search</button>
+                                        <button class="btn btn-lg btn-success" type="submit">ค้นหา</button>
                                     </div>
                                 </div>
                             </form>
@@ -51,7 +51,7 @@
                           <button class="btn btn-primary " @click="insertQuestion (users)">send</button>
                     </div>
                         <!--<diV :key="key" v-for="(subquestion, key) in subquestions">-->
-                      <div class="box" :key="key" v-for="(subquestion, key) in subquestions">
+                      <div class="box" :key="key" v-for="(subquestion, key) in subquestions" v-if="!showData.length > 0">
                           <article class="media">
                             <div class="media-left">
                               <figure class="image is-64x64">
@@ -64,6 +64,9 @@
                                   <strong>{{subquestion.users}}</strong>
                                   <br>
                                   {{subquestion.question}}
+                                  <br>
+                                  <img v-url={filename:subquestion.pic} width="300" height="350"/><br>
+                                  <video v-url={filename:subquestion.pic} />
                                 </p>
                               </div>
                             </div>
@@ -85,7 +88,53 @@
                                 <div v-if = "comment === key">
                                   <input type="text" class="input is-hovered" v-model="ans">
                                   <div class="control">
-                                    <button class="button is-info" @click="insert_ans (key,users)"><b-icon icon="check"></b-icon><span>ตอบกลับ</span></button>
+                                    <button class="button is-info" @click="insert_ans (subquestion.key,users)"><b-icon icon="check"></b-icon><span>ตอบกลับ</span></button>
+                                  </div>
+                                </div>
+                                  <div v-else>
+                                    <button class="btn btn-primary" @click="sw (key)">ตอบกลับ</button>
+                                  </div>
+                            </div>
+                          </article>
+                          </div>
+                      <div class="box" :key="key" v-for="(subquestion, key) in showData" v-if="showData.length > 0">
+                          <article class="media">
+                            <div class="media-left">
+                              <figure class="image is-64x64">
+                                <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
+                              </figure>
+                            </div>
+                            <div class="media-content">
+                              <div class="content">
+                                <p>
+                                  <strong>{{subquestion.users}}</strong>
+                                  <br>
+                                  {{subquestion.question}}
+                                  <br>
+                                  <img v-url={filename:subquestion.pic} width="300" height="350"/><br>
+                                  <video v-url={filename:subquestion.pic} />
+                                </p>
+                              </div>
+                            </div>
+                          </article>
+                          <article class="media">
+                            <div class="media-left">
+                              <figure class="image is-64x64">
+                                <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
+                              </figure>
+                            </div>
+                            <div class="media-content">
+                              <div class="content" :key="key1" v-for="(ans, key1) in subquestion.ans">
+                                <p>
+                                  <strong>{{ans.name}}</strong>
+                                  <br>
+                                  {{ans.ans}}
+                                </p>
+                              </div>
+                                <div v-if = "comment === key">
+                                  <input type="text" class="input is-hovered" v-model="ans">
+                                  <div class="control">
+                                    <button class="button is-info" @click="insert_ans (subquestion.key,users)"><b-icon icon="check"></b-icon><span>ตอบกลับ</span></button>
                                   </div>
                                 </div>
                                   <div v-else>
@@ -105,6 +154,7 @@ import firebase from 'firebase'
 import { mapGetters } from 'vuex'
 var database = firebase.database()
 var questionRef = database.ref('/Question')
+var storageRef = firebase.storage().ref()
 export default {
   name: 'HelloWorld',
   data () {
@@ -123,7 +173,9 @@ export default {
       updatequestion: '',
       user: {},
       img: [],
-      comment: ''
+      comment: '',
+      search: '',
+      showData: []
     }
   },
   computed: {
@@ -137,10 +189,11 @@ export default {
     onFileChange (fileImg) {
       this.dataImg = fileImg
     },
-    createImage () {
-      const storageRef = firebase.storage().ref('image/' + this.dataImg.name.toLowerCase().split(' ').join('-'))
-      const uploadTask = storageRef.put(this.dataImg)
-      return uploadTask
+    async createImage () {
+      // const storageRef = firebase.storage().ref('image/' + this.dataImg.name.toLowerCase().split(' ').join('-'))
+      await storageRef.child(this.dataImg.name).put(this.dataImg)
+      // const uploadTask = storageRef.put(this.dataImg)
+      // return uploadTask
     },
     sw  (key) {
       this.comment = key
@@ -154,10 +207,11 @@ export default {
       this.comment = ''
     },
     async insertQuestion (users) {
+      await this.createImage()
       this.data.users = users
+      this.data.pic = this.dataImg.name
       questionRef.push(this.data)
-      let urlsImg = await this.createImage()
-      firebase.database.ref('img').push(urlsImg.downloadURL)
+      // database.ref('/img').push(urlsImg.downloadURL)
       // let tmp = ({
       //   question: this.question
       // })
@@ -176,11 +230,31 @@ export default {
       })
       this.updatekey = ''
       this.updatequestion = ''
+    },
+    filter (Search) {
+      if (Search.length > 0) {
+        this.showData = this.subquestions.filter(
+          (user) => {
+            if (user.question.toString().indexOf(Search) >= 0) {
+              return user
+            }
+          }
+        )
+      } else {
+        this.showData = []
+      }
     }
   },
   mounted () {
     questionRef.on('value', snap => {
-      this.subquestions = snap.val()
+      var data = []
+      snap.forEach(ss => {
+        var item = ss.val()
+        item.key = ss.key
+        data.push(item)
+      })
+      this.subquestions = data
+      console.log(this.subquestions)
     })
   }
 }
