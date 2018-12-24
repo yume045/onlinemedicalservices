@@ -15,7 +15,7 @@
                                     </div>
                                     <div class="col">
                                         <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords"  v-model="search" @input="filter(search)">
-                                        ทั้งหมด
+                                    ยังไม่มีคนตอบ
                                     </div>
                                     <div class="col-auto">
                                     </div>
@@ -287,7 +287,7 @@ export default {
     }
   },
   mounted () {
-    questionRef.on('value', snap => {
+    questionRef.orderByChild('status').equalTo(0).on('value', snap => {
       var data = []
       snap.forEach(ss => {
         var item = ss.val()

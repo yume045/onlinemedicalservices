@@ -16,7 +16,7 @@
                               <option value="โรคตา ">โรคตา </option>
                               <option value="โรคต่อมไร้ท่อ ">โรคต่อมไร้ท่อ </option>
                               <option value="โรคติดต่อเพศสัมพันธ์ ">โรคติดต่อเพศสัมพันธ์ </option>
-                              <option value="โรคระบประสาท ">โรคระบประสาท </option>
+                              <option value="โรคระบประสาท ">โรคระบบประสาท </option>
                               <option value="โรคหูคอจมูก ">โรคหูคอจมูก </option>
                               <option value="จิตเวช ">จิตเวช </option>
                               <option value="ระบบย่อยอาหาร ">ระบบย่อยอาหาร </option>

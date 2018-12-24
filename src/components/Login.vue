@@ -65,13 +65,13 @@ export default {
           this.signIn({userSet, Per})
           if (this.hasprofile.Permistion === 3) {
             this.$router.push('/Homeadmin')
-            alert('welcome back 3')
+            alert('welcome back Administrator')
           } if (this.hasprofile.Permistion === 2) {
             this.$router.push('/Question')
-            alert('welcome back 2')
+            alert('welcome back Doctor')
           } if (this.hasprofile.Permistion === 1) {
             this.$router.push('/Question')
-            alert('welcome back 1')
+            alert('welcome to Online-medical-service')
           }
         }
         //  else alert('Username Or Password incorrect')

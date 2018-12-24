@@ -47,7 +47,7 @@
                                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="story"></textarea>
                                         </b-col>
                                     </b-row>
-                      <router-link to="/Login"><b-button type="submit" variant="primary" class="btn btn-outline-primary" @click="insertPharmacist ()">สมัครสมาชิก</b-button></router-link>
+                      <b-button type="submit" variant="primary" class="btn btn-outline-primary" @click="insertPharmacist ()">เพิ่มข้อมูล</b-button>
                       <b-button type="reset" variant="danger" class="btn btn-outline-danger">ยกเลิก</b-button>
                   </b-container>
                 </div>

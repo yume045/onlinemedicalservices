@@ -212,7 +212,8 @@ export default {
       search: '',
       searchuser: '',
       countuser: 0,
-      showData: []
+      showData: [],
+      tmp: ''
     }
   },
   computed: {

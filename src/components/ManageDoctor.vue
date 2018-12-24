@@ -36,7 +36,7 @@
                                 </b-col>
                             </b-row>
                                 <div>
-                                  <select class="form-control form-control-lg" v-model="option" >
+                                <select class="form-control form-control-lg" v-model="option" >
                                   <option :value="null" disabled>-- เลือกแผนก --</option>
                                   <option v-for="(Ops, key) in Op" :key="Op[key]" :value="Ops.addOption" >{{Ops.addOption}}</option>
                                 </select>
@@ -47,7 +47,7 @@
                                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="story"></textarea>
                                         </b-col>
                                     </b-row>
-                      <b-button type="submit" variant="primary" class="btn btn-outline-primary" @click="insertDoctor ">สมัครสมาชิก</b-button>
+                      <b-button type="submit" variant="primary" class="btn btn-outline-primary" @click="insertDoctor ">เพิ่มข้อมูล</b-button>
                       <b-button type="reset" variant="danger" class="btn btn-outline-danger">ยกเลิก</b-button>
                   </b-container>
                 </div>

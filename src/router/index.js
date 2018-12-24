@@ -17,6 +17,8 @@ import Diseaseadmin from '@/components/Diseaseadmin'
 import Disease from '@/components/Disease'
 import Diseasenews from '@/components/Diseasenews'
 import Medicnews from '@/components/Medicnews'
+import Question2 from '@/components/Question2'
+import Question3 from '@/components/Question3'
 Vue.use(Router)
 
 export default new Router({
@@ -105,6 +107,16 @@ export default new Router({
       path: '/Diseasenews',
       name: 'Diseasenews',
       component: Diseasenews
+    },
+    {
+      path: '/Question2',
+      name: 'Question2',
+      component: Question2
+    },
+    {
+      path: '/Question3',
+      name: 'Question3',
+      component: Question3
     }
   ]
 })

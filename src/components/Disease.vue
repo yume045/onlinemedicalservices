@@ -18,10 +18,10 @@
                             </form>
                         </div>
                     </div>
-                    <label> คำค้นหายอดนิยม </label>
-                     <div :key="key" v-for="(hit, key) in show">
-                       {{hit.search}}
-                      </div>
+                    <div  style="margin-left : 23%;"> คำค้นหายอดนิยม</div><br><br>
+                        <div class="columns is-mobile" :key="key" v-for="(hit, key) in show">
+                          <div class="column">&nbsp;&nbsp;{{hit.search}}&nbsp;·&nbsp;</div>
+                        </div>
     </div>
 <div>
   <br>
@@ -89,6 +89,7 @@ import { mapGetters, mapActions } from 'vuex'
 var database = firebase.database()
 var diseaseadminRef = database.ref('/Diseaseadmin')
 var diseaseadminRef1 = database.ref('/Poppulardisease')
+var diseaseadminRef2 = database.ref('/Poppulardisease')
 export default {
   name: 'Disease',
   data () {
@@ -102,7 +103,8 @@ export default {
       adddisease2: '',
       showData: [],
       search: '',
-      show: ''
+      show: '',
+      show1: ''
     }
   },
   methods: {
@@ -159,6 +161,7 @@ export default {
         let update = getsearch.count + 1
         diseaseadminRef1.child(getkey).child('count').set(update)
       }
+      this.search = ''
     }
   },
   mounted () {
@@ -175,6 +178,10 @@ export default {
     diseaseadminRef1.orderByChild('count').limitToLast(5).on('value', snap => {
       this.show = snap.val()
       console.log(this.show)
+    })
+    diseaseadminRef2.on('value', snap => {
+      this.show1 = snap.val()
+      console.log(this.show1)
     })
   },
   computed: {
