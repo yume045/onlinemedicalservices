@@ -36,8 +36,9 @@ const mutations = {
     state.selectNews = payload
     console.log(state.selectNews)
   },
-  LOAD (state, {user, permission, selectShop}) {
+  LOAD (state, {user, Per, selectShop}) {
     state.user = user
+    state.Per = Per
   },
   logout: (state) => {
     state.user = null
@@ -58,12 +59,15 @@ const actions = {
   },
   save ({state}) {
     localStorage.setItem('user', JSON.stringify(state.user))
+    localStorage.setItem('Per', JSON.stringify(state.Per))
   },
   load ({commit}) {
     let Getuser = localStorage.getItem('user')
+    let GetPer = localStorage.getItem('Per')
     if (Getuser !== 'null') {
       let user = JSON.parse(Getuser)
-      commit('LOAD', {user})
+      let Per = JSON.parse(GetPer)
+      commit('LOAD', {user, Per})
     }
   }
 }

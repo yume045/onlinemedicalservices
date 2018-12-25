@@ -29,6 +29,12 @@
         <a class="nav-link disabled" href="/#/manage" v-if="Checklogin && permission === 3">จัดการข้อมูลผู้ใช้</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link disabled" href="/#/manage" v-if="Checklogin && permission === 2">จัดการข้อมูลผู้ใช้</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="/#/RegisterAdmin" v-if="Checklogin && permission === 3">เพิ่มข้อมูลผู้ป่วย</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link disabled" href="/#/ManageDoctor" v-if="Checklogin && permission === 3">เพิ่มข้อมูลแพทย์</a>
       </li>
       <li class="nav-item">

@@ -19,6 +19,7 @@ import Diseasenews from '@/components/Diseasenews'
 import Medicnews from '@/components/Medicnews'
 import Question2 from '@/components/Question2'
 import Question3 from '@/components/Question3'
+import RegisterAdmin from '@/components/RegisterAdmin'
 Vue.use(Router)
 
 export default new Router({
@@ -117,6 +118,11 @@ export default new Router({
       path: '/Question3',
       name: 'Question3',
       component: Question3
+    },
+    {
+      path: '/RegisterAdmin',
+      name: 'RegisterAdmin',
+      component: RegisterAdmin
     }
   ]
 })

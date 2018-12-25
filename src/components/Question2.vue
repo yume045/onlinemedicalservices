@@ -15,7 +15,6 @@
                                     </div>
                                     <div class="col">
                                         <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords"  v-model="search" @input="filter(search)">
-                                    เฉพาะที่มีคนตอบ
                                     </div>
                                     <div class="col-auto">
                                     </div>
