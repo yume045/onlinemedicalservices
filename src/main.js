@@ -11,6 +11,8 @@ import 'buefy/dist/buefy.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import firebase from 'firebase'
+import VueSweetalert2 from 'vue-sweetalert2'
+Vue.use(VueSweetalert2)
 Vue.use(BootstrapVue)
 Vue.use(Vuex)
 Vue.use(Buefy)

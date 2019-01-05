@@ -20,6 +20,8 @@ import Medicnews from '@/components/Medicnews'
 import Question2 from '@/components/Question2'
 import Question3 from '@/components/Question3'
 import RegisterAdmin from '@/components/RegisterAdmin'
+import Datadoc from '@/components/Datadoc'
+import Datapharmacist from '@/components/Datapharmacist'
 Vue.use(Router)
 
 export default new Router({
@@ -123,6 +125,16 @@ export default new Router({
       path: '/RegisterAdmin',
       name: 'RegisterAdmin',
       component: RegisterAdmin
+    },
+    {
+      path: '/Datadoc',
+      name: 'Datadoc',
+      component: Datadoc
+    },
+    {
+      path: '/Datapharmacist',
+      name: 'Datapharmacist',
+      component: Datapharmacist
     }
   ]
 })

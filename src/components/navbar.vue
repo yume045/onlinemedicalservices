@@ -14,9 +14,6 @@
         <a class="nav-link" href="/#/" v-if="!Checklogin">หน้าหลัก</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/#/Homeadmin" v-if="Checklogin && permission === 3">หน้าหลัก</a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link" href="/#/Question" v-if="Checklogin && permission === 1">ปรึกษาแพทย์</a>
       </li>
       <li class="nav-item">
@@ -26,10 +23,21 @@
         <a class="nav-link disabled" href="/#/Disease">โรค</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled" href="/#/manage" v-if="Checklogin && permission === 3">จัดการข้อมูลผู้ใช้</a>
+        <a class="nav-link dropdown-toggle" href="#" v-if="Checklogin && permission === 3" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          จัดการข้อมูลผู้ใช้</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin-left: 20%;">
+          <a class="dropdown-item" href="#/manage">ข้อมูลผู้ป่วย</a>
+          <a class="dropdown-item" href="#/Datadoc">ข้อมูลแพทย์</a>
+          <a class="dropdown-item" href="#/Datapharmacist">ข้อมูลเภสัชกร</a>
+        </div>
       </li>
       <li class="nav-item">
         <a class="nav-link disabled" href="/#/manage" v-if="Checklogin && permission === 2">จัดการข้อมูลผู้ใช้</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">ข้อมูลผู้ป่วย</a>
+          <a class="dropdown-item" href="#/Datadoc">ข้อมูลแพทย์</a>
+          <a class="dropdown-item" href="#">ข้อมูลเภสัชกรe</a>
+        </div>
       </li>
       <li class="nav-item">
         <a class="nav-link disabled" href="/#/RegisterAdmin" v-if="Checklogin && permission === 3">เพิ่มข้อมูลผู้ป่วย</a>
@@ -42,6 +50,9 @@
       </li>
       <li class="nav-item">
         <a class="nav-link disabled" href="/#/ManageOption" v-if="Checklogin && permission === 3">จัดการแผนกของแพทย์</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="/#/Homeadmin" v-if="Checklogin && permission === 3">เพิ่มข้อมูล-ข่าว</a>
       </li>
       <li class="nav-item">
         <a class="nav-link disabled" href="/#/Medicenadmin" v-if="Checklogin && permission === 3">เพิ่มข้อมูลยา</a>
@@ -107,7 +118,7 @@ export default {
   font-family:'Abel', sans-serif,'Mitr', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
 }
 </style>

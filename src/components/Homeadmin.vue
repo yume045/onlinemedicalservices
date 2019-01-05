@@ -1,98 +1,68 @@
 <template>
   <div class="hello">
-                        <section class="container">
-                          <div class="columns">
-                            <div class="columns is-9">
-                              <div class="box content">
-                                <input type="text" id="form21" class="md-textarea form-control" rows="3" v-model="add"><br>
-                                <textarea type="text" id="form22" class="md-textarea form-control" rows="3" v-model="add1"></textarea><br>
-                                <input type="text" name="" id="" class="md-textarea form-control" v-model="addpicture">
-                              <br>
-                              <button class="btn btn-primary" @click="insertHomeadmin ()">เพิ่มข้อมูล</button>
-                              </div>
-                            </div>
-                          </div> <br>
-                          <div class="row">
-                            <div class="column is-one-third" :key="key" v-for="(subadd, key) in subadds">
-                                <div class="col-sm">
-                                    <b-card  title=""
-                                      img-src v-bind:src="subadd.addpicture"
-                                      img-alt="Image"
-                                      img-top
-                                      tag="article"
-                                      style="max-width: 20rem;margin-left:0%;"
-                                      class="mb-2" >
-                                        <p class="card-text">
-                                          <img v-bind:src="subadd.addpicture" style="width: 250px; height: 250px;">
-                                        </p>
-                                        <p class="card-text">
-                                          {{subadd.add}}
-                                        </p>
-                                        <p class="card-text">
-                                          {{subadd.add1}}
-                                        </p>
-                                            <b-button href="#" variant="primary" class="btn btn-outline-info">อ่านเพิ่มเติม</b-button>
-                                      </b-card>
-                                  </div>
-                            </div>
-                          </div>
-                        </section><br>
-                    <div>
-                  </div><br><br>
-<div style="margin-left:35%;">
-  <b-nav-form>
-
-    </b-nav-form>
-    </div>
-    </div>
+    <section class="container">
+      <div class="row">
+        <div class="col-12 mb-4 text-center">
+          <h2>เพิ่มข่าวประชาสัมพันธ์</h2>
+        </div>
+        <div class="col-12">
+          <div>
+            <b-form-input class="mb-3" v-model="title" type="text" placeholder="ชื่อเรื่อง"></b-form-input>
+            <vue-editor v-model="content" placeholder="กรอกข้อมูล"></vue-editor>
+            <b-form-input class="mt-3" v-model="img" type="text" placeholder="Link รูปภาพ ตัวอย่าง : www.example.com/image.jpg"></b-form-input>
+            <button class="mt-3 btn btn-primary" @click="insertHomeadmin ()">เพิ่มข้อมูล</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script>
-import firebase from 'firebase'
-import { mapGetters } from 'vuex'
+/* eslint-disable */
+import { VueEditor } from "vue2-editor"
+import firebase from "firebase"
+import { mapGetters } from "vuex"
 var database = firebase.database()
-var homeadminRef = database.ref('/Homeadmin')
+var homeadminRef = database.ref("/Homeadmin")
 export default {
-  name: 'Homeadmin',
-  data () {
+  name: "Homeadmin",
+  data() {
     return {
-      add: '',
-      add1: '',
-      subadds: '',
-      subaddmedics: '',
-      addpicture: ''
+      title: "",
+      content: "",
+      img: ""
     }
   },
   methods: {
-    insertHomeadmin () {
-      let tmp = ({
-        add: this.add,
-        add1: this.add1,
-        addpicture: this.addpicture
-      })
-      homeadminRef.push(tmp)
-      this.add = ''
-      this.add1 = ''
-      this.addpicture = ''
+    insertHomeadmin() {
+      var payload = {
+        title: this.title,
+        content: this.content,
+        img: this.img
+      }
+      homeadminRef.push(payload)
+      this.title = ""
+      this.content = ""
     }
   },
-  mounted () {
-    homeadminRef.on('value', snap => {
+  mounted() {
+    homeadminRef.on("value", snap => {
       this.subadds = snap.val()
       console.log(this.subadds)
     })
   },
-  created: {
+  created: {},
+  components: {
+    VueEditor
   },
   computed: {
     ...mapGetters({
-      users: 'user/user',
-      Checklogin: 'user/isLoggedIn'
+      users: "user/user",
+      Checklogin: "user/isLoggedIn"
     })
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>
