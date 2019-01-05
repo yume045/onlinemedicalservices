@@ -1,93 +1,149 @@
 <template>
-    <div class="hello">
-  <div>
-</div><br><br>
+  <div class="hello">
+    <div></div>
+    <br>
+    <br>
     <b-container fluid style="width:35%;">
       <div class="level-right" style="margin-right:30%;">
-    <b-row class="my-1">
-        <b-col sm="3"><label for="input-default">ชื่อแผนก:</label></b-col>
-        <b-col sm="9">
-        <b-form-input id="input-default" type="text" min=0 placeholder="" v-model="addOption"></b-form-input>
-    </b-col>
-    </b-row><br>
-      <div class="level-item">
-        <p class=""><a class="btn btn-success"  @click="insertOption()">เพิ่มแผนก</a></p>
+        <b-row class="my-1">
+          <b-col sm="3">
+            <label for="input-default">ชื่อแผนก:</label>
+          </b-col>
+          <b-col sm="9">
+            <b-form-input id="input-default" type="text" min="0" placeholder v-model="addOption"></b-form-input>
+          </b-col>
+        </b-row>
+        <br>
+        <div class="level-item">
+          <p class>
+            <a class="btn btn-success" @click="insertOption()">เพิ่มแผนก</a>
+          </p>
         </div>
       </div>
-    </b-container><br>
+    </b-container>
+    <br>
     <b-container>
-        <b-row class="box">
-         <b-col><label for="input-default">แผนก</label></b-col>
-        </b-row>
-        <div class="">
-          <div :key="key" v-for="(show, key) in shows">
-            <div v-if="updateKey === key">
-            <b-form-input id="input-default" type="text" v-model="updateoption" placeholder="ชื่อแผนก"></b-form-input><br>
-            <b-button type="submit" variant="primary" class="btn btn-success"  @click="updateop(key, updateoption)">บันทึก</b-button>
-            </div>
-          <div v-else><hr>
-              <b-table-column label="First Name">
-                {{show.addOption}}&nbsp;&nbsp;
-              </b-table-column>
-              <div class="level-right"></div>
-            <b-button type="submit" variant="primary" class="btn btn-danger"  @click="deleteop(key)">x</b-button>
-            <b-button type="submit" variant="primary" class="btn btn-warning" @click="setupdate(key, show.addOption)">u</b-button>
+      <b-row class="box">
+        <b-col>
+          <label for="input-default">แผนก</label>
+        </b-col>
+      </b-row>
+      <div class="mb-5">
+        <div :key="key" v-for="(show, key) in shows">
+          <div v-if="updateKey === key">
+            <b-form-input
+              id="input-default"
+              type="text"
+              v-model="updateoption"
+              placeholder="ชื่อแผนก"
+            ></b-form-input>
+            <br>
+            <b-button
+              type="submit"
+              variant="primary"
+              class="btn btn-success"
+              @click="updateop(key, updateoption)"
+            >บันทึก</b-button>
+          </div>
+          <div v-else>
+            <hr>
+            <b-column label="First Name">{{show.addOption}}</b-column>
+            <b-column class="float-right">
+              <b-button
+                type="submit"
+                variant="primary"
+                class="btn btn-danger"
+                @click="deleteop(key)"
+              >x</b-button>
+              <b-button
+                type="submit"
+                variant="primary"
+                class="btn btn-warning"
+                @click="setupdate(key, show.addOption)"
+              >u</b-button>
+            </b-column>
+            <div class="level-right"></div>
           </div>
         </div>
-        </div>
+      </div>
     </b-container>
   </div>
 </template>
 
 <script>
-import firebase from 'firebase'
-var database = firebase.database()
-var addOptionRef = database.ref('/Manageoption')
+/* eslint-disable */
+import firebase from "firebase";
+var database = firebase.database();
+var addOptionRef = database.ref("/Manageoption");
 export default {
-  name: 'ManageOption',
-  data () {
+  name: "ManageOption",
+  data() {
     return {
-      addOption: '',
+      addOption: "",
       shows: {},
-      updateoption: '',
-      updateKey: ''
-    }
+      updateoption: "",
+      updateKey: ""
+    };
   },
   methods: {
-    insertOption () {
-      let tmp = ({
+    insertOption() {
+      let tmp = {
         addOption: this.addOption
-      })
-      addOptionRef.push(tmp)
-      this.addOption = ''
+      };
+      addOptionRef.push(tmp);
+      this.addOption = "";
     },
-    deleteop (key) {
-      addOptionRef.child(key).remove()
+    deleteop(key) {
+      this.$swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then(result => {
+        if (result.value) {
+          this.$swal("Deleted!", "Your file has been deleted.", "success");
+          addOptionRef.child(key).remove();
+        }
+      });
     },
-    updateop (key, addOption) {
+    updateop(key, addOption) {
       addOptionRef.child(key).update({
         addOption: addOption
-      })
-      this.updateoption = ''
-      this.updateKey = ''
+      });
+      this.updateoption = "";
+      this.updateKey = "";
+      this.$swal({
+        position: "top-end",
+        type: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500
+      });
     },
-    setupdate (key, addOption) {
-      this.updateoption = addOption
-      this.updateKey = key
+    setupdate(key, addOption) {
+      this.updateoption = addOption;
+      this.updateKey = key;
     }
   },
-  mounted () {
-    const dbRefObject2 = firebase.database().ref().child('Manageoption')
-    dbRefObject2.on('value', snap => {
-      this.shows = snap.val()
-      console.log(this.shows)
-    })
+  mounted() {
+    const dbRefObject2 = firebase
+      .database()
+      .ref()
+      .child("Manageoption");
+    dbRefObject2.on("value", snap => {
+      this.shows = snap.val();
+      console.log(this.shows);
+    });
   }
-}
+};
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 ul {
@@ -102,11 +158,11 @@ a {
   color: #42b983;
 }
 button {
-  font-family:'Abel', sans-serif,'Mitr', sans-serif;
+  font-family: "Abel", sans-serif, "Mitr", sans-serif;
   font-size: 14px;
 }
 input {
-  font-family:'Abel', sans-serif,'Mitr', sans-serif;
+  font-family: "Abel", sans-serif, "Mitr", sans-serif;
   font-size: 14px;
 }
 .tag {
