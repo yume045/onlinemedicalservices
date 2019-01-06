@@ -28,7 +28,7 @@
                   name="blood"
                   :options="blood"
                   class="ml-5"
-                  @change="filter(selected)"
+                  @input="filter1(selected)"
                 ></b-form-checkbox-group>
               </b-form-group>
             </div>
@@ -57,7 +57,7 @@
         <td>โรคประจำตัว</td>
         <td>จัดการข้อมูล</td>
       </tr>
-      <tr :key="key" v-for="(user, key) in (search.length>0)?showData:users">
+      <tr :key="key" v-for="(user, key) in (showData.length>0)?showData:users">
         <td>{{user.HN}}</td>
         <td>{{user.name}}</td>
         <td>{{user.sername}}</td>
@@ -506,6 +506,38 @@ export default {
         .child("Pharmacist")
         .child(key)
         .remove();
+    },
+    filter1(Search) {
+      console.log(Search);
+      if (Search.length == 1) {
+        this.showData = this.users.filter(user => {
+          if (
+            // user.bloodtype.toString().indexOf(Search[i]) >= 0
+            user.bloodtype === Search[0]
+          ) {
+            return user;
+          }
+        });
+      }
+      else {
+        this.showData = []
+        var data2 = []
+        for (var i = 0; i < Search.length; i++){
+        data2 = this.users.filter(user => {
+          if (
+            user.bloodtype === Search[i]
+          ) {
+            return user;
+          }
+        });
+        for (var x = 0; x < data2.length; x++){
+        this.showData[this.showData.length] = data2[x]
+          }
+        }
+        console.log(this.showData)
+      }
+    if (Search.length == 0)
+        this.showData = []
     }
     // SetUpdate3(key, usernamephar, sernamephar, age, option, story) {
     //   this.updateKey2 = key;
