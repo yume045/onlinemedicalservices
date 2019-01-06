@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar navbar-light shadow-lg p-3 mb-5" style="background-color: #00BFFF;">
+    <nav class="navbar navbar-expand-lg navbar navbar-light shadow-lg p-3 mb-5" style="background-color: #85C1E9;">
   <a class="navbar-brand" href="/#/">Online-Medical-Service</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="/#/" v-if="Checklogin && permission !== 3">หน้าหลัก</a>
       </li>
-       <li class="nav-item active">
+       <li class="nav-item">
         <a class="nav-link" href="/#/" v-if="!Checklogin">หน้าหลัก</a>
       </li>
       <li class="nav-item">
@@ -20,7 +20,7 @@
         <a class="nav-link" href="/#/Medicine">ยา</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled" href="/#/Disease">โรค</a>
+        <a class="nav-link" href="/#/Disease">โรค</a>
       </li>
       <li class="nav-item">
         <a class="nav-link dropdown-toggle" href="#" v-if="Checklogin && permission === 3" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -32,33 +32,19 @@
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled" href="/#/manage" v-if="Checklogin && permission === 2">จัดการข้อมูลผู้ใช้</a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">ข้อมูลผู้ป่วย</a>
-          <a class="dropdown-item" href="#/Datadoc">ข้อมูลแพทย์</a>
-          <a class="dropdown-item" href="#">ข้อมูลเภสัชกรe</a>
+        <a class="nav-link dropdown-toggle" href="#" v-if="Checklogin && permission === 3" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          เพิ่มข้อมูล</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin-left: 28%;">
+          <a class="dropdown-item" href="#/RegisterAdmin">เพิ่มข้อมูลผู้ป่วย</a>
+          <a class="dropdown-item" href="#/ManageDoctor">เพิ่มข้อมูลแพทย์</a>
+          <a class="dropdown-item" href="#/ManagePharmacist">เพิ่มข้อมูลเภสัชกร</a>
+          <a class="dropdown-item" href="#/Homeadmin">เพิ่มข้อมูล-ข่าว</a>
+          <a class="dropdown-item" href="#/Medicenadmin">เพิ่มข้อมูลยา</a>
+          <a class="dropdown-item" href="#/Diseaseadmin">เพิ่มข้อมูลโรค</a>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled" href="/#/RegisterAdmin" v-if="Checklogin && permission === 3">เพิ่มข้อมูลผู้ป่วย</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="/#/ManageDoctor" v-if="Checklogin && permission === 3">เพิ่มข้อมูลแพทย์</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="/#/ManagePharmacist" v-if="Checklogin && permission === 3">เพิ่มข้อมูลเภสัชกร</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="/#/ManageOption" v-if="Checklogin && permission === 3">จัดการแผนกของแพทย์</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="/#/Homeadmin" v-if="Checklogin && permission === 3">เพิ่มข้อมูล-ข่าว</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="/#/Medicenadmin" v-if="Checklogin && permission === 3">เพิ่มข้อมูลยา</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="/#/Diseaseadmin" v-if="Checklogin && permission === 3">เพิ่มข้อมูลโรค</a>
+        <a class="nav-link" href="/#/ManageOption" v-if="Checklogin && permission === 3">จัดการแผนกของแพทย์</a>
       </li>
     </ul>
   </div>

@@ -8,7 +8,8 @@
         <td>ชื่อแพทย์</td>
         <td>นามสกุลแพทย์</td>
         <td>อายุ</td>
-        <td>ความชำนานการทางการแพทย์</td>
+        <td>ความเชี่ยวชาญของแพทย์</td>
+        <td>แผนกของแพทย์</td>
         <td>ประวัติเบื้องต้นของแพทย์</td>
         <td>จัดการข้อมูล</td>
       </tr>
@@ -16,6 +17,7 @@
         <td>{{doctor.usernamedoc}}</td>
         <td>{{doctor.sernamedoc}}</td>
         <td>{{doctor.age}}</td>
+        <td>{{doctor.special}}</td>
         <td>{{doctor.option}}</td>
         <td>{{doctor.story}}</td>
         <td>
@@ -23,7 +25,7 @@
           <b-btn
             v-b-modal.modal1
             class="btn btn-warning ml-2"
-            @click="SetUpdate2 (key, doctor.usernamedoc, doctor.sernamedoc, doctor.age, doctor.option, doctor.story)"
+            @click="SetUpdate2 (key, doctor.usernamedoc, doctor.sernamedoc, doctor.age, doctor.special, doctor.option, doctor.story)"
           >Edit</b-btn>
         </td>
       </tr>
@@ -56,7 +58,12 @@
             </tr>
             <tr>
               <td colspan="2">
-                <input class="form-control mb-2" type="text" v-model="updateoption" placeholder="ความชำนานการทางการแพทย์">
+                <input class="form-control mb-2" type="text" v-model="updatespecial" placeholder="ความเชี่ยวชาญของแพทย์">
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <input class="form-control mb-2" type="text" v-model="updateoption" placeholder="แผนกของแพทย์">
               </td>
             </tr>
             <tr>
@@ -68,7 +75,7 @@
               <td>
                 <button
                   class="btn btn-success"
-                  @click="Update2(updateKey1, updateusernamedoc, updatesernamedoc, updateage, updateoption, updatestory)"
+                  @click="Update2(updateKey1, updateusernamedoc, updatesernamedoc, updateage, updatespecial, updateoption, updatestory)"
                 >บันทึก</button>
               </td>
             </tr>
@@ -123,7 +130,8 @@ export default {
       searchuser: "",
       countuser: 0,
       showData: [],
-      tmp: ""
+      tmp: "",
+      updatespecial: ""
     };
   },
   computed: {},
@@ -286,16 +294,17 @@ export default {
         }
       });
     },
-    SetUpdate2(key, usernamedoc, sernamedoc, age, option, story) {
+    SetUpdate2(key, usernamedoc, sernamedoc, age, special, option, story) {
       this.showModal = false;
       this.updateKey1 = key;
       this.updateusernamedoc = usernamedoc;
       this.updatesernamedoc = sernamedoc;
       this.updateage = age;
+      this.updatespecial = special;
       this.updateoption = option;
       this.updatestory = story;
     },
-    Update2(key, usernamedoc, sernamedoc, age, option, story) {
+    Update2(key, usernamedoc, sernamedoc, age, special, option, story) {
       this.showModal = true;
       manageuser
         .child("Doctor")
@@ -304,6 +313,7 @@ export default {
           usernamedoc: usernamedoc,
           sernamedoc: sernamedoc,
           age: age,
+          special: special,
           option: option,
           story: story
         });
@@ -311,6 +321,7 @@ export default {
       this.updateusernamedoc = "";
       this.updatesernamedoc = "";
       this.updateage = "";
+      this.updatespecial = "";
       this.updateoption = "";
       this.updatestory = "";
       this.$swal({

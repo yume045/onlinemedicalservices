@@ -75,7 +75,20 @@
           </tr>
           <tr>
             <td colspan="2">
-              ความชำนาญ:
+              ความเชี่ยวชาญของแพทย์:
+              <input
+                class="form-control mb-2"
+                type="text"
+                name
+                id
+                v-model="special"
+                placeholder="ความเชี่ยวชาญของแพทย์"
+              >
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              แผนก:
               <select class="form-control mb-2" v-model="option">
                 <option :value="null" disabled>-- เลือกแผนก --</option>
                 <option
@@ -144,7 +157,8 @@ export default {
       Permistion: "",
       seletetion: null,
       users: {},
-      Op: ""
+      Op: "",
+      special: ""
     };
   },
   methods: {
@@ -155,6 +169,7 @@ export default {
         usernamedoc: this.usernamedoc,
         sernamedoc: this.sernamedoc,
         age: this.age,
+        special: this.special,
         option: this.option,
         story: this.story,
         seletetion: this.seletetion,
@@ -166,6 +181,7 @@ export default {
         this.usernamedoc == "" ||
         this.sernamedoc == "" ||
         this.age == "" ||
+        this.special == "" ||
         this.option == "" ||
         this.story == "" ||
         this.seletetion == ""
@@ -185,6 +201,7 @@ export default {
         this.usernamedoc = "";
         this.sernamedoc = "";
         this.age = "";
+        this.special = "";
         this.option = "";
         this.story = "";
         this.Permistion = "";
