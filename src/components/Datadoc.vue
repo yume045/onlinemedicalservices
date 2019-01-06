@@ -1,8 +1,8 @@
 <template>
   <div class>
-    <label for>
-      <h1>แพทย์</h1>
-    </label>
+    <div>
+      <h1 class="text-center">แพทย์</h1>
+    </div>
     <table class="table table-hover">
       <tr>
         <td>ชื่อแพทย์</td>
@@ -18,12 +18,14 @@
         <td>{{doctor.age}}</td>
         <td>{{doctor.option}}</td>
         <td>{{doctor.story}}</td>
-        <td><button class="btn btn-danger" @click="deleteUser2 (key)">X</button>
-        <b-btn
-          v-b-modal.modal1
-          class="btn btn-warning ml-2"
-          @click="SetUpdate2 (key, doctor.usernamedoc, doctor.sernamedoc, doctor.age, doctor.option, doctor.story)"
-        >U</b-btn></td>
+        <td>
+          <button class="btn btn-danger" @click="deleteUser2 (key)">Delete</button>
+          <b-btn
+            v-b-modal.modal1
+            class="btn btn-warning ml-2"
+            @click="SetUpdate2 (key, doctor.usernamedoc, doctor.sernamedoc, doctor.age, doctor.option, doctor.story)"
+          >Edit</b-btn>
+        </td>
       </tr>
     </table>
 
@@ -35,15 +37,44 @@
       no-fade="true"
       hide-footer
     >
-      <input type="text" v-model="updateusernamedoc" placeholder="ชื่อแพทย์">
-      <input type="text" v-model="updatesernamedoc" placeholder="นามสกุลแพทย์">
-      <input type="text" v-model="updateage" placeholder="อายุ">
-      <input type="text" v-model="updateoption" placeholder="ความชำนานการทางการแพทย์">
-      <textarea type="text" v-model="updatestory" placeholder="ประวัติเบื้องต้นของแพทย์"></textarea>
-      <button
-        class="btn btn-success"
-        @click="Update2(updateKey1, updateusernamedoc, updatesernamedoc, updateage, updateoption, updatestory)"
-      >บันทึก</button>
+      <form action>
+        <div>
+          <center>
+            <tr>
+              <td>
+                <input class="form-control mb-2" type="text" v-model="updateusernamedoc" placeholder="ชื่อแพทย์">
+              </td>
+              <td>
+                <input class="form-control mb-2" type="text" v-model="updatesernamedoc" placeholder="นามสกุลแพทย์">
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td colspan="2">
+                <input class="form-control mb-2" type="text" v-model="updateage" placeholder="อายุ">
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <input class="form-control mb-2" type="text" v-model="updateoption" placeholder="ความชำนานการทางการแพทย์">
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <textarea class="form-control mb-2" type="text" v-model="updatestory" placeholder="ประวัติเบื้องต้นของแพทย์"></textarea>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button
+                  class="btn btn-success"
+                  @click="Update2(updateKey1, updateusernamedoc, updatesernamedoc, updateage, updateoption, updatestory)"
+                >บันทึก</button>
+              </td>
+            </tr>
+          </center>
+        </div>
+      </form>
     </b-modal>
   </div>
 </template>
@@ -282,6 +313,13 @@ export default {
       this.updateage = "";
       this.updateoption = "";
       this.updatestory = "";
+      this.$swal({
+        position: "center",
+        type: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500
+      });
     },
     deleteUser3(key) {
       manageuser

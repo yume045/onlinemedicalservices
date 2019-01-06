@@ -1,33 +1,41 @@
 <template>
   <div class="hello">
-    <div></div>
-    <br>
-    <br>
-    <b-container fluid style="width:35%;">
-      <div class="level-right" style="margin-right:30%;">
-        <b-row class="my-1">
-          <b-col sm="3">
-            <label for="input-default">ชื่อแผนก:</label>
-          </b-col>
-          <b-col sm="9">
-            <b-form-input id="input-default" type="text" min="0" placeholder v-model="addOption"></b-form-input>
-          </b-col>
-        </b-row>
-        <br>
-        <div class="level-item">
-          <p class>
-            <a class="btn btn-success" @click="insertOption()">เพิ่มแผนก</a>
-          </p>
-        </div>
+    <form action>
+      <div>
+        <center>
+          <h2>จัดการแผนกของแพทย์</h2>
+          <tr>
+            <td class="ml-2">ชื่อแผนก:</td>
+            <td>
+              <input
+                class="form-control mb-2"
+                type="text"
+                name
+                id
+                v-model="addOption"
+                placeholder="ชื่อแผนก"
+              >
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <b-button
+                type="submit"
+                variant="primary"
+                class="btn btn-success"
+                @click="insertOption()"
+              >เพิ่มแผนก</b-button>
+            </td>
+          </tr>
+        </center>
       </div>
-    </b-container>
+    </form>
     <br>
     <b-container>
       <b-row class="box">
         <b-col>
           <label for="input-default">แผนก</label>
-        </b-col>
-      </b-row>
       <div class="mb-5">
         <div :key="key" v-for="(show, key) in shows">
           <div v-if="updateKey === key">
@@ -54,18 +62,20 @@
                 variant="primary"
                 class="btn btn-danger"
                 @click="deleteop(key)"
-              >x</b-button>
+              >Delete</b-button>
               <b-button
                 type="submit"
                 variant="primary"
                 class="btn btn-warning"
                 @click="setupdate(key, show.addOption)"
-              >u</b-button>
+              >Edit</b-button>
             </b-column>
             <div class="level-right"></div>
           </div>
         </div>
       </div>
+      </b-col>
+      </b-row>
     </b-container>
   </div>
 </template>
@@ -116,7 +126,7 @@ export default {
       this.updateoption = "";
       this.updateKey = "";
       this.$swal({
-        position: "top-end",
+        position: "center",
         type: "success",
         title: "Your work has been saved",
         showConfirmButton: false,

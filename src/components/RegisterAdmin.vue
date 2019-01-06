@@ -4,80 +4,74 @@
     <br>
     <br>
     <form action>
-      <div>
-        <h2 class="text-center">เพิ่มข้อมูลผู้ป่วย</h2>
-        <b-container fluid style="width:40%;">
-          <b-row class="my-1">
-            <b-col sm="3">
-              <label for="input-default">Username:</label>
-            </b-col>
-            <b-col sm="9">
-              <b-form-input
-                required
-                id="input-default"
+    <b-container>
+      <center>
+      <b-row class="box">
+        <b-col>
+          <h2 class="text-center mb-5">เพิ่มข้อมูลผู้ป่วย</h2>
+          <tr>
+            <td class="mr-2">Username:
+              <input
+                class="form-control mb-2"
                 type="text"
-                min="0"
-                placeholder
+                name
+                id
                 v-model="username"
-              ></b-form-input>
-            </b-col>
-          </b-row>
-          <b-row class="my-1">
-            <b-col sm="3">
-              <label for="input-default">Password:</label>
-            </b-col>
-            <b-col sm="9">
-              <b-form-input
-                required
-                id="input-default"
+                placeholder="Username"
+              >
+            </td>
+            <td class="mr-2">Password:
+              <input
+                class="form-control mb-2"
                 type="password"
-                min="0"
-                placeholder
+                name
+                id
                 v-model="password"
-              ></b-form-input>
-            </b-col>
-          </b-row>
-          <b-row class="my-1">
-            <b-col sm="3">
-              <label for="input-default">รหัสบัตรประชาชน:</label>
-            </b-col>
-            <b-col sm="9">
-              <b-form-input
-                required
-                id="input-default"
+                placeholder="Password"
+              >
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">รหัสบัตรประชาชน:
+              <input
+                class="form-control mb-2"
                 type="number"
-                min="0"
-                placeholder
+                name
+                id
                 v-model="idpeople"
-              ></b-form-input>
-            </b-col>
-          </b-row>
-          <b-row class="my-1">
-            <b-col sm="3">
-              <label for="input-default">ชื่อ:</label>
-            </b-col>
-            <b-col sm="9">
-              <b-form-input required id="input-default" type="text" placeholder v-model="name"></b-form-input>
-            </b-col>
-          </b-row>
-          <b-row class="my-1">
-            <b-col sm="3">
-              <label for="input-default">นามสกุล:</label>
-            </b-col>
-            <b-col sm="9">
-              <b-form-input required id="input-default" type="text" placeholder v-model="sername"></b-form-input>
-            </b-col>
-          </b-row>
-          <b-row class="my-1">
-            <b-col sm="3">
-              <label for="input-default">เพศ:</label>
-            </b-col>
-            <b-col sm="9">
-              <input required class name="gen" type="radio" value="ชาย" id="male" v-model="gen">
+                placeholder="รหัสบัตรประชาชน"
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>ชื่อ:
+              <input
+                class="form-control mb-2"
+                type="text"
+                name
+                id
+                v-model="name"
+                placeholder="ชื่อ"
+              >
+            </td>
+            <td>นามสกุล:
+              <input
+                class="form-control mb-2"
+                type="text"
+                name
+                id
+                v-model="sername"
+                placeholder="นามสกุล"
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              เพศ:
+              <input class name="gen" type="radio" value="ชาย" id="male" v-model="gen">
               <label class="form-check-label" for="male">ชาย</label>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <input
-                required
                 class
                 name="gen"
                 type="radio"
@@ -86,118 +80,115 @@
                 v-model="gen"
               >
               <label class="form-check-label" for="female">หญิง</label>
-            </b-col>
-          </b-row>
-          <b-row class="my-1">
-            <b-col sm="3">
-              <label for="input-default">วัน/เดือน/ปี:</label>
-            </b-col>
-            <b-col sm="9">
-              <b-form-input
-                required
-                id="input-default"
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">เดือน/วัน/ปี:
+              <input
+                class="form-control mb-2"
                 type="date"
-                placeholder="วัน/เดือน/ปี"
+                name
+                id
+                max="01-06-2019"
                 v-model="day"
-              ></b-form-input>
-            </b-col>
-          </b-row>
-          <b-row class="my-1">
-            <b-col sm="3">
-              <label for="input-default">น้ำหนัก:</label>
-            </b-col>
-            <b-col sm="9">
-              <b-form-input
-                required
-                id="input-default"
+                placeholder="เดือน/วัน/ปี"
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>น้ำหนัก:
+              <input
+                class="form-control mb-2"
                 type="number"
-                min="0"
-                placeholder
+                name
+                id
+                min="1"
+                max="300"
                 v-model="weight"
-              ></b-form-input>
-            </b-col>
-          </b-row>
-          <b-row class="my-1">
-            <b-col sm="3">
-              <label for="input-default">ส่วนสูง:</label>
-            </b-col>
-            <b-col sm="9">
-              <b-form-input
-                required
-                id="input-default"
+                placeholder="น้ำหนัก"
+              >
+            </td>
+            <td>ส่วนสูง:
+              <input
+                class="form-control mb-2"
                 type="number"
-                min="0"
-                placeholder
+                name
+                id
+                min="30"
+                max="250"
                 v-model="height"
-              ></b-form-input>
-            </b-col>
-          </b-row>
-          <b-row class="my-1">
-            <b-col sm="3">
-              <label for="input-default">กรุ๊ปเลือด:</label>
-            </b-col>
-            <b-col sm="9">
-              <b-form-select id="exampleInput3" :options="bloods" required v-model="bloodtype"></b-form-select>
-            </b-col>
-          </b-row>
-          <b-row class="my-1">
-            <b-col sm="3">
-              <label for="input-default">ที่อยู่:</label>
-            </b-col>
-            <b-col sm="9">
+                placeholder="ส่วนสูง"
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>กรุ๊ปเลือด:
+              <b-form-select
+                class="form-control mb-2"
+                id="exampleInput3"
+                :options="bloods"
+                v-model="bloodtype"
+              ></b-form-select>
+            </td>
+            <td>เบอร์โทร:
+              <input
+                class="form-control mb-2"
+                type="number"
+                name
+                id
+                v-model="numberphone"
+                placeholder="เบอร์โทร"
+              >
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">ที่อยู่:
               <textarea
-                required
-                class="form-control"
-                id="exampleFormControlTextarea1"
-                rows="3"
+                class="form-control mb-2"
+                type="text"
+                name
+                id
                 v-model="address"
-              ></textarea>
-            </b-col>
-          </b-row>
-          <b-row class="my-1">
-            <b-col sm="3">
-              <label for="input-default">เบอร์โทร:</label>
-            </b-col>
-            <b-col sm="9">
-              <b-form-input id="input-default" type="tel" placeholder v-model="numberphone"></b-form-input>
-            </b-col>
-          </b-row>
-          <b-row class="my-1">
-            <b-col sm="3">
-              <label for="input-default">ยาที่แพ้:</label>
-            </b-col>
-            <b-col sm="9">
+                placeholder="ที่อยู่"
+              />
+            </td>
+          </tr>
+          <tr></tr>
+          <tr>
+            <td colspan="2">ยาที่แพ้:
               <textarea
-                class="form-control"
-                id="exampleFormControlTextarea1"
-                rows="3"
+                class="form-control mb-2"
+                type="text"
+                name
+                id
                 v-model="medical"
+                placeholder="ยาที่แพ้"
               ></textarea>
-            </b-col>
-          </b-row>
-          <b-row class="my-1">
-            <b-col sm="3">
-              <label for="input-default">โรคประจำตัว:</label>
-            </b-col>
-            <b-col sm="9">
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">โรคประจำตัว:
               <textarea
-                class="form-control"
-                id="exampleFormControlTextarea1"
-                rows="3"
+                class="form-control mb-2"
+                type="text"
+                name
+                id
                 v-model="disease"
+                placeholder="โรคประจำตัว"
               ></textarea>
-            </b-col>
-          </b-row>
-          <b-row class="justify-content-center mt-3 mb-5">
+            </td>
+          </tr>
           <b-button
             type="submit"
             variant="primary"
-            class="btn btn-outline-primary mr-2"
+            class="btn btn-outline-primary mr-2 mt-3 mb-5"
             @click="insertUser ()"
           >เพิ่มข้อมูลผู้ป่วย</b-button>
-          <b-button type="reset" variant="danger" class="btn btn-outline-danger">ยกเลิก</b-button></b-row>
-        </b-container>
-      </div>
+          <b-button type="reset" variant="danger" class="btn btn-outline-danger mt-3 mb-5">ยกเลิก</b-button>
+          </b-col>
+          </b-row>
+          </center>
+    </b-container>
     </form>
   </div>
 </template>
@@ -214,7 +205,7 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      bloods:['A','B','AB','O'],
+      bloods: ["A", "B", "AB", "O"],
       msg: "Welcome to Your Vue.js App",
       username: "",
       password: "",
@@ -254,31 +245,57 @@ export default {
         HN: (this.HN = Math.floor(Math.random() * (1000000000 - 1 + 1)) + 1),
         Permistion: (this.Permistion = 1)
       };
-      UserRef.child(this.username).push(tmp);
-      Manage.child("Users").push(tmp);
-      this.username = "";
-      this.password = "";
-      this.idpeople = "";
-      this.name = "";
-      this.sername = "";
-      this.gen = "";
-      this.day = "";
-      this.weight = "";
-      this.height = "";
-      this.bloodtype = "";
-      this.address = "";
-      this.numberphone = "";
-      this.medical = "";
-      this.disease = "";
-      this.HN = "";
-      this.Permistion = "";
-      this.$swal({
-        position: "top-end",
-        type: "success",
-        title: "Your work has been saved",
-        showConfirmButton: false,
-        timer: 1500
-      });
+      if (
+        this.username == "" ||
+        this.password == "" ||
+        this.idpeople == "" ||
+        this.name == "" ||
+        this.sername == "" ||
+        this.gen == "" ||
+        this.day == "" ||
+        this.weight == "" ||
+        this.height == "" ||
+        this.bloodtype == "" ||
+        this.address == "" ||
+        this.numberphone == "" ||
+        this.numberphone == "" ||
+        this.medical == "" ||
+        this.disease == ""
+      ) {
+        this.$swal({
+          type: "error",
+          title: "Oops...",
+          text: "กรุณากรอกข้อมูลให้ครบ",
+          footer: "<a href>Why do I have this issue?</a>"
+        });
+        console.log("กรุณากรอกข้อมูลให้ครบ");
+      } else {
+        UserRef.child(this.username).push(tmp);
+        Manage.child("Users").push(tmp);
+        this.username = "";
+        this.password = "";
+        this.idpeople = "";
+        this.name = "";
+        this.sername = "";
+        this.gen = "";
+        this.day = "";
+        this.weight = "";
+        this.height = "";
+        this.bloodtype = "";
+        this.address = "";
+        this.numberphone = "";
+        this.medical = "";
+        this.disease = "";
+        this.HN = "";
+        this.Permistion = "";
+        this.$swal({
+          position: "center",
+          type: "success",
+          title: "Your work has been saved",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
     }
   }
 };

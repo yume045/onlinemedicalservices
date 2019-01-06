@@ -1,8 +1,8 @@
 <template>
   <div class>
-    <label for>
-      <h1>แพทย์</h1>
-    </label>
+      <div>
+      <h1 class="text-center">เภสัชกร</h1>
+      </div>
     <table class="table table-hover">
       <tr>
         <td>ชื่อเภสัชกร</td>
@@ -19,12 +19,12 @@
         <td>{{pharma.option}}</td>
         <td>{{pharma.story}}</td>
         <td>
-          <button class="btn btn-danger mr-2" @click="deleteUser3 (key)">X</button>
+          <button class="btn btn-danger mr-2" @click="deleteUser3 (key)">Delete</button>
           <b-btn
             v-b-modal.modal1
             class="btn btn-warning"
             @click="SetUpdate3 (key, pharma.usernamephar, pharma.sernamephar, pharma.age, pharma.option, pharma.story)"
-          >U</b-btn>
+          >Edit</b-btn>
         </td>
       </tr>
     </table>
@@ -371,6 +371,13 @@ export default {
       this.updateage2 = "";
       this.updateoption2 = "";
       this.updatestory2 = "";
+      this.$swal({
+        position: "center",
+        type: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   }
 };

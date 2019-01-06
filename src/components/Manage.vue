@@ -27,7 +27,7 @@
                   v-model="selected"
                   name="blood"
                   :options="blood"
-                  class="ml-4"
+                  class="ml-5"
                   @change="filter(selected)"
                 ></b-form-checkbox-group>
               </b-form-group>
@@ -37,9 +37,9 @@
       </div>
       <br>
     </div>
-    <label for>
-      <h1>ผู้ป่วย</h1>
-    </label>
+    <div>
+      <h1 class="text-center mt-5">ผู้ป่วย</h1>
+    </div>
     <table class="table table-hover">
       <tr>
         <td>Hospital Number</td>
@@ -72,7 +72,7 @@
         <td>{{user.medical}}</td>
         <td>{{user.disease}}</td>
         <td>
-          <button class="btn btn-danger" @click="deleteUser (user.key)">X</button>
+          <button class="btn btn-danger mr-2" @click="deleteUser (user.key)">Delete</button>
           <b-btn
             v-b-modal.modal1
             @click="SetUpdate(
@@ -91,7 +91,7 @@
               user.disease
             )"
             class="btn btn-warning"
-          >U</b-btn>
+          >Edit</b-btn>
         </td>
       </tr>
     </table>
@@ -239,7 +239,7 @@
                 <td>
                   <button
                     class="btn btn-success"
-                    @click="Update(updateDisease, updateMedical, updateNumberphone, updateAddress, updatebloodtype, updateHeight, updateWeight, updateday, updategen, updateid, updatesurName, updateName, updateKey, Manage)"
+                    @click="Update(updateDisease, updateMedical, updateNumberphone, updateAddress, updatebloodtype, updateHeight, updateWeight, updateday, updategen, updateid, updatesurName, updateName, updateKey)"
                   >แก้ไขข้อมูล</button>
                 </td>
               </tr>
@@ -297,7 +297,7 @@ export default {
       countuser: 0,
       showData: [],
       tmp: "",
-      blood: ['A', 'B', 'AB', 'O'],
+      blood: ["A", "B", "AB", "O"],
       selected: [],
       allSelected: false,
       indeterminate: false
@@ -424,12 +424,11 @@ export default {
       height,
       weight,
       day,
+      gen,
       idpeople,
       sername,
       name,
-      keys,
-      key,
-      Manage
+      key
     ) {
       this.showModal = true;
       manageuser
@@ -439,6 +438,7 @@ export default {
           name: name,
           sername: sername,
           idpeople: idpeople,
+          gen: gen,
           day: day,
           weight: weight,
           height: height,
@@ -452,6 +452,7 @@ export default {
       this.updateName = "";
       this.updatesurName = "";
       this.updateid = "";
+      this.updategen = "";
       this.updateday = "";
       this.updateWeight = "";
       this.updateHeight = "";
@@ -460,6 +461,13 @@ export default {
       this.updateNumberphone = "";
       this.updateMedical = "";
       this.updateDisease = "";
+      this.$swal({
+        position: "center",
+        type: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500
+      });
     },
     deleteUser2(key) {
       manageuser
@@ -498,33 +506,33 @@ export default {
         .child("Pharmacist")
         .child(key)
         .remove();
-    },
-    SetUpdate3(key, usernamephar, sernamephar, age, option, story) {
-      this.updateKey2 = key;
-      this.updateusernamephar = usernamephar;
-      this.updatesernamephar = sernamephar;
-      this.updateage2 = age;
-      this.updateoption2 = option;
-      this.updatestory2 = story;
-    },
-    Update3(key, usernamephar, sernamephar, age, option, story) {
-      manageuser
-        .child("Pharmacist")
-        .child(key)
-        .update({
-          usernamephar: usernamephar,
-          sernamephar: sernamephar,
-          age: age,
-          option: option,
-          story: story
-        });
-      this.updateKey2 = "";
-      this.updateusernamephar = "";
-      this.updatesernamephar = "";
-      this.updateage2 = "";
-      this.updateoption2 = "";
-      this.updatestory2 = "";
     }
+    // SetUpdate3(key, usernamephar, sernamephar, age, option, story) {
+    //   this.updateKey2 = key;
+    //   this.updateusernamephar = usernamephar;
+    //   this.updatesernamephar = sernamephar;
+    //   this.updateage2 = age;
+    //   this.updateoption2 = option;
+    //   this.updatestory2 = story;
+    // },
+    // Update3(key, usernamephar, sernamephar, age, option, story) {
+    //   manageuser
+    //     .child("Pharmacist")
+    //     .child(key)
+    //     .update({
+    //       usernamephar: usernamephar,
+    //       sernamephar: sernamephar,
+    //       age: age,
+    //       option: option,
+    //       story: story
+    //     });
+    //   this.updateKey2 = "";
+    //   this.updateusernamephar = "";
+    //   this.updatesernamephar = "";
+    //   this.updateage2 = "";
+    //   this.updateoption2 = "";
+    //   this.updatestory2 = "";
+    // }
   }
 };
 </script>
