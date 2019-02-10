@@ -44,6 +44,13 @@ export default {
       homeadminRef.push(payload)
       this.title = ""
       this.content = ""
+      this.$swal({
+        position: "center",
+        type: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   },
   mounted() {

@@ -75,10 +75,11 @@ export default {
           }
         }
         //  else alert('Username Or Password incorrect')
-      } else alert('Username Or Password incorrect')
+      } else {}
       this.hasprofile = {}
       this.username = ''
       this.password = ''
+      alert('Username Or Password incorrect')
     }
   },
   computed: {

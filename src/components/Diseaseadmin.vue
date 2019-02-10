@@ -82,6 +82,13 @@ export default {
       this.adddisease2 = "";
       this.addpicturedisease = "";
       this.type = "";
+      this.$swal({
+        position: "center",
+        type: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   },
   mounted() {

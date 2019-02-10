@@ -20,7 +20,7 @@
             </div>
             <div class="col">
               <b-form-group>
-                <b>Blood Group :</b>
+                <b>กรองข้อมูล :</b>
                 <br>
                 <b-form-checkbox-group
                   id="blood"
@@ -297,7 +297,8 @@ export default {
       countuser: 0,
       showData: [],
       tmp: "",
-      blood: ["A", "B", "AB", "O"],
+      blood: ["A", "B", "AB", "O", "ชาย", "หญิง"],
+      sex: ["ชาย", "หญิง"],
       selected: [],
       allSelected: false,
       indeterminate: false
@@ -513,7 +514,8 @@ export default {
         this.showData = this.users.filter(user => {
           if (
             // user.bloodtype.toString().indexOf(Search[i]) >= 0
-            user.bloodtype === Search[0]
+            user.bloodtype === Search[0] ||
+            user.gen === Search[0]
           ) {
             return user;
           }
@@ -525,7 +527,8 @@ export default {
         for (var i = 0; i < Search.length; i++){
         data2 = this.users.filter(user => {
           if (
-            user.bloodtype === Search[i]
+            user.bloodtype === Search[i] ||
+            user.gen === Search[i]
           ) {
             return user;
           }

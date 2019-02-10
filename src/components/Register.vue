@@ -38,6 +38,8 @@
                 type="number"
                 name
                 id
+                min="1"
+                max="300"
                 v-model="idpeople"
                 placeholder="รหัสบัตรประชาชน"
               >

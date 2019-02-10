@@ -50,6 +50,13 @@ export default {
       this.addmedic = ''
       this.addmedic2 = ''
       this.addpicturemedic = ''
+      this.$swal({
+        position: "center",
+        type: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   },
   mounted () {

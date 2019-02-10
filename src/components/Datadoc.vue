@@ -34,7 +34,7 @@
     <b-modal
       :hidden="showModal"
       id="modal1"
-      title="แก้ไขข้อมูลผู้ป่วย"
+      title="แก้ไขข้อมูลแพทย์"
       no-close-on-backdrop="true"
       no-fade="true"
       hide-footer

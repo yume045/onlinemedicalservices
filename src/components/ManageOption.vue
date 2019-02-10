@@ -102,6 +102,13 @@ export default {
       };
       addOptionRef.push(tmp);
       this.addOption = "";
+      this.$swal({
+        position: "center",
+        type: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500
+      });
     },
     deleteop(key) {
       this.$swal({
