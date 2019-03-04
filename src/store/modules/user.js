@@ -6,42 +6,46 @@ const state = {
   getuser: null,
   selectNews: null,
   added: [],
-  Per: null
+  status: null
 }
 
 const getters = {
   user: state => {
-    console.log('test')
     return state.user
   },
   isLoggedIn: state => {
     return state.user !== null
   },
-  Per: state => {
-    console.log('2222')
-    return state.Per
+  status: state => {
+    return state.status
   },
   selectNews: state => {
     return state.selectNews
+  },
+  profile: state => {
+    return state.profile
   }
 }
 
 const mutations = {
   setUser: (state, payload) => {
     state.user = payload.userSet
-    state.Per = payload.Per
-    console.log(payload.Per)
+    state.status = payload.status
+    console.log(payload.status)
   },
   selectNews: (state, payload) => {
     state.selectNews = payload
     console.log(state.selectNews)
   },
-  LOAD (state, {user, Per, selectShop}) {
+  LOAD (state, {user, status}) {
     state.user = user
-    state.Per = Per
+    state.status = status
   },
   logout: (state) => {
     state.user = null
+  },
+  setProfile: (state, payload) => {
+    state.profile = payload
   }
 }
 
@@ -59,16 +63,19 @@ const actions = {
   },
   save ({state}) {
     localStorage.setItem('user', JSON.stringify(state.user))
-    localStorage.setItem('Per', JSON.stringify(state.Per))
+    localStorage.setItem('status', JSON.stringify(state.status))
   },
   load ({commit}) {
     let Getuser = localStorage.getItem('user')
-    let GetPer = localStorage.getItem('Per')
+    let GetStatus = localStorage.getItem('status')
     if (Getuser !== 'null') {
       let user = JSON.parse(Getuser)
-      let Per = JSON.parse(GetPer)
-      commit('LOAD', {user, Per})
+      let status = JSON.parse(GetStatus)
+      commit('LOAD', {user, status})
     }
+  },
+  setProfile ({commit, dispatch}, payload) {
+    commit('setProfile', payload)
   }
 }
 

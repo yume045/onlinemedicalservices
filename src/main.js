@@ -1,23 +1,15 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
-import App from './App'
-import router from './router'
+import Vue from "vue"
+import App from "./App.vue"
+import router from "./router"
+import Argon from "./plugins/argon-kit"
 import Vuex from 'vuex'
 import store from './store'
-import BootstrapVue from 'bootstrap-vue'
-import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
 import firebase from 'firebase'
 import VueSweetalert2 from 'vue-sweetalert2'
 Vue.use(VueSweetalert2)
-Vue.use(BootstrapVue)
 Vue.use(Vuex)
-Vue.use(Buefy)
-
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+Vue.use(Argon)
 
 let storageRef = firebase.storage().ref()
 Vue.directive('url', {
@@ -27,11 +19,9 @@ Vue.directive('url', {
     console.log(el.src)
   }
 })
-/* eslint-disable no-new */
+
 new Vue({
-  el: '#app',
   router,
   store,
-  components: { App },
-  template: '<App/>'
-})
+  render: h => h(App)
+}).$mount("#app");
