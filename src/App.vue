@@ -1,19 +1,26 @@
 <template>
   <div id="app">
-    <Navbar />
-    <router-view/>
+    <router-view name="header"></router-view>
+    <main>
+      <fade-transition origin="center" mode="out-in" :duration="250">
+        <router-view/>
+      </fade-transition>
+    </main>
+    <router-view name="footer"></router-view>
   </div>
 </template>
-
 <script>
-import Navbar from './components/navbar'
-export default {
-  name: 'App',
-  components: {
-    Navbar
-  }
-}
-</script>
+import { FadeTransition } from "vue2-transitions";
 
+export default {
+  components: {
+    FadeTransition
+  }
+};
+</script>
 <style>
+  #app {
+    font-family: "Abel", sans-serif, "Mitr", sans-serif;
+  }
 </style>
+
