@@ -48,7 +48,7 @@
         <li class="nav-item">
           <router-link
             class="nav-link nav-link-icon"
-            to="/Medicine"
+            to="/Redirect/Medicine/go"
             rel="noopener"
             data-toggle="tooltip"
           >
@@ -58,7 +58,7 @@
         <li class="nav-item">
           <router-link
             class="nav-link nav-link-icon"
-            to="/Disease"
+            to="/Redirect/Disease/go"
             rel="noopener"
             data-toggle="tooltip"
           >
@@ -90,9 +90,7 @@
             <span class="nav-link-inner--text">เพิ่มข้อมูล</span>
           </router-link>
           <router-link to="/Redirect/Insert/Member" class="dropdown-item">เพิ่มข้อมูลผู้ใช้</router-link>
-          <router-link to="/Homeadmin" class="dropdown-item">เพิ่มข่าวประชาสัมพันธ์</router-link>
-          <router-link to="/InsertMedic" class="dropdown-item">เพิ่มข้อมูลยา</router-link>
-          <router-link to="/Diseaseadmin" class="dropdown-item">เพิ่มข้อมูลโรค</router-link>
+          <router-link to="/InsertNews" class="dropdown-item">เพิ่มข่าว - ยา - โรค</router-link>
         </base-dropdown>
       </ul>
       <ul class="navbar-nav align-items-lg-center ml-lg-auto">

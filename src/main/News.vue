@@ -28,8 +28,7 @@
 import firebase from "firebase";
 import { mapGetters } from "vuex";
 var database = firebase.database();
-var newsRef = database.ref("/Homeadmin");
-var newsRef1 = database.ref("/Homeadmin");
+var newsRef = database.ref("/News");
 export default {
   name: "News",
   subadds: [],
@@ -38,8 +37,7 @@ export default {
   content: "",
   data() {
     return {
-      subadds: "",
-      news: ""
+      news: []
     };
   },
   computed: {
@@ -51,15 +49,12 @@ export default {
     })
   },
   mounted() {
-    newsRef.on("value", snap => {
-      this.subadds = snap.val();
-      console.log(this.subadds);
-    });
-    const newsRef2 = newsRef1.orderByChild("title").equalTo(this.selectNews);
-    newsRef2.on("child_added", snap => {
-      this.news = snap.val();
-      console.log(this.news);
-    });
+    newsRef
+      .orderByKey()
+      .equalTo(this.$route.params.key)
+      .once("child_added", snap => {
+        this.news = snap.val();
+      });
   }
 };
 </script>

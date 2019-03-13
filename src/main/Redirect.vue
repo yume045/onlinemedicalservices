@@ -7,7 +7,7 @@
 <script>
 
 export default {
-  name: "HelloWorld",
+  name: "Redirect",
   data() {
     return {
       path: this.$route.params.path,
@@ -15,7 +15,11 @@ export default {
     };
   },
   mounted() {
-    this.$router.push("/" + this.path + '/' + this.type);
+    if(this.type === 'go') {
+      this.$router.push("/" + this.path);
+    } else {
+      this.$router.push("/" + this.path + '/' + this.type);
+    }
   }
 };
 </script>

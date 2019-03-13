@@ -1,25 +1,21 @@
 import Vue from "vue";
 import Router from "vue-router";
-import AppHeader from "./main/AppHeader";
-import AppFooter from "./main/AppFooter";
+import AppHeader from "./main/AllSite/AppHeader";
+import AppFooter from "./main/AllSite/AppFooter";
 import Components from "./views/Components.vue";
 import Landing from "./views/Landing.vue";
 import Login from "./main/Login.vue";
 import Register from "./main/Register.vue";
 import Profile from "./views/Profile.vue";
-import HomeAdmin from "./main/HomeAdmin.vue";
+import Homeadmin from "./main/Homeadmin.vue";
 import EditProfile from "./main/EditProfile.vue";
-import Home from "./main/Home.vue";
-import Medicine from "./main/Medicine.vue";
+import ListNews from "./main/ListNews.vue";
 import News from "./main/News.vue";
-import Disease from "./main/Disease.vue";
-import MedicNews from "./main/MedicNews.vue";
-import DiseaseNews from "./main/DiseaseNews.vue";
 import ManageOption from "./main/ManageOption.vue";
 import Manage from "./main/Manage.vue";
 import Redirect from "./main/Redirect.vue";
 import Insert from "./main/Insert.vue";
-import InsertMedic from "./main/InsertMedic.vue";
+import InsertNews from "./main/InsertNews.vue";
 
 Vue.use(Router);
 
@@ -28,10 +24,28 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "Home",
+      name: "News",
       components: {
         header: AppHeader,
-        default: Home,
+        default: ListNews,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/Medicine",
+      name: "Medicine",
+      components: {
+        header: AppHeader,
+        default: ListNews,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/Disease",
+      name: "Disease",
+      components: {
+        header: AppHeader,
+        default: ListNews,
         footer: AppFooter
       }
     },
@@ -67,52 +81,16 @@ export default new Router({
       name: "Homeadmin",
       components: {
         header: AppHeader,
-        default: HomeAdmin,
+        default: Homeadmin,
         footer: AppFooter
       }
     },
     {
-      path: "/Medicine",
-      name: "Medicine",
-      components: {
-        header: AppHeader,
-        default: Medicine,
-        footer: AppFooter
-      }
-    },
-    {
-      path: "/News",
+      path: "/News/:key",
       name: "News",
       components: {
         header: AppHeader,
         default: News,
-        footer: AppFooter
-      }
-    },
-    {
-      path: "/MedicNews",
-      name: "MedicNews",
-      components: {
-        header: AppHeader,
-        default: MedicNews,
-        footer: AppFooter
-      }
-    },
-    {
-      path: "/Disease",
-      name: "Disease",
-      components: {
-        header: AppHeader,
-        default: Disease,
-        footer: AppFooter
-      }
-    },
-    {
-      path: "/DiseaseNews",
-      name: "DiseaseNews",
-      components: {
-        header: AppHeader,
-        default: DiseaseNews,
         footer: AppFooter
       }
     },
@@ -154,11 +132,11 @@ export default new Router({
     },
     ,
     {
-      path: "/InsertMedic",
-      name: "InsertMedic",
+      path: "/InsertNews",
+      name: "InsertNews",
       components: {
         header: AppHeader,
-        default: InsertMedic,
+        default: InsertNews,
         footer: AppFooter
       }
     }

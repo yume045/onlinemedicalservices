@@ -10,11 +10,16 @@
       </div>
     </section>
     <div class="jumbotron bg-secondary container mt--300">
-      <h1 class="display-4">เพิ่มข้อมูลยา</h1>
+      <h1 class="display-4 mb-3">เพิ่มข่าว - ยา - โรค</h1>
+      <div class="col-12 float-left mb-3">
+        <base-radio name="News" class="mb-3 mr-4 float-left" v-model="type">ข่าวประชาสัมพันธ์</base-radio>
+        <base-radio name="Medicine" class="mb-3 mr-4 float-left" v-model="type">ข้อมูลยา</base-radio>
+        <base-radio name="Disease" class="mb-3 mr-4 float-left" v-model="type">ข้อมูลโรค</base-radio>
+      </div>
       <base-input
         alternative
         class="mb-3"
-        placeholder="ชื่อยา"
+        placeholder="ชื่อ"
         addon-left-icon="ni ni-bold-right"
         type="text"
         v-model="title"
@@ -28,7 +33,15 @@
         type="text"
         v-model="img"
       ></base-input>
-      <button class="mt-3 btn btn-primary" @click="insertHomeadmin ()">เพิ่มข้อมูล</button>
+      <base-input
+        alternative
+        class="mt-3"
+        placeholder="กำหนด Tag ที่เกี่ยวข้อง"
+        addon-left-icon="ni ni-tag"
+        type="text"
+        v-model="tag"
+      ></base-input>
+      <button class="mt-3 btn btn-primary" @click="insertNews ()">เพิ่มข้อมูล</button>
     </div>
   </div>
 </template>
@@ -39,42 +52,42 @@ import { VueEditor } from "vue2-editor";
 import firebase from "firebase";
 import { mapGetters } from "vuex";
 var database = firebase.database();
-var homeadminRef = database.ref("/Medicenadmin");
+var firebaseRef = database.ref("/News");
 export default {
-  name: "Medic",
+  name: "InsertNews",
   data() {
     return {
       title: "",
       content: "",
-      img: ""
+      img: "",
+      tag: "",
+      type: "News"
     };
   },
   methods: {
-    insertHomeadmin() {
+    insertNews() {
       var payload = {
         title: this.title,
         content: this.content,
-        img: this.img
+        img: this.img,
+        timestamp: Date.now(),
+        type: this.type,
+        tag: this.tag
       };
-      homeadminRef.push(payload);
+      firebaseRef.push(payload);
       this.title = "";
       this.content = "";
+      this.img = "";
+      this.tag = "";
       this.$swal({
         position: "center",
         type: "success",
-        title: "Your work has been saved",
+        title: "Your Insert Data Success",
         showConfirmButton: false,
         timer: 1500
       });
     }
   },
-  mounted() {
-    homeadminRef.on("value", snap => {
-      this.subadds = snap.val();
-      console.log(this.subadds);
-    });
-  },
-  created: {},
   components: {
     VueEditor
   },
