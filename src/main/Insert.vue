@@ -23,9 +23,18 @@
             >
               <template>
                 <div class="text-center text-muted mb-4">
-                  <h4>Register</h4>
+                  <h4>เพิ่มข้อมูล</h4>
                 </div>
                 <form role="form">
+                  <div class="col-12 float-left mb-4">
+                    <base-radio name="Doctor" class="mb-3 mr-4 float-left" v-model="type">หมอ</base-radio>
+                    <base-radio
+                      name="Pharmacist"
+                      class="mb-3 mr-4 float-left"
+                      v-model="type"
+                    >เภสัชกร</base-radio>
+                    <base-radio name="Member" class="mb-3 mr-4 float-left" v-model="type">ผู้ป่วย</base-radio>
+                  </div>
                   <base-input
                     alternative
                     class="mb-3 col-6 float-left"
@@ -123,37 +132,33 @@
                     placeholder="โรคประจำตัว"
                     v-model="disease"
                   ></textarea>
-                  <div class="col-6 float-left mb-4">
-                    <base-radio
-                      name="Doctor"
-                      class="mb-3 mr-4 float-left"
-                      v-model="type"
-                    >หมอ</base-radio>
-                    <base-radio
-                      name="Pharmacist"
-                      class="mb-3 mr-4 float-left"
-                      v-model="type"
-                    >เภสัชกร</base-radio>
-                    <base-radio name="Member" class="mb-3 mr-4 float-left" v-model="type">ผู้ป่วย</base-radio>
+                  <div v-if="type === 'Member'"></div>
+                  <div v-else>
+                    <select class="custom-select mb-3" v-model="departmentChecked">
+                      <option
+                        :key="key"
+                        v-for="(dep, key) in department"
+                        :value="dep.addOption"
+                      >{{dep.addOption}}</option>
+                    </select>
+                    <textarea
+                      class="mb-3 form-control form-control-alternative"
+                      rows="3"
+                      placeholder="ประสบการณ์การทำงาน"
+                      v-model="story"
+                    ></textarea>
                   </div>
                   <div class="text-center">
-                    <base-button type="primary" block  class="my-4" v-on:click="insertUser()">สมัครสมาชิก</base-button>
+                    <base-button
+                      type="primary"
+                      block
+                      class="my-4"
+                      v-on:click="insertUser()"
+                    >เพิ่มข้อมูล</base-button>
                   </div>
                 </form>
               </template>
             </card>
-            <div class="row mt-3">
-              <div class="col-6">
-                <a href="/" class="text-light">
-                  <small>หน้าหลัก</small>
-                </a>
-              </div>
-              <div class="col-6 text-right">
-                <router-link to="/Register" class="text-light">
-                  <small>สมัครสมาชิก</small>
-                </router-link>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -181,7 +186,7 @@ export default {
       name: "",
       sername: "",
       gen: "",
-      birthdate: "",
+      birthdate: Date.now(),
       weight: "",
       height: "",
       bloodtype: "",
@@ -190,8 +195,11 @@ export default {
       medical: "",
       disease: "",
       HN: "",
+      department: "",
+      story: "",
       Permistion: "Member",
-      type: "Member"
+      type: "Member",
+      departmentChecked: ""
     };
   },
   methods: {
@@ -212,8 +220,10 @@ export default {
         medical: this.medical,
         disease: this.disease,
         type: this.type,
+        story: this.story,
+        department: this.departmentChecked,
         HN: (this.HN = Date.now()),
-        Permistion: this.Permistion
+        Permistion: this.type
       };
       if (
         this.username == "" ||
@@ -257,6 +267,7 @@ export default {
         this.disease = "";
         this.HN = "";
         this.Permistion = "";
+        this.departmentChecked = "";
         this.$swal({
           position: "center",
           type: "success",
@@ -267,7 +278,16 @@ export default {
       }
     }
   },
-  components: { flatPicker }
+  components: { flatPicker },
+  created() {
+    const dbRefObject = firebase
+      .database()
+      .ref()
+      .child("Manageoption");
+    dbRefObject.on("value", snap => {
+      this.department = snap.val();
+    });
+  }
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

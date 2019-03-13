@@ -10,6 +10,9 @@
       </div>
     </section>
     <section v-if="modal" class="jumbotron bg-secondary mt--300">
+      <h2 class="mb-3" v-if="showType === 'Member'">ข้อมูลผู้ป่วย</h2>
+      <h2 class="mb-3" v-if="showType === 'Doctor'">ข้อมูลหมอ</h2>
+      <h2 class="mb-3" v-if="showType === 'Pharmacist'">ข้อมูลเภสัชกร</h2>
       <div class="row justify-content-end">
         <div class="col-xl-6 col-lg-6 col-md-8 col-sm-10">
           <base-input
@@ -54,7 +57,7 @@
             <td>{{user.sername}}</td>
             <td>{{user.idpeople}}</td>
             <td>{{user.gen}}</td>
-            <td>{{user.day}}</td>
+            <td>{{user.birthdate}}</td>
             <td>{{user.weight}}</td>
             <td>{{user.height}}</td>
             <td>{{user.bloodtype}}</td>
@@ -187,7 +190,7 @@
               class="mb-3 mr-4 float-left"
               v-model="editData.type"
             >เภสัชกร</base-radio>
-            <base-radio name="Member" class="mb-3 mr-4 float-left" v-model="editData.type">ผู้ใช้</base-radio>
+            <base-radio name="Member" class="mb-3 mr-4 float-left" v-model="editData.type">ผู้ป่วย</base-radio>
           </div>
           <div class="text-center">
             <base-button
@@ -285,7 +288,7 @@ export default {
     },
     deleteUser(key) {
       this.$swal({
-        title: "คุณต้องการที่จะลบข้อมูลผู้ป่วยคนนี้ใช่หรือไม่?",
+        title: "คุณต้องการที่จะลบข้อมูลนี้ใช่หรือไม่?",
         text: "You won't be able to revert this!",
         type: "warning",
         showCancelButton: true,

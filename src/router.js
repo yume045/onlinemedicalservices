@@ -17,6 +17,9 @@ import MedicNews from "./main/MedicNews.vue";
 import DiseaseNews from "./main/DiseaseNews.vue";
 import ManageOption from "./main/ManageOption.vue";
 import Manage from "./main/Manage.vue";
+import Redirect from "./main/Redirect.vue";
+import Insert from "./main/Insert.vue";
+import InsertMedic from "./main/InsertMedic.vue";
 
 Vue.use(Router);
 
@@ -128,6 +131,34 @@ export default new Router({
       components: {
         header: AppHeader,
         default: Manage,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/Redirect/:path/:type",
+      name: "Redirect",
+      components: {
+        header: null,
+        default: Redirect,
+        footer: null
+      }
+    },
+    {
+      path: "/Insert/:type",
+      name: "Insert",
+      components: {
+        header: AppHeader,
+        default: Insert,
+        footer: AppFooter
+      }
+    },
+    ,
+    {
+      path: "/InsertMedic",
+      name: "InsertMedic",
+      components: {
+        header: AppHeader,
+        default: InsertMedic,
         footer: AppFooter
       }
     }

@@ -10,6 +10,7 @@
       </div>
     </section>
     <section class="jumbotron bg-secondary container mt--300">
+      <h1 class="mb-3">ข่าวประชาสัมพันธ์</h1>
       <div class="row mb-5 justify-content-end">
         <div class="col-xl-8 col-lg-8 col-md-10 col-sm-12">
           <base-input

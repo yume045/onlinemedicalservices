@@ -10,6 +10,7 @@
       </div>
     </section>
     <section class="jumbotron bg-secondary container mt--300">
+      <h1 class="mb-3">ยา</h1>
       <div class="row justify-content-end">
         <div class="col-xl-8 col-lg-8 col-md-10 col-sm-12">
           <base-input
@@ -34,25 +35,25 @@
         <div
           class="col-xl-4 col-lg-4 col-md-6 col-sm-12"
           :key="key"
-          v-for="(subaddmedic, key) in showData"
+          v-for="(value, key) in store"
           v-if="showData.length > 0"
         >
           <div class="card mb-3 card-lift--hover shadow border-1">
             <img
-              :src="subaddmedic.addpicturemedic"
+              :src="value.img"
               style="height: 15rem;margin-left:0%;"
               class="card-img"
             >
             <div class="card-body">
-              <h5 class="card-title">{{subaddmedic.addmedic.slice()}}</h5>
-              <p class="card-text" v-html="subaddmedic.addmedic2.slice(0,150)"></p>
+              <h5 class="card-title">{{value.title.slice()}}</h5>
+              <p class="card-text" v-html="value.content.slice(0,150)"></p>
               <p class="card-text">
                 <small class="text-muted">
                   <base-button
                     outline
                     type="default"
                     size="sm"
-                    v-on:click="select(subaddmedic.addmedic)"
+                    v-on:click="select(value.title)"
                   >อ่านเพิ่มเติม</base-button>
                 </small>
               </p>
@@ -71,21 +72,14 @@ import { mapGetters, mapActions } from "vuex";
 var database = firebase.database();
 var medicenadminRef = database.ref("/Medicenadmin");
 var medicenadminRef1 = database.ref("/Poppularmedicen");
-var medicenadminRef2 = database.ref("/Poppularmedicen");
 export default {
   name: "Medicine",
   data() {
     return {
-      subadds: [],
-      subaddmedics: "",
-      addpicture: "",
-      addmedic: "",
-      addmedic2: "",
-      addpicturemedic: "",
+      store : [],
       showData: [],
       search: "",
-      show: "",
-      show1: ""
+      show: ""
     };
   },
   methods: {
@@ -98,7 +92,7 @@ export default {
     },
     filter(Search) {
       if (Search.length > 0) {
-        this.showData = this.subadds.filter(val => {
+        this.showData = this.store.filter(val => {
           if (
             val.addmedic.toString().indexOf(Search) >= 0 ||
             val.addmedic2.toString().indexOf(Search) >= 0
@@ -107,7 +101,7 @@ export default {
           }
         });
       } else {
-        this.showData = this.subadds;
+        this.showData = this.store;
       }
     },
     insertUser() {
@@ -146,8 +140,9 @@ export default {
         item.key = ss.key;
         data.push(item);
       });
-      this.subadds = data;
-      this.showData = data;
+      this.store = snap.val();
+      this.showData = snap.val();
+      console.log(snap.val())
     });
     medicenadminRef1
       .orderByChild("count")
@@ -156,10 +151,6 @@ export default {
         this.show = snap.val();
         console.log(this.show);
       });
-    medicenadminRef2.on("value", snap => {
-      this.show1 = snap.val();
-      console.log(this.show1);
-    });
   },
   computed: {
     ...mapGetters({

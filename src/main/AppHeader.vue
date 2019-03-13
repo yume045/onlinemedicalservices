@@ -76,24 +76,22 @@
           </router-link>
         </li>
         <base-dropdown tag="li" class="nav-item" v-if="Checklogin && permission === 'Admin'">
-          <router-link slot="title" to="/#" class="nav-link" data-toggle="dropdown" role="button">
+          <router-link slot="title" to="#" class="nav-link" data-toggle="dropdown" role="button">
             <i class="ni ni-collection "></i>
             <span class="nav-link-inner--text">จัดการข้อมูลผู้ใช้</span>
           </router-link>
-          <router-link to="/Manage/Member" class="dropdown-item">ข้อมูลผู้ป่วย</router-link>
-          <router-link to="/Manage/Doctor" class="dropdown-item">ข้อมูลแพทย์</router-link>
-          <router-link to="/Manage/Pharmacist" class="dropdown-item">ข้อมูลเภสัชกร</router-link>
+          <router-link to="/Redirect/Manage/Member" class="dropdown-item">ข้อมูลผู้ป่วย</router-link>
+          <router-link to="/Redirect/Manage/Doctor" class="dropdown-item">ข้อมูลแพทย์</router-link>
+          <router-link to="/Redirect/Manage/Pharmacist" class="dropdown-item">ข้อมูลเภสัชกร</router-link>
         </base-dropdown>
         <base-dropdown tag="li" class="nav-item" v-if="Checklogin && permission === 'Admin'">
           <router-link slot="title" to="#" class="nav-link" data-toggle="dropdown" role="button">
             <i class="ni ni-fat-add "></i>
             <span class="nav-link-inner--text">เพิ่มข้อมูล</span>
           </router-link>
-          <router-link to="/RegisterAdmin" class="dropdown-item">เพิ่มข้อมูลผู้ป่วย</router-link>
-          <router-link to="/ManageDoctor" class="dropdown-item">เพิ่มข้อมูลแพทย์</router-link>
-          <router-link to="/ManagePharmacist" class="dropdown-item">เพิ่มข้อมูลเภสัชกร</router-link>
+          <router-link to="/Redirect/Insert/Member" class="dropdown-item">เพิ่มข้อมูลผู้ใช้</router-link>
           <router-link to="/Homeadmin" class="dropdown-item">เพิ่มข่าวประชาสัมพันธ์</router-link>
-          <router-link to="/Medicenadmin" class="dropdown-item">เพิ่มข้อมูลยา</router-link>
+          <router-link to="/InsertMedic" class="dropdown-item">เพิ่มข้อมูลยา</router-link>
           <router-link to="/Diseaseadmin" class="dropdown-item">เพิ่มข้อมูลโรค</router-link>
         </base-dropdown>
       </ul>
@@ -108,16 +106,6 @@
             <span class="nav-link-inner--text">เข้าสู่ระบบ</span>
           </router-link>
         </li>
-        <!-- <li class="nav-item d-none d-lg-block ml-lg-4">
-          <router-link
-            to="/Register"
-            rel="noopener"
-            class="btn btn-neutral btn-icon"
-          >
-            <i class="ni ni-circle-08"></i>
-            <span class="nav-link-inner--text">สมัครสมาชิก</span>
-          </router-link>
-        </li> -->
         <base-dropdown tag="li" class="nav-item" v-if="Checklogin">
           <router-link slot="title" to="/" class="nav-link" data-toggle="dropdown" role="button">
             <i class="ni ni-circle-08"></i>
