@@ -17,54 +17,60 @@
               <div class="col-lg-3 order-lg-2">
                 <div class="card-profile-image">
                   <a href="#">
-                    <img v-lazy="'img/theme/team-4-800x800.jpg'" class="rounded-circle">
+                    <img
+                      src="./assets/user.png"
+                      class="rounded-circle"
+                    >
                   </a>
                 </div>
               </div>
               <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
                 <div class="card-profile-actions py-4 mt-lg-0">
-                  <base-button type="info" size="sm" class="mr-4">Follow</base-button>
-                  <base-button type="default" size="sm" class="float-right">Message</base-button>
+                  <base-button type="info" size="sm" class="mr-4">Message</base-button>
+                  <base-button type="default" size="sm" class="float-right">Follow</base-button>
                 </div>
               </div>
               <div class="col-lg-4 order-lg-1">
                 <div class="card-profile-stats d-flex justify-content-center">
                   <div>
-                    <span class="heading">22</span>
-                    <span class="description">Friends</span>
+                    <span class="heading">{{users.height}}</span>
+                    <span class="description">CM.</span>
                   </div>
                   <div>
-                    <span class="heading">10</span>
-                    <span class="description">Photos</span>
+                    <span class="heading">{{users.weight}}</span>
+                    <span class="description">Kg.</span>
                   </div>
                   <div>
-                    <span class="heading">89</span>
-                    <span class="description">Comments</span>
+                    <span class="heading">{{users.bloodtype}}</span>
+                    <span class="description">Group Blood</span>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="text-center mt-5" >
+            <div class="text-center mt-5">
+              {{users}}
               <h3>
-                {{this.users}}
-                <span class="font-weight-light">, {{this.user.day}}</span>
+                <span class="font-weight-light"> {{users.name + ' ' + users.surname}}, {{new Date().getFullYear() - users.birthdate.substr(0,4)}}</span>
               </h3>
               <div class="h6 font-weight-300">
-                <i class="ni location_pin mr-2"></i>Bucharest, Romania
+                <i class="ni location_pin mr-2"></i> {{users.type}} , {{users.gen.toUpperCase()}}
+              </div>
+              <div class="h6">
+                แผนก : {{users.department}}
+              </div>
+              <div class="h6 mt-2">
+                <i class="ni business_briefcase-24 mr-2"></i>
               </div>
               <div class="h6 mt-4">
-                <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
+                <i class="ni business_briefcase-24 mr-2"></i>Phone : {{users.numberphone}}
               </div>
               <div>
-                <i class="ni education_hat mr-2"></i>University of Computer Science
+                <i class="ni education_hat mr-2"></i>Address : {{users.address}}
               </div>
             </div>
             <div class="mt-5 py-5 border-top text-center">
               <div class="row justify-content-center">
-                <div class="col-lg-9">
-                  <p>An artist of considerable range, Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and records all of his own music, giving it a warm, intimate feel with a solid groove structure. An artist of considerable range.</p>
-                  <a href="#">Show more</a>
-                </div>
+                
               </div>
             </div>
           </div>
@@ -77,42 +83,27 @@
 import firebase from "firebase";
 import { mapGetters } from "vuex";
 var database = firebase.database();
-var editprofile = database.ref("/User");
+var editprofile = database.ref("/Users");
 export default {
   name: "Editprofile",
   data() {
     return {
-      user: {},
-      updateAddress: "",
-      updateKey1: ""
+      userKey: this.$route.params.key,
+      users: {}
     };
   },
-  computed: {
-    ...mapGetters({
-      users: "user/profile",
-    })
-  },
   methods: {
-    Setupdate(key, address) {
-      console.log(key);
-      console.log(address);
-      this.updateKey1 = key;
-      this.updateAddress = address;
-    },
-    Update(key, address) {
-      console.log(address);
-      editprofile
-        .child(this.users)
-        .child(key)
-        .update({
-          address: address
-        });
-      this.updateKey1 = "";
-      this.updateAddress = "";
-      console.log(this.updateKey1);
-    }
+    
+  },
+  mounted () {
+    editprofile
+      .orderByKey()
+      .equalTo(this.userKey)
+      .once("child_added", snap => {
+        this.users = snap.val();
+      });
   }
-}
+};
 </script>
 <style>
 </style>

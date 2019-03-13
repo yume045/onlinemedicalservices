@@ -7,7 +7,6 @@ import Landing from "./views/Landing.vue";
 import Login from "./main/Login.vue";
 import Register from "./main/Register.vue";
 import Profile from "./views/Profile.vue";
-import Homeadmin from "./main/Homeadmin.vue";
 import EditProfile from "./main/EditProfile.vue";
 import ListNews from "./main/ListNews.vue";
 import News from "./main/News.vue";
@@ -50,7 +49,7 @@ export default new Router({
       }
     },
     {
-      path: "/EditProfile",
+      path: "/EditProfile/:key",
       name: "EditProfile",
       components: {
         header: AppHeader,
@@ -73,15 +72,6 @@ export default new Router({
       components: {
         header: AppHeader,
         default: Register,
-        footer: AppFooter
-      }
-    },
-    {
-      path: "/Homeadmin",
-      name: "Homeadmin",
-      components: {
-        header: AppHeader,
-        default: Homeadmin,
         footer: AppFooter
       }
     },

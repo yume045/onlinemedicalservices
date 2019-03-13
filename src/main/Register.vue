@@ -61,7 +61,7 @@
                     class="mb-3 col-6 float-left"
                     type="text"
                     placeholder="นามสกุล"
-                    v-model="sername"
+                    v-model="surname"
                   ></base-input>
                   <div class="col-6 float-left">
                     <base-radio name="male" class="mb-3 mr-4 float-left" v-model="gen">ชาย</base-radio>
@@ -166,7 +166,7 @@
 
 import firebase from "firebase";
 var database = firebase.database();
-var UserRef = database.ref("/User");
+var UserRef = database.ref("/Users");
 import flatPicker from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 
@@ -179,7 +179,7 @@ export default {
       password: "",
       idpeople: "",
       name: "",
-      sername: "",
+      surname: "",
       gen: "",
       birthdate: "",
       weight: "",
@@ -201,7 +201,7 @@ export default {
         password: this.password,
         idpeople: this.idpeople,
         name: this.name,
-        sername: this.sername,
+        surname: this.surname,
         gen: this.gen,
         birthdate: this.birthdate,
         weight: this.weight,
@@ -220,7 +220,7 @@ export default {
         this.password == "" ||
         this.idpeople == "" ||
         this.name == "" ||
-        this.sername == "" ||
+        this.surname == "" ||
         this.gen == "" ||
         this.birthdate == "" ||
         this.weight == "" ||
@@ -245,7 +245,7 @@ export default {
         this.password = "";
         this.idpeople = "";
         this.name = "";
-        this.sername = "";
+        this.surname = "";
         this.gen = "";
         this.birthdate = "";
         this.weight = "";

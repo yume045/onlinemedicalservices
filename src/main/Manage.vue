@@ -54,7 +54,7 @@
           <tr :key="key" v-for="(user, key) in (showData.length>0)?showData:users">
             <td>{{user.HN}}</td>
             <td>{{user.name}}</td>
-            <td>{{user.sername}}</td>
+            <td>{{user.surname}}</td>
             <td>{{user.idpeople}}</td>
             <td>{{user.gen}}</td>
             <td>{{user.birthdate}}</td>
@@ -121,7 +121,7 @@
             class="mb-3 col-6 float-left"
             type="text"
             placeholder="นามสกุล"
-            v-model="editData.sername"
+            v-model="editData.surname"
           ></base-input>
           <div class="col-6 float-left">
             <base-radio name="male" class="mb-3 mr-4 float-left" v-model="editData.gen">ชาย</base-radio>
@@ -270,7 +270,7 @@ export default {
         this.showData = this.users.filter(user => {
           if (
             user.name.toString().indexOf(Search) >= 0 ||
-            user.sername.toString().indexOf(Search) >= 0 ||
+            user.surname.toString().indexOf(Search) >= 0 ||
             user.gen.toString().indexOf(Search) >= 0 ||
             user.idpeople.toString().indexOf(Search) >= 0 ||
             user.bloodtype.toString().indexOf(Search) >= 0 ||

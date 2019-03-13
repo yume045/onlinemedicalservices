@@ -79,34 +79,38 @@ export default {
   methods: {
     ...mapActions({
       signIn: "user/signIn",
-      setProfile: "user/setProfile"
+      setKey: "user/setKey",
+      save: "user/save"
     }),
     async loginWeb(e) {
       const dbRefObject = await firebase
         .database()
         .ref()
-        .child("User");
-      dbRefObject.once("child_added", snap => {
+        .child("Users");
+      dbRefObject.once("child_added", (snap) => {
         const val = snap.val();
         if (val !== null) {
           if (
             val.username === this.username &&
             val.password === this.password
           ) {
+            console.log(val)
             const userSet = val.username;
+            const userKey = snap.key
             const status = val.Permistion;
             this.signIn({ userSet, status });
-            this.setProfile(val);
+            this.setKey({ userKey });
+            this.save();
             if (val.Permistion === "Admin") {
-              this.$router.push("/Homeadmin");
+              this.$router.push("/");
               alert("welcome back Administrator");
             }
             if (val.Permistion === "Doctor") {
-              this.$router.push("/Question");
+              this.$router.push("/");
               alert("welcome back Doctor");
             }
             if (val.Permistion === "Member") {
-              this.$router.push("/Question");
+              this.$router.push("/");
               alert("welcome to Online-medical-service");
             }
           } else alert("Username Or Password incorrect");
@@ -128,16 +132,6 @@ export default {
     user() {
       return this.$store.getters.user;
     }
-  },
-  mounted() {
-    const dbRefObject = firebase
-      .database()
-      .ref()
-      .child("User");
-    dbRefObject.on("value", snap => {
-      this.users = snap.val();
-      console.log(this.user);
-    });
   }
 };
 </script>

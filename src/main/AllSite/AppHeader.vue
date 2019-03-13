@@ -109,7 +109,7 @@
             <i class="ni ni-circle-08"></i>
             <span class="nav-link-inner--text">{{this.users}}</span>
           </router-link>
-          <router-link to="/Editprofile" class="dropdown-item">ข้อมูลผู้ใช้</router-link>
+          <router-link :to="'/Editprofile/' + this.profile.userKey"  class="dropdown-item">ข้อมูลผู้ใช้</router-link>
           <button to="/" class="dropdown-item" v-if="Checklogin" v-on:click="logoutWeb" >ออกจากระบบ</button>
         </base-dropdown>
       </ul>
@@ -145,7 +145,8 @@ export default {
     ...mapGetters({
       users: "user/user",
       Checklogin: "user/isLoggedIn",
-      permission: "user/status"
+      permission: "user/status",
+      profile: "user/profile"
     })
   },
   methods: {
@@ -163,7 +164,6 @@ export default {
   created() {
     this.load()
   }
-
 }
 </script>
 <style>

@@ -31,15 +31,14 @@ const mutations = {
   setUser: (state, payload) => {
     state.user = payload.userSet
     state.status = payload.status
-    console.log(payload.status)
   },
   selectNews: (state, payload) => {
     state.selectNews = payload
-    console.log(state.selectNews)
   },
-  LOAD (state, {user, status}) {
+  LOAD(state, { user, status, profile }) {
     state.user = user
-    state.status = status
+    state.status = status,
+    state.profile = profile
   },
   logout: (state) => {
     state.user = null
@@ -50,33 +49,38 @@ const mutations = {
 }
 
 const actions = {
-  signIn: ({commit, dispatch}, payload) => {
+  signIn: ({ commit, dispatch }, payload) => {
     commit('setUser', payload)
     dispatch('save')
   },
-  logout: ({commit, dispatch}, payload) => {
+  setKey: ({ commit, dispatch }, payload) => {
+    commit('setProfile', payload)
+    dispatch('save')
+  },
+  logout: ({ commit, dispatch }, payload) => {
     commit('setUser', payload)
     dispatch('save')
   },
-  selectNews: ({commit}, payload) => {
+  selectNews: ({ commit }, payload) => {
     commit('selectNews', payload)
   },
-  save ({state}) {
+  save({ state }) {
     localStorage.setItem('user', JSON.stringify(state.user))
     localStorage.setItem('status', JSON.stringify(state.status))
+    localStorage.setItem('profile', JSON.stringify(state.profile))
+    console.log(state.profile)
   },
-  load ({commit}) {
+  load({ commit }) {
     let Getuser = localStorage.getItem('user')
     let GetStatus = localStorage.getItem('status')
+    let GetProfile = localStorage.getItem('profile')
     if (Getuser !== 'null') {
       let user = JSON.parse(Getuser)
       let status = JSON.parse(GetStatus)
-      commit('LOAD', {user, status})
+      let profile = JSON.parse(GetProfile)
+      commit('LOAD', { user, status, profile })
     }
   },
-  setProfile ({commit, dispatch}, payload) {
-    commit('setProfile', payload)
-  }
 }
 
 export default {
