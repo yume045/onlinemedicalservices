@@ -15,6 +15,7 @@ import Manage from "./main/Manage.vue";
 import Redirect from "./main/Redirect.vue";
 import Insert from "./main/Insert.vue";
 import InsertNews from "./main/InsertNews.vue";
+import Question from "./main/Question.vue";
 
 Vue.use(Router);
 
@@ -120,13 +121,21 @@ export default new Router({
         footer: AppFooter
       }
     },
-    ,
     {
       path: "/InsertNews",
       name: "InsertNews",
       components: {
         header: AppHeader,
         default: InsertNews,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/Question",
+      name: "Question",
+      components: {
+        header: AppHeader,
+        default: Question,
         footer: AppFooter
       }
     }
