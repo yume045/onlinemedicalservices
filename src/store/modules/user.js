@@ -13,6 +13,9 @@ const getters = {
   user: state => {
     return state.user
   },
+  getuser: state => {
+    return state.getuser
+  },
   isLoggedIn: state => {
     return state.user !== null
   },
@@ -31,6 +34,7 @@ const mutations = {
   setUser: (state, payload) => {
     state.user = payload.userSet
     state.status = payload.status
+    state.getuser = payload.val
   },
   selectNews: (state, payload) => {
     state.selectNews = payload
@@ -45,6 +49,9 @@ const mutations = {
   },
   setProfile: (state, payload) => {
     state.profile = payload
+  },
+  setGetUser: (state, payload) => {
+    state.getuser = payload
   }
 }
 
@@ -68,7 +75,6 @@ const actions = {
     localStorage.setItem('user', JSON.stringify(state.user))
     localStorage.setItem('status', JSON.stringify(state.status))
     localStorage.setItem('profile', JSON.stringify(state.profile))
-    console.log(state.profile)
   },
   load({ commit }) {
     let Getuser = localStorage.getItem('user')
