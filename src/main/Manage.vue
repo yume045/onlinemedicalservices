@@ -211,7 +211,7 @@
 import firebase from "firebase";
 import flatPicker from "vue-flatpickr-component";
 var database = firebase.database();
-var manageuser = database.ref("/User");
+var manageuser = database.ref("/Users");
 export default {
   name: "Manage",
   data() {
@@ -253,7 +253,7 @@ export default {
     const dbRefObject = firebase
       .database()
       .ref()
-      .child("User");
+      .child("Users");
     dbRefObject.on("child_added", snap => {
       var data = snap.val();
       if (data.type === this.showType) {
@@ -265,7 +265,6 @@ export default {
   },
   methods: {
     filter(Search) {
-      console.log(Search);
       if (Search.length > 0) {
         this.showData = this.users.filter(user => {
           if (

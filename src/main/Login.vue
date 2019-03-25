@@ -101,15 +101,15 @@ export default {
             this.setKey({ userKey });
             this.save();
             if (val.Permistion === "Admin") {
-              this.$router.push("/");
+              this.$router.push("/Home");
               alert("welcome back Administrator");
             }
             if (val.Permistion === "Doctor") {
-              this.$router.push("/");
+              this.$router.push("/Home");
               alert("welcome back Doctor");
             }
             if (val.Permistion === "Member") {
-              this.$router.push("/");
+              this.$router.push("/Home");
               alert("welcome to Online-medical-service");
             }
           }

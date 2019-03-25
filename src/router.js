@@ -16,6 +16,7 @@ import Redirect from "./main/Redirect.vue";
 import Insert from "./main/Insert.vue";
 import InsertNews from "./main/InsertNews.vue";
 import Question from "./main/Question.vue";
+import Chat from "./main/Chat.vue";
 
 Vue.use(Router);
 
@@ -24,6 +25,15 @@ export default new Router({
   routes: [
     {
       path: "/",
+      name: "Home",
+      components: {
+        header: AppHeader,
+        default: ListNews,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/Home",
       name: "News",
       components: {
         header: AppHeader,
@@ -136,6 +146,15 @@ export default new Router({
       components: {
         header: AppHeader,
         default: Question,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/Chat",
+      name: "Chat",
+      components: {
+        header: AppHeader,
+        default: Chat,
         footer: AppFooter
       }
     }

@@ -1,13 +1,13 @@
 <template>
   <header class="header-global">
     <base-nav class="navbar-main" transparent type effect="light" expand>
-      <router-link slot="brand" class="navbar-brand mr-lg-5" to="/">
+      <router-link slot="brand" class="navbar-brand mr-lg-5" to="/Redirect/Home/go">
         Online-Medical-Servicer
       </router-link>
 
       <div class="row" slot="content-header" slot-scope="{closeMenu}">
         <div class="col-6 collapse-brand">
-          <router-link to="/">
+          <router-link to="/Redirect/Home/go">
             Online-Medical-Servicer
           </router-link>
         </div>
@@ -20,7 +20,7 @@
         <li class="nav-item" v-if="Checklogin && permission !== 'Admin'">
           <router-link
             class="nav-link nav-link-icon"
-            to="/"
+            to="/Redirect/Home/go"
             rel="noopener"
           >
             <span class="nav-link-inner--text ">หน้าหลัก</span>
@@ -29,20 +29,10 @@
         <li class="nav-item" v-if="!Checklogin">
           <router-link
             class="nav-link nav-link-icon"
-            to="/"
+            to="/Redirect/Home/go"
             rel="noopener"
           >
             <span class="nav-link-inner--text ">หน้าหลัก</span>
-          </router-link>
-        </li>
-        <li class="nav-item" v-if="Checklogin && permission === 'Member'">
-          <router-link
-            class="nav-link nav-link-icon"
-            to="/Question"
-            rel="noopener"
-            data-toggle="tooltip"
-          >
-            <span class="nav-link-inner--text ">ปรึกษาแพทย์</span>
           </router-link>
         </li>
         <li class="nav-item">
@@ -63,6 +53,16 @@
             data-toggle="tooltip"
           >
             <span class="nav-link-inner--text ">โรค</span>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link
+            class="nav-link nav-link-icon"
+            to="/Question"
+            rel="noopener"
+            data-toggle="tooltip"
+          >
+            <span class="nav-link-inner--text ">ปรึกษาแพทย์</span>
           </router-link>
         </li>
         <li class="nav-item" v-if="Checklogin && permission === 'Admin'" >
@@ -105,12 +105,12 @@
           </router-link>
         </li>
         <base-dropdown tag="li" class="nav-item" v-if="Checklogin">
-          <router-link slot="title" to="/" class="nav-link" data-toggle="dropdown" role="button">
+          <router-link slot="title" :to="'/Editprofile/' + this.profile.userKey" class="nav-link" data-toggle="dropdown" role="button">
             <i class="ni ni-circle-08"></i>
             <span class="nav-link-inner--text">{{this.users}}</span>
           </router-link>
           <router-link :to="'/Editprofile/' + this.profile.userKey"  class="dropdown-item">ข้อมูลผู้ใช้</router-link>
-          <button to="/" class="dropdown-item" v-if="Checklogin" v-on:click="logoutWeb" >ออกจากระบบ</button>
+          <button href="" class="dropdown-item" v-if="Checklogin" v-on:click="logoutWeb" >ออกจากระบบ</button>
         </base-dropdown>
       </ul>
     </base-nav>

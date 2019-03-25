@@ -127,7 +127,7 @@
               </div>
               <div class="col-9">
                 <textarea
-                  class="form-control form-control mb-3"
+                  class="form-control form-control mb-1"
                   rows="3"
                   placeholder="ตอบกลับ"
                   v-model="data.message"

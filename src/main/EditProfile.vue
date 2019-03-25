@@ -71,7 +71,7 @@
               </div>
             </div>
             <div class="mt-3 py-3 border-top text-center">
-              <div class="row justify-content-center">
+              <div v-if="users.type !== 'Member'" class="row justify-content-center">
                 ประสบการณ์การทำงาน : {{users.story}}
               </div>
             </div>
