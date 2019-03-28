@@ -12,15 +12,27 @@
         <span></span>
       </div>
       <div class="container jumbotron justify-content-center">
-        <div class="row border" style="height:600px">
-          <div class="col-3 border-right">นัด</div>
+        <div class="row border mb-5 " style="height:600px">
+          <div class="col-3 border-right">
+            <div class="row border-bottom" style="height:50px">
+              <div class="col-12">
+                <h4 class="mt-2">Chat Message</h4>
+              </div>
+            </div>
+          </div>
           <div class="col-9">
             <div class="row border-bottom" style="height:50px">
               <div class="col-9">
                 <h4 class="mt-2 border-right">Dr. Online Medical</h4>
               </div>
               <div class="col-3">
-                <base-button block class="mt-1" type="default" outline icon="ni ni-camera-compact">Call</base-button>
+                <base-button
+                  block
+                  class="mt-1"
+                  type="default"
+                  outline
+                  icon="ni ni-camera-compact"
+                >Call</base-button>
               </div>
             </div>
             <div class="row border-bottom" style="height:480px"></div>
@@ -76,18 +88,18 @@ export default {
 </script>
 <style>
 .border {
-  border: 0.0625rem solid black !important;
+  border: 0.1rem solid black !important;
 }
 .border-right {
-  border-right: 0.0625rem solid black !important;
+  border-right: 0.1rem solid black !important;
 }
 .border-left {
-  border-left: 0.0625rem solid black !important;
+  border-left: 0.1rem solid black !important;
 }
 .border-top {
-  border-top: 0.0625rem solid black !important;
+  border-top: 0.1rem solid black !important;
 }
 .border-bottom {
-  border-bottom: 0.0625rem solid black !important;
+  border-bottom: 0.1rem solid black !important;
 }
 </style>

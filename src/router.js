@@ -17,6 +17,7 @@ import Insert from "./main/Insert.vue";
 import InsertNews from "./main/InsertNews.vue";
 import Question from "./main/Question.vue";
 import Chat from "./main/Chat.vue";
+import Queue from "./main/Queue.vue";
 
 Vue.use(Router);
 
@@ -155,6 +156,15 @@ export default new Router({
       components: {
         header: AppHeader,
         default: Chat,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/Queue",
+      name: "Queue",
+      components: {
+        header: AppHeader,
+        default: Queue,
         footer: AppFooter
       }
     }
