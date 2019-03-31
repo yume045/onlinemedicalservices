@@ -110,8 +110,19 @@
             :to="'/Editprofile/' + this.profile.userKey"
             class="dropdown-item"
           >ข้อมูลผู้ใช้</router-link>
-          <router-link :to="'/Queue'" class="dropdown-item">
+          <router-link 
+          :to="'/Queue'" 
+          class="dropdown-item"
+          v-if="getUser.type === 'Doctor'"
+          >
             <span class="nav-link-inner--text">จัดการคิว</span>
+          </router-link>
+          <router-link 
+          :to="'/BookQueue'" 
+          class="dropdown-item"
+          v-if="getUser.type === 'Member'"
+          >
+            <span class="nav-link-inner--text">จองคิวหมอ</span>
           </router-link>
           <button href class="dropdown-item" v-if="Checklogin" v-on:click="logoutWeb">ออกจากระบบ</button>
         </base-dropdown>
@@ -149,7 +160,8 @@ export default {
       users: "user/user",
       Checklogin: "user/isLoggedIn",
       permission: "user/status",
-      profile: "user/profile"
+      profile: "user/profile",
+      getUser: "user/getuser"
     })
   },
   methods: {

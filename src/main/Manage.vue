@@ -51,6 +51,7 @@
             <td>โรคประจำตัว</td>
             <td>จัดการข้อมูล</td>
           </tr>
+          <tbody>
           <tr :key="key" v-for="(user, key) in (showData.length>0)?showData:users">
             <td>{{user.HN}}</td>
             <td>{{user.name}}</td>
@@ -75,6 +76,7 @@
               <base-button type="danger" size="sm" @click="deleteUser(user.key)">Delete</base-button>
             </td>
           </tr>
+          </tbody>
         </table>
       </div>
     </section>

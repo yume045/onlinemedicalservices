@@ -169,7 +169,7 @@ export default {
       message: "",
       search: "",
       showData: [],
-      file: "Upload ไฟล์ที่เกี่ยวข้อง",
+      file: "",
       countQuestion: {
         all: 0,
         answer: 0
@@ -180,7 +180,7 @@ export default {
     ...mapGetters({
       users: "user/user",
       Checklogin: "user/isLoggedIn",
-      permission: "user/Per",
+      profile: "user/profile",
       getUser: "user/getuser"
     })
   },
@@ -203,13 +203,13 @@ export default {
       // return uploadTask
     },
     async sendQuestion() {
-      await this.createImage();
+      if(this.file != "") await this.createImage();
       questionRef.push(this.data);
       this.data = {
         message: "",
         img: "",
         status: 0,
-        users: JSON.parse(localStorage.getItem("profile")).userKey
+        users: this.profile.userKey
       };
     },
     sendAnswer(key) {
@@ -218,7 +218,7 @@ export default {
         message: "",
         img: "",
         status: 0,
-        users: JSON.parse(localStorage.getItem("profile")).userKey
+        users: this.profile.userKey
       };
     },
     filter() {

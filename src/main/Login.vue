@@ -41,7 +41,7 @@
                   v-model="password"
                 ></base-input>
                 <div class="text-center">
-                  <base-button type="primary" class="my-4" v-on:click="loginWeb()">Login</base-button>
+                  <base-button type="primary" class="my-4" @click="loginWeb()">Login</base-button>
                 </div>
               </form>
             </template>

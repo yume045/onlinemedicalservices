@@ -42,8 +42,8 @@
         </div>
       </div>
       <div class="row justify-content-center mt-3">
-        <div class="col-10 card">
-          <table width="100%" class="table">
+        <div class="col-10 card table-responsive">
+          <table width="100%" class="table table-hover">
             <thead class="thead-light">
             <tr>
               <th>ลำดับ</th>
@@ -53,6 +53,7 @@
               <th>ลบคิว</th>
             </tr>
             </thead>
+            <tbody>
             <tr v-for="(val, key, index) in showData" :key="key">
               <td>{{index + 1}}</td>
               <td>{{new Date(val.date).toDateString()}}</td>
@@ -63,6 +64,7 @@
                 </base-button>
               </td>
             </tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -83,7 +85,7 @@ export default {
       payload: {
         date: Date.now(),
         time: '08:00',
-        user: 'N/A'
+        user: 'N/A',
       },
       showData: {}
     };
@@ -100,10 +102,10 @@ export default {
     deleteQueue(key) {
       this.$swal({
         title: "คุณต้องการที่จะลบข้อมูลนี้ใช่หรือไม่?",
-        text: "You won't be able to revert this!",
+        text: "Delelte it ?",
         type: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
+        confirmButtonColor: "#5e72e4",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!"
       }).then(result => {
@@ -119,7 +121,7 @@ export default {
     ...mapGetters({
       users: "user/user",
       Checklogin: "user/isLoggedIn",
-      permission: "user/Per",
+      permission: "user/status",
       getUser: "user/getuser",
       profile: "user/profile"
     })

@@ -39,10 +39,11 @@ const mutations = {
   selectNews: (state, payload) => {
     state.selectNews = payload
   },
-  LOAD(state, { user, status, profile }) {
+  LOAD(state, { user, status, profile, get }) {
     state.user = user
     state.status = status,
     state.profile = profile
+    state.getuser = get
   },
   logout: (state) => {
     state.user = null
@@ -75,16 +76,19 @@ const actions = {
     localStorage.setItem('user', JSON.stringify(state.user))
     localStorage.setItem('status', JSON.stringify(state.status))
     localStorage.setItem('profile', JSON.stringify(state.profile))
+    localStorage.setItem('getUser', JSON.stringify(state.getuser))
   },
   load({ commit }) {
     let Getuser = localStorage.getItem('user')
     let GetStatus = localStorage.getItem('status')
     let GetProfile = localStorage.getItem('profile')
+    let getU = localStorage.getItem('getUser')
     if (Getuser !== 'null') {
       let user = JSON.parse(Getuser)
       let status = JSON.parse(GetStatus)
       let profile = JSON.parse(GetProfile)
-      commit('LOAD', { user, status, profile })
+      let get = JSON.parse(getU)
+      commit('LOAD', { user, status, profile, get})
     }
   },
 }

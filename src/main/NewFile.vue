@@ -10,6 +10,9 @@
       </div>
     </section>
     <section class="jumbotron bg-secondary container mt--300">
+      <div class="row">
+        <h3>....</h3>
+      </div>
     </section>
   </div>
 </template>
@@ -24,6 +27,13 @@ export default {
     return {
      
     };
+  },
+  computed: {
+    ...mapGetters({
+      Checklogin: "user/isLoggedIn",
+      profile: "user/profile",
+      getUser: "user/getuser"
+    })
   },
   methods: {
     
