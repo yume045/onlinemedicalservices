@@ -58,7 +58,7 @@
               <td>{{index + 1}}</td>
               <td>{{new Date(val.date).toDateString()}}</td>
               <td>{{val.time}}</td>
-              <td>{{val.user}}</td>
+              <td>{{usersData[val.user]}}</td>
               <td>
                 <base-button @click="deleteQueue(key)" type="danger" size="sm" icon="ni ni-fat-remove">
                 </base-button>
@@ -78,6 +78,7 @@ import flatPicker from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 var database = firebase.database();
 var queueRef = database.ref("/Queues");
+var userRef = database.ref("/Users");
 export default {
   name: "Queue",
   data() {
@@ -87,7 +88,8 @@ export default {
         time: '08:00',
         user: 'N/A',
       },
-      showData: {}
+      showData: {},
+      usersData: {}
     };
   },
   methods: {
@@ -129,6 +131,9 @@ export default {
   mounted() {
     queueRef.child(this.profile.userKey).orderByChild("time").on("value", snap => {
       this.showData = snap.val();
+    });
+    userRef.on("child_added", snap => {
+      this.usersData[snap.key] = snap.val().name + " " + snap.val().surname;
     });
   }
 };

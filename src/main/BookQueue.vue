@@ -14,8 +14,8 @@
         <h3>จองคิวหมอ</h3>
       </div>
       <div class="row justify-content-center mt-3">
-        <div class="col-10 card" v-for="(data, key) in showData" :key="key">
-          <caption>{{userByKey(key)}}</caption>
+        <div class="col-10 card" v-for="(data, hkey) in showData" :key="hkey">
+          <caption>{{usersData[hkey]}}</caption>
           <table width="100%" class="table table-hover">
             <thead class="thead-light">
               <tr>
@@ -27,35 +27,49 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(val, key, index) in data" :key="key">
+              <tr v-for="(val, key, index) in data" :key="key" :hostKey="key">
                 <td>{{index + 1}}</td>
                 <td>{{new Date(val.date).toDateString()}}</td>
                 <td>{{val.time}}</td>
-                <td>{{val.user}}</td>
+                <td>{{usersData[val.user]}}</td>
                 <td>
                   <base-button
-                    v-if="val.user !== 'N/A'"
+                    v-if="val.user === profile.userKey"
+                    type="success"
+                    size="sm"
+                    icon="ni ni-check-bold"
+                    @click="removeQueue(key, hkey)"
+                  ></base-button>
+                  <base-button
+                    v-else-if="val.user !== 'N/A'"
                     type="danger"
                     size="sm"
                     disabled
                     icon="ni ni-fat-remove"
                   ></base-button>
                   <base-button
-                    v-if="val.user === 'NA'"
-                    type="success"
-                    size="sm"
-                    icon="ni ni-check-bold"
-                  ></base-button>
-                  <base-button
                     v-else
-                    type=""
+                    type
                     size="sm"
                     icon="ni ni-fat-add"
+                    @click="addQueue(key, hkey)"
                   ></base-button>
                 </td>
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+      <div class="row">
+        <h6>หมายเหตุ : </h6>
+        <div class="col-12 mb-2">
+          <base-button type="success" size="sm" icon="ni ni-check-bold"></base-button> : จองคิวแล้ว
+        </div>
+        <div class="col-12 mb-2">
+          <base-button type="danger" size="sm" disabled icon="ni ni-fat-remove"></base-button> : คิวถูกจอง
+        </div>
+        <div class="col-12">
+          <base-button type size="sm" icon="ni ni-fat-add"></base-button> : คิวว่าง
         </div>
       </div>
     </section>
@@ -72,7 +86,8 @@ export default {
   data() {
     return {
       showData: {},
-      result: ""
+      result: "",
+      usersData: {}
     };
   },
   computed: {
@@ -83,18 +98,23 @@ export default {
     })
   },
   methods: {
-    userByKey(key) {
-      console.log(key)
-      userRef.child(key).once("value", snap => {
-        this.result = snap.val().name + ' ' + snap.val().surname
+    removeQueue: function (key , hkey) {
+      queueRef.child(hkey + "/" + key).update({
+        user: 'N/A'
       });
-      return this.result
+    },
+    addQueue: function(key, hkey) {
+      queueRef.child(hkey + "/" + key).update({
+        user: this.profile.userKey
+      });
     }
   },
   mounted() {
     queueRef.on("value", snap => {
       this.showData = snap.val();
-      console.log(this.showData);
+    });
+    userRef.on("child_added", snap => {
+      this.usersData[snap.key] = snap.val().name + " " + snap.val().surname;
     });
   }
 };
