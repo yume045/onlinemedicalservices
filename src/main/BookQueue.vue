@@ -15,7 +15,7 @@
       </div>
       <div class="row justify-content-center mt-3">
         <div class="col-10 card" v-for="(data, key) in showData" :key="key">
-          <caption>{{userByKey}}</caption>
+          <caption>{{userByKey(key)}}</caption>
           <table width="100%" class="table table-hover">
             <thead class="thead-light">
               <tr>
@@ -23,7 +23,7 @@
                 <th>วัน/เดือน/ปี ที่นัด</th>
                 <th>เวลา</th>
                 <th>ผู้ป่วย</th>
-                <th>ลบคิว</th>
+                <th>จองคิว</th>
               </tr>
             </thead>
             <tbody>
@@ -34,10 +34,23 @@
                 <td>{{val.user}}</td>
                 <td>
                   <base-button
-                    @click="deleteQueue(key)"
+                    v-if="val.user !== 'N/A'"
                     type="danger"
                     size="sm"
+                    disabled
                     icon="ni ni-fat-remove"
+                  ></base-button>
+                  <base-button
+                    v-if="val.user === 'NA'"
+                    type="success"
+                    size="sm"
+                    icon="ni ni-check-bold"
+                  ></base-button>
+                  <base-button
+                    v-else
+                    type=""
+                    size="sm"
+                    icon="ni ni-fat-add"
                   ></base-button>
                 </td>
               </tr>
@@ -53,11 +66,13 @@ import firebase from "firebase";
 import { mapGetters } from "vuex";
 var database = firebase.database();
 var queueRef = database.ref("/Queues");
+var userRef = database.ref("/Users");
 export default {
   name: "BookQueue",
   data() {
     return {
-      showData: {}
+      showData: {},
+      result: ""
     };
   },
   computed: {
@@ -65,12 +80,17 @@ export default {
       Checklogin: "user/isLoggedIn",
       profile: "user/profile",
       getUser: "user/getuser"
-    }),
-    userByKey: function() {
-      return "key"
+    })
+  },
+  methods: {
+    userByKey(key) {
+      console.log(key)
+      userRef.child(key).once("value", snap => {
+        this.result = snap.val().name + ' ' + snap.val().surname
+      });
+      return this.result
     }
   },
-  methods: {},
   mounted() {
     queueRef.on("value", snap => {
       this.showData = snap.val();
