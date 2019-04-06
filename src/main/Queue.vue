@@ -87,6 +87,8 @@ export default {
         date: Date.now(),
         time: '08:00',
         user: 'N/A',
+        status: "ว่าง",
+        rate: 0
       },
       showData: {},
       usersData: {}
@@ -98,7 +100,9 @@ export default {
       this.payload = {
         date: Date.now(),
         time: '08:00',
-        user: 'N/A'
+        user: 'N/A',
+        status: "ว่าง",
+        rate: 0
       }
     },
     deleteQueue(key) {

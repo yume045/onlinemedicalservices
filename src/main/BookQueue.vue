@@ -15,7 +15,7 @@
       </div>
       <div class="row justify-content-center mt-3">
         <div class="col-10 card" v-for="(data, hkey) in showData" :key="hkey">
-          <caption>{{usersData[hkey]}}</caption>
+          <caption><user-by-key :userKey="hkey"></user-by-key></caption>
           <table width="100%" class="table table-hover">
             <thead class="thead-light">
               <tr>
@@ -78,6 +78,7 @@
 <script>
 import firebase from "firebase";
 import { mapGetters } from "vuex";
+import UserByKey from "@/main/components/UserByKey";
 var database = firebase.database();
 var queueRef = database.ref("/Queues");
 var userRef = database.ref("/Users");
@@ -92,6 +93,9 @@ export default {
       usersData: {}
     };
   },
+  components: {
+    UserByKey
+  },
   computed: {
     ...mapGetters({
       Checklogin: "user/isLoggedIn",
@@ -104,20 +108,27 @@ export default {
       queueRef.child(hkey + "/" + key).update({
         user: "N/A"
       });
+      chatRef.child(key).remove()
     },
     addQueue: function(key, hkey) {
-      var room = Date.now()
       queueRef.child(hkey + "/" + key).update({
         user: this.profile.userKey,
-        room: room
       });
-      chatRef.child(room).set({
+      chatRef.child(key).set({
         doctor: hkey,
         user: this.profile.userKey,
       });
     }
   },
-  mounted() {
+  mounted(){
+    queueRef.on("value", snap => {
+      this.showData = snap.val();
+    });
+    userRef.on("child_added", snap => {
+      this.usersData[snap.key] = snap.val().name + " " + snap.val().surname;
+    });
+  },
+  created() {
     queueRef.on("value", snap => {
       this.showData = snap.val();
     });

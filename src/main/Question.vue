@@ -94,7 +94,7 @@
                   </h5>
                   <img src="./assets/users.svg" height="80px" width="80px" class="doctor">
                   <br>
-                  <h6 class="text-center">{{usersData[val.users]}}</h6>
+                  <h6 class="text-center"><user-by-key :userKey="val.users"></user-by-key></h6>
                 </div>
               </div>
               <div class="col-9 mt-2">
@@ -116,7 +116,7 @@
                   </h5>
                   <img src="./assets/users.svg" height="80px" width="80px" class="doctor">
                   <br>
-                  <h6 class="text-center">{{usersData[answer.users]}}</h6>
+                  <h6 class="text-center"><user-by-key :userKey="answer.users"></user-by-key></h6>
                 </div>
               </div>
               <div class="col-9">
@@ -135,7 +135,7 @@
                   </h5>
                   <img src="./assets/users.svg" height="80px" width="80px" class="doctor">
                   <br>
-                  <h6 class="text-center">{{usersData[data.users]}}</h6>
+                  <h6 class="text-center"><user-by-key :userKey="data.users"></user-by-key></h6>
                 </div>
               </div>
               <div class="col-9">
@@ -162,6 +162,7 @@
 /* eslint-disable */
 import firebase from "firebase";
 import { mapGetters } from "vuex";
+import UserByKey from "@/main/components/UserByKey";
 var database = firebase.database();
 var questionRef = database.ref("/Question");
 var userRef = database.ref("/Users");
@@ -185,8 +186,7 @@ export default {
       countQuestion: {
         all: 0,
         answer: 0
-      },
-      usersData: {}
+      }
     };
   },
   computed: {
@@ -196,6 +196,9 @@ export default {
       profile: "user/profile",
       getUser: "user/getuser"
     })
+  },
+  components: {
+    UserByKey
   },
   methods: {
     onFileChange(fileImg) {
@@ -281,9 +284,6 @@ export default {
       if (snap.val().ans !== undefined) {
         this.countQuestion.answer++;
       }
-    });
-    userRef.on("child_added", snap => {
-      this.usersData[snap.key] = snap.val().name + " " + snap.val().surname
     });
   }
 };

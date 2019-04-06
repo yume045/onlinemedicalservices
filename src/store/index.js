@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import user from './modules/user'
+import chat from './modules/chat'
 
 Vue.use(Vuex)
 
@@ -18,7 +19,8 @@ const state = {
 }
 
 const modules = {
-  user
+  user,
+  chat
 }
 
 export default new Vuex.Store({

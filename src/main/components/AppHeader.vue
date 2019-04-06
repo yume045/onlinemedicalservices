@@ -130,7 +130,7 @@
           >
             <span class="nav-link-inner--text">จองคิวหมอ</span>
           </router-link>
-          <button href class="dropdown-item" v-if="Checklogin" v-on:click="logoutWeb">ออกจากระบบ</button>
+          <a href="#" class="dropdown-item" v-if="Checklogin" v-on:click="logoutWeb">ออกจากระบบ</a>
         </base-dropdown>
       </ul>
     </base-nav>
