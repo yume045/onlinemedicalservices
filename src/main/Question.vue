@@ -25,17 +25,29 @@
       <div class="mainQuestion">
         <div class="listQuestion row">
           <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
+            <li
+              @click="filterQuestion('All')"
+              href="#Question"
+              class="list-group-item d-flex justify-content-between align-items-center nav-link"
+            >
               ดูคำถามทั้งหมด
               <span class="badge badge-primary badge-pill">{{countQuestion.all}}</span>
             </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
+            <li
+              @click="filterQuestion('answer')"
+              href="#Question"
+              class="list-group-item d-flex justify-content-between align-items-center nav-link"
+            >
               ดูเฉพาะคำถามที่มีคำตอบ
               <span
                 class="badge badge-primary badge-pill"
               >{{countQuestion.answer}}</span>
             </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
+            <li
+              @click="filterQuestion('nonAnswer')"
+              href="#Question"
+              class="list-group-item d-flex justify-content-between align-items-center nav-link"
+            >
               ดูเฉพาะคำถามที่ยังไม่มีคำตอบ
               <span
                 class="badge badge-primary badge-pill"
@@ -72,17 +84,17 @@
             <base-button type="primary" class="my-4" v-on:click="sendQuestion()">ส่งคำถาม</base-button>
           </div>
         </div>
-        <div class="mt-4" v-for="(val, key) in showData" :key="key">
+        <div class="mt-4" id="Question" v-for="(val, key) in showData" :key="key">
           <div class="card">
             <div class="row">
-              <div class="col-3 border-right  text-center">
+              <div class="col-3 border-right text-center">
                 <div height="80px" width="80px">
                   <h5>
                     <i class="ni ni-send float-right text-primary"></i>
                   </h5>
                   <img src="./assets/users.svg" height="80px" width="80px" class="doctor">
                   <br>
-                  <h6 class="text-center">{{val.users}}</h6>
+                  <h6 class="text-center">{{usersData[val.users]}}</h6>
                 </div>
               </div>
               <div class="col-9 mt-2">
@@ -104,7 +116,7 @@
                   </h5>
                   <img src="./assets/users.svg" height="80px" width="80px" class="doctor">
                   <br>
-                  <h6 class="text-center">{{answer.users}}</h6>
+                  <h6 class="text-center">{{usersData[answer.users]}}</h6>
                 </div>
               </div>
               <div class="col-9">
@@ -123,7 +135,7 @@
                   </h5>
                   <img src="./assets/users.svg" height="80px" width="80px" class="doctor">
                   <br>
-                  <h6 class="text-center">{{data.users}}</h6>
+                  <h6 class="text-center">{{usersData[data.users]}}</h6>
                 </div>
               </div>
               <div class="col-9">
@@ -152,7 +164,7 @@ import firebase from "firebase";
 import { mapGetters } from "vuex";
 var database = firebase.database();
 var questionRef = database.ref("/Question");
-var usersRef = database.ref("/Users");
+var userRef = database.ref("/Users");
 var storageRef = firebase.storage().ref();
 export default {
   name: "Question",
@@ -173,7 +185,8 @@ export default {
       countQuestion: {
         all: 0,
         answer: 0
-      }
+      },
+      usersData: {}
     };
   },
   computed: {
@@ -203,7 +216,7 @@ export default {
       // return uploadTask
     },
     async sendQuestion() {
-      if(this.file != "") await this.createImage();
+      if (this.file != "") await this.createImage();
       questionRef.push(this.data);
       this.data = {
         message: "",
@@ -220,6 +233,28 @@ export default {
         status: 0,
         users: this.profile.userKey
       };
+    },
+    filterQuestion(type) {
+      this.showData = {}
+      if (type === "All") {
+        questionRef.on("value", snap => {
+          this.showData = snap.val();
+        });
+      } else if (type === "answer") {
+        questionRef.on("child_added", snap => {
+          if (snap.val().ans !== undefined) {
+            this.showData[snap.key] = snap.val();
+          }
+        });
+      } else {
+        questionRef.on("child_added", snap => {
+          console.log(snap.val().ans)
+          if (snap.val().ans === undefined) {
+            this.showData[snap.key] = snap.val();
+          }
+        });
+      }
+      console.log(this.showData)
     },
     filter() {
       this.showData = [];
@@ -243,9 +278,12 @@ export default {
       this.countQuestion.all = snap.numChildren();
     });
     questionRef.on("child_added", snap => {
-      if (snap.val().ans.length !== "undefined") {
+      if (snap.val().ans !== undefined) {
         this.countQuestion.answer++;
       }
+    });
+    userRef.on("child_added", snap => {
+      this.usersData[snap.key] = snap.val().name + " " + snap.val().surname
     });
   }
 };

@@ -111,6 +111,12 @@
             class="dropdown-item"
           >ข้อมูลผู้ใช้</router-link>
           <router-link 
+          :to="'/Chat'" 
+          class="dropdown-item"
+          >
+            <span class="nav-link-inner--text">คิว - แชท</span>
+          </router-link>
+          <router-link 
           :to="'/Queue'" 
           class="dropdown-item"
           v-if="getUser.type === 'Doctor'"

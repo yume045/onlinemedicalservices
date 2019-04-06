@@ -12,18 +12,21 @@
         <span></span>
       </div>
       <div class="container jumbotron justify-content-center">
-        <div class="row border mb-5 " style="height:600px">
-          <div class="col-3 border-right">
-            <div class="row border-bottom" style="height:50px">
+        <div class="row border border-dark mb-5" style="height:600px">
+          <div class="col-3 border-right border-dark">
+            <div class="row border-bottom border-dark" style="height:50px">
               <div class="col-12">
                 <h4 class="mt-2">Chat Message</h4>
               </div>
             </div>
+            <div class="row">
+              <side-chat></side-chat>
+            </div>
           </div>
           <div class="col-9">
-            <div class="row border-bottom" style="height:50px">
+            <div class="row border-bottom border-dark" style="height:50px">
               <div class="col-9">
-                <h4 class="mt-2 border-right">Dr. Online Medical</h4>
+                <h4 class="mt-2 border-right border-dark">Dr. Online Medical</h4>
               </div>
               <div class="col-3">
                 <base-button
@@ -35,7 +38,7 @@
                 >Call</base-button>
               </div>
             </div>
-            <div class="row border-bottom" style="height:480px"></div>
+            <div class="row border-bottom border-dark" style="height:480px"></div>
             <div class="row mt-3">
               <div class="col-9">
                 <textarea
@@ -50,6 +53,7 @@
                   Send
                   <i class="ni ni-send"></i>
                 </base-button>
+                
               </div>
             </div>
           </div>
@@ -61,6 +65,7 @@
 <script>
 import firebase from "firebase";
 import { mapGetters } from "vuex";
+import SideChat from "@/main/Chat/SideChat";
 var database = firebase.database();
 var chatRef = database.ref("/Chats");
 export default {
@@ -72,6 +77,9 @@ export default {
         userKey: ""
       }
     };
+  },
+  components: {
+    SideChat
   },
   methods: {
     sendMsg() {
@@ -87,19 +95,4 @@ export default {
 };
 </script>
 <style>
-.border {
-  border: 0.1rem solid black !important;
-}
-.border-right {
-  border-right: 0.1rem solid black !important;
-}
-.border-left {
-  border-left: 0.1rem solid black !important;
-}
-.border-top {
-  border-top: 0.1rem solid black !important;
-}
-.border-bottom {
-  border-bottom: 0.1rem solid black !important;
-}
 </style>

@@ -61,15 +61,15 @@
         </div>
       </div>
       <div class="row">
-        <h6>หมายเหตุ : </h6>
+        <h6>หมายเหตุ :</h6>
         <div class="col-12 mb-2">
-          <base-button type="success" size="sm" icon="ni ni-check-bold"></base-button> : จองคิวแล้ว
+          <base-button type="success" size="sm" icon="ni ni-check-bold"></base-button>: จองคิวแล้ว
         </div>
         <div class="col-12 mb-2">
-          <base-button type="danger" size="sm" disabled icon="ni ni-fat-remove"></base-button> : คิวถูกจอง
+          <base-button type="danger" size="sm" disabled icon="ni ni-fat-remove"></base-button>: คิวถูกจอง
         </div>
         <div class="col-12">
-          <base-button type size="sm" icon="ni ni-fat-add"></base-button> : คิวว่าง
+          <base-button type size="sm" icon="ni ni-fat-add"></base-button>: คิวว่าง
         </div>
       </div>
     </section>
@@ -81,6 +81,8 @@ import { mapGetters } from "vuex";
 var database = firebase.database();
 var queueRef = database.ref("/Queues");
 var userRef = database.ref("/Users");
+var chatRef = database.ref("/Chats");
+
 export default {
   name: "BookQueue",
   data() {
@@ -98,14 +100,20 @@ export default {
     })
   },
   methods: {
-    removeQueue: function (key , hkey) {
+    removeQueue: function(key, hkey) {
       queueRef.child(hkey + "/" + key).update({
-        user: 'N/A'
+        user: "N/A"
       });
     },
     addQueue: function(key, hkey) {
+      var room = Date.now()
       queueRef.child(hkey + "/" + key).update({
-        user: this.profile.userKey
+        user: this.profile.userKey,
+        room: room
+      });
+      chatRef.child(room).set({
+        doctor: hkey,
+        user: this.profile.userKey,
       });
     }
   },
