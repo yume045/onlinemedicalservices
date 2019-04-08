@@ -19,7 +19,7 @@
                 <h4 class="mt-2">Queue - Chat</h4>
               </div>
             </div>
-            <div class="row bg-light ">
+            <div class="row">
               <side-chat  :userKey="profile.userKey"></side-chat>
             </div>
           </div>

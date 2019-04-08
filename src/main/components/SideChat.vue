@@ -1,17 +1,28 @@
 <template>
   <div class="SideChat col-12">
-    <div
-      class="pt-3 pb-3 border-bottom border-dark"
-      alternative
-      v-for="(val, key) in showData"
-      :key="key"
-    >
+    <div alternative v-for="(val, key) in showData" :key="key">
       <a href="#/Chat" class="nav-link" @click="setChat(key)">
-        <span v-if="true" class="dot-online"></span>
-        <span v-else class="dot-offline"></span>
-        <user-by-key :userKey="val.doctor"></user-by-key>
-        {{val.time}}
-        {{new Date(val.date).toDateString()}}
+        <div class="chat_list">
+          <div class="chat_people">
+            <div class="chat_img">
+              <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+            </div>
+            <div v-if="getUser.type === 'Doctor'" class="chat_ib">
+              <h5>
+                <user-by-key :userKey="val.user"></user-by-key>
+                <span class="chat_date">{{val.time}}</span>
+              </h5>
+              <p>{{new Date(val.date).toDateString()}}</p>
+            </div>
+            <div v-else class="chat_ib">
+              <h5>
+                <user-by-key :userKey="val.doctor"></user-by-key>
+                <span class="chat_date">{{val.time}}</span>
+              </h5>
+              <p>{{new Date(val.date).toDateString()}}</p>
+            </div>
+          </div>
+        </div>
       </a>
     </div>
   </div>
@@ -56,53 +67,40 @@ export default {
     setChat(key) {
       this.actionSelectChat(key);
       chatRef.child(key).on("value", snap => {
-        this.actionChatData(snap.val())
+        this.actionChatData(snap.val());
       });
     }
   },
-  mounted() {
-    chatRef.on("child_added", snap => {
-      if (snap.val().user === this.userKey) {
-        this.showData[snap.key] = snap.val();
-        queueRef.child(snap.val().doctor + "/" + snap.key).on("value", val => {
-          this.showData[snap.key].time = val.val().time;
-          this.showData[snap.key].date = val.val().date;
-        });
-      }
-    });
-  },
+  
   created() {
-    chatRef.on("child_added", snap => {
-      if (snap.val().user === this.userKey) {
-        this.showData[snap.key] = snap.val();
-        queueRef.child(snap.val().doctor + "/" + snap.key).on("value", val => {
-          this.showData[snap.key].time = val.val().time;
-          this.showData[snap.key].date = val.val().date;
-        });
-      }
-    });
+    if (this.getUser.type === "Doctor") {
+      console.log(this.getUser.type)
+      chatRef.on("child_added", snap => {
+        if (snap.val().doctor === this.userKey) {
+          this.showData[snap.key] = snap.val();
+          queueRef
+            .child(snap.val().doctor + "/" + snap.key)
+            .on("value", val => {
+              this.showData[snap.key].time = val.val().time;
+              this.showData[snap.key].date = val.val().date;
+            });
+        }
+      });
+    } else {
+      chatRef.on("child_added", snap => {
+        if (snap.val().user === this.userKey) {
+          this.showData[snap.key] = snap.val();
+          queueRef
+            .child(snap.val().doctor + "/" + snap.key)
+            .on("value", val => {
+              this.showData[snap.key].time = val.val().time;
+              this.showData[snap.key].date = val.val().date;
+            });
+        }
+      });
+    }
   }
 };
 </script>
 <style>
-.dot-online {
-  height: 15px;
-  width: 15px;
-  background-color: #66ff66;
-  border-radius: 50%;
-  display: inline-block;
-  float: left;
-  margin-right: 10px;
-  margin-top: 12px;
-}
-.dot-offline {
-  height: 15px;
-  width: 15px;
-  background-color: #ff4d4d;
-  border-radius: 50%;
-  display: inline-block;
-  float: left;
-  margin-right: 10px;
-  margin-top: 12px;
-}
 </style>

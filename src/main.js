@@ -6,10 +6,15 @@ import Vuex from 'vuex'
 import store from './store'
 import firebase from 'firebase'
 import VueSweetalert2 from 'vue-sweetalert2'
+import VueChatScroll from 'vue-chat-scroll'
+import rate from 'vue-rate';
+
+Vue.use(rate)
 Vue.use(VueSweetalert2)
 Vue.use(Vuex)
 Vue.config.productionTip = false;
 Vue.use(Argon)
+Vue.use(VueChatScroll)
 
 let storageRef = firebase.storage().ref()
 Vue.directive('url', {
