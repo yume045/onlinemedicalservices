@@ -88,6 +88,7 @@ export default {
         .ref()
         .child("Users");
       dbRefObject.on("child_added", snap => {
+        console.log(val)
         const val = snap.val();
         if (val !== null) {
           if (
@@ -100,6 +101,7 @@ export default {
             this.signIn({ userSet, status, val });
             this.setKey({ userKey });
             this.save();
+            
             if (val.Permistion === "Admin") {
               this.$router.push("/Home");
               alert("welcome back Administrator");

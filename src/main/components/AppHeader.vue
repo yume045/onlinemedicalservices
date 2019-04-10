@@ -89,7 +89,7 @@
         </base-dropdown>
       </ul>
       <ul class="navbar-nav align-items-lg-center ml-lg-auto navbar-nav-hover">
-        <li class="nav-item d-none d-lg-block ml-lg-4" v-if="!Checklogin">
+        <li class="nav-item  ml-lg-4" v-if="!Checklogin">
           <router-link to="/Login" rel="noopener" class="btn btn-neutral btn-icon">
             <i class="ni ni-check-bold"></i>
             <span class="nav-link-inner--text">เข้าสู่ระบบ</span>
@@ -110,24 +110,13 @@
             :to="'/Editprofile/' + this.profile.userKey"
             class="dropdown-item"
           >ข้อมูลผู้ใช้</router-link>
-          <router-link 
-          :to="'/Chat'" 
-          class="dropdown-item"
-          >
+          <router-link :to="'/Chat'" class="dropdown-item">
             <span class="nav-link-inner--text">คิว - แชท</span>
           </router-link>
-          <router-link 
-          :to="'/Queue'" 
-          class="dropdown-item"
-          v-if="getUser.type === 'Doctor'"
-          >
+          <router-link :to="'/Queue'" class="dropdown-item" v-if="getUser.type === 'Doctor'">
             <span class="nav-link-inner--text">จัดการคิว</span>
           </router-link>
-          <router-link 
-          :to="'/BookQueue'" 
-          class="dropdown-item"
-          v-if="getUser.type === 'Member'"
-          >
+          <router-link :to="'/BookQueue'" class="dropdown-item" v-if="getUser.type === 'Member'">
             <span class="nav-link-inner--text">จองคิวหมอ</span>
           </router-link>
           <a href="#" class="dropdown-item" v-if="Checklogin" v-on:click="logoutWeb">ออกจากระบบ</a>
