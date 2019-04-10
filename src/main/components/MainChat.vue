@@ -8,7 +8,7 @@
         </h4>
       </div>
       <div class="col-3">
-        <base-button block class="mt-1" type="default" outline icon="ni ni-camera-compact">Call</base-button>
+        <base-button @click="videoCall()" block class="mt-1" type="default" outline icon="ni ni-camera-compact">Call</base-button>
       </div>
     </div>
     <div
@@ -22,7 +22,10 @@
       <div class="chat mb-0" v-for="(val, key) in chatData.chat" :key="key">
         <div v-if="val.userKey === profile.userKey" class="outgoing_msg mr-1">
           <div class="sent_msg">
-            <p>{{val.message}}</p>
+            <p v-if="val.message === 'JoinVideoCall'">
+              <base-button @click="videoCall()" type="success">Call</base-button>
+            </p>
+            <p v-else >{{val.message}}</p>
             <span
               class="time_date"
             >{{new Date(val.timestamp).toLocaleTimeString('en-US')}} | {{new Date(val.timestamp).toLocaleDateString('en-US')}}</span>
@@ -34,7 +37,10 @@
           </div>
           <div class="received_msg">
             <div class="received_withd_msg">
-              <p>{{val.message}}</p>
+              <p v-if="val.message === 'JoinVideoCall'">
+              <base-button @click="videoCall()" type="success">Join Video Call</base-button>
+              </p>
+              <p v-else>{{val.message}}</p>
               <span
                 class="time_date"
               >{{new Date(val.timestamp).toLocaleTimeString('en-US')}} | {{new Date(val.timestamp).toLocaleDateString('en-US')}}</span>
@@ -45,7 +51,7 @@
     </div>
     <div class="row mt-3">
       <div class="col-1">
-        <base-button @click="modals.modal0 = true" size="sm" type="danger">END</base-button>
+        <base-button size="sm" type="danger">END</base-button>
       </div>
       <div class="col-8">
         <textarea
@@ -68,6 +74,7 @@
 import firebase from "firebase";
 import { mapGetters, mapActions } from "vuex";
 import UserByKey from "@/main/components/UserByKey";
+import * as Cookies from "js-cookie"
 var database = firebase.database();
 var chatRef = database.ref("/Chats");
 var queueRef = database.ref("/Queues");
@@ -79,9 +86,11 @@ export default {
       showData: {},
       message: "",
       rate: 2,
-      modals: {
-        modal0: false
-      }
+      channel: "",
+      baseMode: "avc",
+      transcode: "interop",
+      attendeeMode: "video",
+      videoProfile: "480p_4"
     };
   },
   components: {
@@ -104,6 +113,23 @@ export default {
     })
   },
   methods: {
+    videoCall() {
+      var payload = {
+        message: "JoinVideoCall",
+        timestamp: Date.now(),
+        userKey: this.profile.userKey
+      };
+      Cookies.set("channel", this.channel);
+      Cookies.set("baseMode", this.baseMode);
+      Cookies.set("transcode", this.transcode);
+      Cookies.set("attendeeMode", this.attendeeMode);
+      Cookies.set("videoProfile", this.videoProfile);
+      chatRef
+        .child(this.selectChat)
+        .child("chat/" + payload.timestamp)
+        .set(payload);
+      this.$router.push("/VideoCall");
+    },
     sendMsg() {
       var payload = {
         message: this.message,
@@ -135,7 +161,7 @@ export default {
     chatRef.child(this.selectChat).on("value", snap => {
       this.showData = snap.val();
     });
-    console.log("chat", this.selectChat);
+    this.channel = this.selectChat
   }
 };
 </script>

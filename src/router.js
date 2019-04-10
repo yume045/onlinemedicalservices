@@ -19,6 +19,8 @@ import Question from "./main/Question.vue";
 import Chat from "./main/Chat.vue";
 import Queue from "./main/Queue.vue";
 import BookQueue from "./main/BookQueue.vue";
+import VideoCall from "./main/components/VideoCall.vue";
+
 Vue.use(Router);
 
 export default new Router({
@@ -176,7 +178,17 @@ export default new Router({
         default: BookQueue,
         footer: AppFooter
       }
-    }
+    },
+    {
+      path: "/VideoCall",
+      name: "VideoCall",
+      components: {
+        header: AppHeader,
+        default: VideoCall,
+        footer: AppFooter
+      }
+    },
+
   ],
   scrollBehavior: to => {
     if (to.hash) {
