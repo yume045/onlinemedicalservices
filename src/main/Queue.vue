@@ -118,6 +118,7 @@ export default {
         if (result.value) {
           this.$swal("Deleted!", "ลบข้อมูลสำเร็จแล้ว", "success");
           queueRef.child(this.profile.userKey).child(key).remove()
+          chatRef.child(key).remove()
         }
       });
     }

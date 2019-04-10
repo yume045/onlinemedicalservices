@@ -12,6 +12,7 @@
                 <user-by-key :userKey="val.user"></user-by-key>
                 <span class="chat_date">{{val.time}}</span>
               </h5>
+              {{val}}
               <p>{{new Date(val.date).toDateString()}}</p>
             </div>
             <div v-else class="chat_ib">

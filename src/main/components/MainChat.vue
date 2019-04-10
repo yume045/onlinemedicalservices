@@ -46,16 +46,6 @@
     <div class="row mt-3">
       <div class="col-1">
         <base-button @click="modals.modal0 = true" size="sm" type="danger">END</base-button>
-        <modal :show.sync="modals.modal0">
-          <template slot="header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          </template>
-          <div>...</div>
-          <template slot="footer">
-            <base-button type="secondary" @click="modals.modal0 = false">Close</base-button>
-            <base-button type="primary">Save changes</base-button>
-          </template>
-        </modal>
       </div>
       <div class="col-8">
         <textarea

@@ -36,6 +36,7 @@ import firebase from "firebase";
 import { mapGetters } from "vuex";
 import SideChat from "@/main/components/SideChat";
 import MainChat from "@/main/components/MainChat";
+import VideoCall from "@/main/components/VideoCall";
 var database = firebase.database();
 var chatRef = database.ref("/Chats");
 export default {
@@ -49,7 +50,8 @@ export default {
   },
   components: {
     SideChat,
-    MainChat
+    MainChat,
+    VideoCall
   },
   methods: {
   },
