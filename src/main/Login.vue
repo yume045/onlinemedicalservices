@@ -87,7 +87,7 @@ export default {
         .database()
         .ref()
         .child("Users");
-      dbRefObject.on("child_added", snap => {
+        await dbRefObject.on("child_added", snap => {
         console.log(val)
         const val = snap.val();
         if (val !== null) {

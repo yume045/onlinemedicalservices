@@ -50,10 +50,10 @@
       </div>
     </div>
     <div class="row mt-3">
-      <div class="col-1">
+      <div class="col-md-1 col-sm-12">
         <base-button size="sm" type="danger">END</base-button>
       </div>
-      <div class="col-8">
+      <div class="col-md-8 col-sm-8">
         <textarea
           v-model="message"
           class="form-control form-control-alternative"
@@ -61,7 +61,7 @@
           placeholder="Type a Message..."
         ></textarea>
       </div>
-      <div class="col-3">
+      <div class="col-md-3 col-sm-4">
         <base-button block @click="sendMsg()" type="primary">
           Send
           <i class="ni ni-send"></i>

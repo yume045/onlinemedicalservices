@@ -12,18 +12,18 @@
         <span></span>
       </div>
       <div class="container jumbotron justify-content-center">
-        <div class="row border border-dark mb-5" style="height:600px">
-          <div class="col-3 border-right border-dark">
-            <div class="row border-bottom border-dark" style="height:50px">
+        <div class="row border border-dark mb-5" style="">
+          <div class="col-sm-12 col-md-3 border-right border-dark">
+            <div class="row " style="height:50px">
               <div class="col-12">
                 <h4 class="mt-2">Queue - Chat</h4>
               </div>
             </div>
-            <div class="row">
-              <side-chat  :userKey="profile.userKey"></side-chat>
+            <div class="row border-top border-dark">
+              <side-chat class="col-3" :userKey="profile.userKey"></side-chat>
             </div>
           </div>
-          <div class="col-9">
+          <div class="col-sm-12 col-md-9 mb-2">
             <main-chat :selectChat="selectChat"></main-chat>
           </div>
         </div>
