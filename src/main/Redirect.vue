@@ -17,6 +17,8 @@ export default {
   mounted() {
     if(this.type === 'go') {
       this.$router.push("/" + this.path);
+    } else if (this.type === undefined) {
+      this.$router.push("/" + this.path + '/Home');
     } else {
       this.$router.push("/" + this.path + '/' + this.type);
     }
