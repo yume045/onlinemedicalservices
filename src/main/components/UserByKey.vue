@@ -1,7 +1,5 @@
 <template>
-    <div class="userByKey">
-      {{result}}
-    </div>
+  <div class="userByKey">{{result}}</div>
 </template>
 <script>
 import firebase from "firebase";

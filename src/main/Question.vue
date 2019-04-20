@@ -23,67 +23,70 @@
         </div>
       </div>
       <div class="mainQuestion">
-        <div class="listQuestion row">
-          <ul class="list-group">
-            <li
-              @click="filterQuestion('All')"
-              href="#Question"
-              class="list-group-item d-flex justify-content-between align-items-center nav-link"
-            >
-              ดูคำถามทั้งหมด
-              <span class="badge badge-primary badge-pill">{{countQuestion.all}}</span>
-            </li>
-            <li
-              @click="filterQuestion('answer')"
-              href="#Question"
-              class="list-group-item d-flex justify-content-between align-items-center nav-link"
-            >
-              ดูเฉพาะคำถามที่มีคำตอบ
-              <span
-                class="badge badge-primary badge-pill"
-              >{{countQuestion.answer}}</span>
-            </li>
-            <li
-              @click="filterQuestion('nonAnswer')"
-              href="#Question"
-              class="list-group-item d-flex justify-content-between align-items-center nav-link"
-            >
-              ดูเฉพาะคำถามที่ยังไม่มีคำตอบ
-              <span
-                class="badge badge-primary badge-pill"
-              >{{countQuestion.all - countQuestion.answer}}</span>
-            </li>
-          </ul>
-        </div>
-        <div class="QusetionMain row mt-4">
-          <div class="col-12">
-            <h3>
-              <i class="ni ni-send"></i> ถามคำถาม
-            </h3>
-          </div>
-          <div class="col-12">
-            <textarea
-              class="form-control form-control-alternative mb-3"
-              rows="5"
-              placeholder="ถามคำถามที่ต้องการ"
-              v-model="data.message"
-            ></textarea>
-            <div class="custom-file">
-              <input
-                type="file"
-                class="custom-file-input"
-                name="file"
-                id="inputGroupFile01"
-                aria-describedby="inputGroupFileAddon01"
-                @change="onFileChange($event.target.files[0])"
+        <div class="row">
+          <div class="col-sm-12 col-md-4 mb-4 mt-5">
+            <ul class="list-group nav nav-pills">
+              <li
+                @click="filterQuestion('All')"
+                href="#Question"
+                :class="(active === 'All')?'list-group-item d-flex justify-content-between align-items-center nav-link active':'list-group-item d-flex justify-content-between align-items-center nav-link'"
               >
-              <label class="custom-file-label" multiple for="inputGroupFile01">{{file.name}}</label>
+                ดูคำถามทั้งหมด
+                <span class="badge badge-primary badge-pill">{{countQuestion.all}}</span>
+              </li>
+              <li
+                @click="filterQuestion('answer')"
+                href="#Question"
+                :class="(active === 'answer')?'list-group-item d-flex justify-content-between align-items-center nav-link active':'list-group-item d-flex justify-content-between align-items-center nav-link'"
+              >
+                คำถามที่มีคำตอบ
+                <span class="badge badge-primary badge-pill">{{countQuestion.answer}}</span>
+              </li>
+              <li
+                @click="filterQuestion('nonAnswer')"
+                href="#Question"
+                :class="(active === 'nonAnswer')?'list-group-item d-flex justify-content-between align-items-center nav-link active':'list-group-item d-flex justify-content-between align-items-center nav-link'"
+              >
+                คำถามที่ยังไม่ตอบ
+                <span
+                  class="badge badge-primary badge-pill"
+                >{{countQuestion.all - countQuestion.answer}}</span>
+              </li>
+            </ul>
+          </div>
+          <div class="QusetionMain col-sm-12 col-md-8">
+            <div class="col-12">
+              <h3>
+                <i class="ni ni-send"></i> ถามคำถาม
+              </h3>
+            </div>
+            <div class="col-12">
+              <textarea
+                class="form-control form-control-alternative mb-3"
+                rows="5"
+                placeholder="ถามคำถามที่ต้องการ"
+                v-model="data.message"
+              ></textarea>
+              <div class="custom-file">
+                <input
+                  placeholder="อัพโหลดไฟล์รูปภาพ"
+                  type="file"
+                  class="custom-file-input"
+                  name="file"
+                  id="inputGroupFile01"
+                  aria-describedby="inputGroupFileAddon01"
+                  @change="onFileChange($event.target.files[0])"
+                >
+                <label class="custom-file-label" multiple for="inputGroupFile01">{{file.name}}</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <base-button type="primary" class="my-4" v-on:click="sendQuestion()">ส่งคำถาม</base-button>
             </div>
           </div>
-          <div class="col-12">
-            <base-button type="primary" class="my-4" v-on:click="sendQuestion()">ส่งคำถาม</base-button>
-          </div>
         </div>
+
+        <!-- Blog -->
         <div class="mt-4" id="Question" v-for="(val, key) in showData" :key="key">
           <div class="card">
             <div class="row">
@@ -94,7 +97,12 @@
                   </h5>
                   <img src="./assets/users.svg" height="80px" width="80px" class="doctor">
                   <br>
-                  <h6 class="text-center"><user-by-key :userKey="val.users"></user-by-key></h6>
+                  <h6 class="text-center mb-4">
+                    <user-by-key :userKey="val.users"></user-by-key>
+                    <small
+                      class="bottom-time"
+                    >{{new Date(val.timestamp).toLocaleTimeString('en-US')}} {{new Date(val.timestamp).toLocaleDateString('en-US')}}</small>
+                  </h6>
                 </div>
               </div>
               <div class="col-9 mt-2">
@@ -116,7 +124,12 @@
                   </h5>
                   <img src="./assets/users.svg" height="80px" width="80px" class="doctor">
                   <br>
-                  <h6 class="text-center"><user-by-key :userKey="answer.users"></user-by-key></h6>
+                  <h6 class="text-center mb-4">
+                    <user-by-key :userKey="answer.users"></user-by-key>
+                  </h6>
+                  <small
+                    class="bottom-time"
+                  >{{new Date(answer.timestamp).toLocaleTimeString('en-US')}} {{new Date(val.timestamp).toLocaleDateString('en-US')}}</small>
                 </div>
               </div>
               <div class="col-9">
@@ -135,7 +148,9 @@
                   </h5>
                   <img src="./assets/users.svg" height="80px" width="80px" class="doctor">
                   <br>
-                  <h6 class="text-center"><user-by-key :userKey="data.users"></user-by-key></h6>
+                  <h6 class="text-center">
+                    <user-by-key :userKey="data.users"></user-by-key>
+                  </h6>
                 </div>
               </div>
               <div class="col-9">
@@ -186,7 +201,8 @@ export default {
       countQuestion: {
         all: 0,
         answer: 0
-      }
+      },
+      active: "All"
     };
   },
   computed: {
@@ -220,6 +236,7 @@ export default {
     },
     async sendQuestion() {
       if (this.file != "") await this.createImage();
+      this.data.timestamp = Date.now();
       questionRef.push(this.data);
       this.data = {
         message: "",
@@ -227,8 +244,10 @@ export default {
         status: 0,
         users: this.profile.userKey
       };
+      this.file = "";
     },
     sendAnswer(key) {
+      this.data.timestamp = Date.now();
       questionRef.child(key + "/ans").push(this.data);
       this.data = {
         message: "",
@@ -238,12 +257,14 @@ export default {
       };
     },
     filterQuestion(type) {
-      this.showData = {}
+      this.showData = {};
       if (type === "All") {
+        this.active = "All";
         questionRef.on("value", snap => {
           this.showData = snap.val();
         });
       } else if (type === "answer") {
+        this.active = "answer";
         questionRef.on("child_added", snap => {
           if (snap.val().ans !== undefined) {
             this.showData[snap.key] = snap.val();
@@ -251,13 +272,13 @@ export default {
         });
       } else {
         questionRef.on("child_added", snap => {
-          console.log(snap.val().ans)
+          this.active = "nonAnswer";
+          console.log(snap.val().ans);
           if (snap.val().ans === undefined) {
             this.showData[snap.key] = snap.val();
           }
         });
       }
-      console.log(this.showData)
     },
     filter() {
       this.showData = [];
@@ -291,4 +312,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.bottom-time {
+  position: absolute; /* ตำแหน่งเทียบกับ container */
+  bottom: 0; /* กำหนดให้ชิดด้านล่าง */
+  text-align: right; /* 2 บรรทัดนี้ถ้าต้องการให้ข้อความอยู่กลาง */
+  width: 90%;
+  color: #747474;
+  display: block;
+  font-size: 12px;
+}
 </style>

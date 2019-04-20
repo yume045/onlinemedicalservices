@@ -8,7 +8,14 @@
         </h4>
       </div>
       <div class="col-3">
-        <base-button @click="videoCall()" block class="mt-1" type="default" outline icon="ni ni-camera-compact">Call</base-button>
+        <base-button
+          @click="videoCall('host')"
+          block
+          class="mt-1"
+          type="default"
+          outline
+          icon="ni ni-camera-compact"
+        >Call</base-button>
       </div>
     </div>
     <div
@@ -23,9 +30,9 @@
         <div v-if="val.userKey === profile.userKey" class="outgoing_msg mr-1">
           <div class="sent_msg">
             <p v-if="val.message === 'JoinVideoCall'">
-              <base-button @click="videoCall()" type="success">Call</base-button>
+              <base-button type="danger">Call End</base-button>
             </p>
-            <p v-else >{{val.message}}</p>
+            <p v-else>{{val.message}}</p>
             <span
               class="time_date"
             >{{new Date(val.timestamp).toLocaleTimeString('en-US')}} | {{new Date(val.timestamp).toLocaleDateString('en-US')}}</span>
@@ -38,7 +45,7 @@
           <div class="received_msg">
             <div class="received_withd_msg">
               <p v-if="val.message === 'JoinVideoCall'">
-              <base-button @click="videoCall()" type="success">Join Video Call</base-button>
+                <base-button @click="videoCall('join')" type="success">Join Video Call</base-button>
               </p>
               <p v-else>{{val.message}}</p>
               <span
@@ -74,13 +81,12 @@
 import firebase from "firebase";
 import { mapGetters, mapActions } from "vuex";
 import UserByKey from "@/main/components/UserByKey";
-import * as Cookies from "js-cookie"
+import * as Cookies from "js-cookie";
 var database = firebase.database();
 var chatRef = database.ref("/Chats");
 var queueRef = database.ref("/Queues");
 export default {
   name: "MainChat",
-  props: {},
   data() {
     return {
       showData: {},
@@ -113,7 +119,7 @@ export default {
     })
   },
   methods: {
-    videoCall() {
+    videoCall(type) {
       var payload = {
         message: "JoinVideoCall",
         timestamp: Date.now(),
@@ -124,10 +130,12 @@ export default {
       Cookies.set("transcode", this.transcode);
       Cookies.set("attendeeMode", this.attendeeMode);
       Cookies.set("videoProfile", this.videoProfile);
-      chatRef
-        .child(this.selectChat)
-        .child("chat/" + payload.timestamp)
-        .set(payload);
+      if (type === "host") {
+        chatRef
+          .child(this.selectChat)
+          .child("chat/" + payload.timestamp)
+          .set(payload);
+      }
       this.$router.push("/VideoCall");
     },
     sendMsg() {
@@ -138,8 +146,8 @@ export default {
       };
       chatRef
         .child(this.selectChat)
-        .child("chat/" + payload.timestamp)
-        .set(payload);
+        .child("chat")
+        .push(payload);
       this.message = "";
     },
     endRate() {
@@ -158,10 +166,10 @@ export default {
     }
   },
   mounted() {
+    this.channel = this.selectChat;
     chatRef.child(this.selectChat).on("value", snap => {
       this.showData = snap.val();
     });
-    this.channel = this.selectChat
   }
 };
 </script>

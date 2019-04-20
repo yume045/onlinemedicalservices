@@ -10,14 +10,14 @@
             <div v-if="getUser.type === 'Doctor'" class="chat_ib">
               <h5>
                 <user-by-key :userKey="val.user"></user-by-key>
-                <span class="chat_date">{{val.time}}</span>
+                <span class="chat_date">{{val.time}} - {{val.totime}}</span>
               </h5>
               <p>{{new Date(val.date).toDateString()}}</p>
             </div>
             <div v-else class="chat_ib">
               <h5>
                 <user-by-key :userKey="val.doctor"></user-by-key>
-                <span class="chat_date">{{val.time}}</span>
+                <span class="chat_date">{{val.time}} - {{val.totime}}</span>
               </h5>
               <p>{{new Date(val.date).toDateString()}}</p>
             </div>
@@ -71,31 +71,18 @@ export default {
       });
     }
   },
-  
+
   created() {
     if (this.getUser.type === "Doctor") {
-      console.log(this.getUser.type)
       chatRef.on("child_added", snap => {
         if (snap.val().doctor === this.userKey) {
           this.showData[snap.key] = snap.val();
-          queueRef
-            .child(snap.val().doctor + "/" + snap.key)
-            .on("value", val => {
-              this.showData[snap.key].time = val.val().time;
-              this.showData[snap.key].date = val.val().date;
-            });
         }
       });
     } else {
       chatRef.on("child_added", snap => {
         if (snap.val().user === this.userKey) {
           this.showData[snap.key] = snap.val();
-          queueRef
-            .child(snap.val().doctor + "/" + snap.key)
-            .on("value", val => {
-              this.showData[snap.key].time = val.val().time;
-              this.showData[snap.key].date = val.val().date;
-            });
         }
       });
     }

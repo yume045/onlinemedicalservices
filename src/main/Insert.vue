@@ -250,7 +250,7 @@ export default {
         });
         console.log("กรุณากรอกข้อมูลให้ครบ");
       } else {
-        UserRef.push(tmp);
+        UserRef.child(this.username).set(tmp);
         this.username = "";
         this.password = "";
         this.idpeople = "";
@@ -268,6 +268,7 @@ export default {
         this.HN = "";
         this.Permistion = "";
         this.departmentChecked = "";
+        this.story = "";
         this.$swal({
           position: "center",
           type: "success",

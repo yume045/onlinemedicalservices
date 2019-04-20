@@ -12,9 +12,9 @@
         <span></span>
       </div>
       <div class="container jumbotron justify-content-center">
-        <div class="row border border-dark mb-5" style="">
+        <div class="row border border-dark mb-5" style>
           <div class="col-sm-12 col-md-3 border-right border-dark">
-            <div class="row " style="height:50px">
+            <div class="row" style="height:50px">
               <div class="col-12">
                 <h4 class="mt-2">Queue - Chat</h4>
               </div>
@@ -53,8 +53,7 @@ export default {
     MainChat,
     VideoCall
   },
-  methods: {
-  },
+  methods: {},
   mounted() {}
 };
 </script>

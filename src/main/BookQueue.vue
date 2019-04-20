@@ -15,7 +15,9 @@
       </div>
       <div class="row justify-content-center mt-3">
         <div class="col-10 card" v-for="(data, hkey) in showData" :key="hkey">
-          <caption><user-by-key :userKey="hkey"></user-by-key></caption>
+          <caption>
+            <user-by-key :userKey="hkey"></user-by-key>
+          </caption>
           <table width="100%" class="table table-hover">
             <thead class="thead-light">
               <tr>
@@ -108,32 +110,34 @@ export default {
       queueRef.child(hkey + "/" + key).update({
         user: "N/A"
       });
-      chatRef.child(key).remove()
+      chatRef.child(key).remove();
     },
     addQueue: function(key, hkey) {
       queueRef.child(hkey + "/" + key).update({
-        user: this.profile.userKey,
+        user: this.profile.userKey
       });
       chatRef.child(key).set({
         doctor: hkey,
         user: this.profile.userKey,
+        time: this.showData[hkey][key].time,
+        totime: this.showData[hkey][key].totime,
+        date: this.showData[hkey][key].date
       });
     }
   },
-  mounted(){
-    queueRef.on("value", snap => {
-      this.showData = snap.val();
-    });
+  mounted() {
     userRef.on("child_added", snap => {
       this.usersData[snap.key] = snap.val().name + " " + snap.val().surname;
     });
-  },
-  created() {
     queueRef.on("value", snap => {
       this.showData = snap.val();
     });
-    userRef.on("child_added", snap => {
-      this.usersData[snap.key] = snap.val().name + " " + snap.val().surname;
+    const dbRefObject = firebase
+      .database()
+      .ref()
+      .child("Manageoption");
+    dbRefObject.on("value", snap => {
+      this.department = snap.val();
     });
   }
 };

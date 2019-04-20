@@ -87,21 +87,17 @@ export default {
         .database()
         .ref()
         .child("Users");
-        await dbRefObject.on("child_added", snap => {
-        console.log(val)
+      await dbRefObject.child(this.username).once("value", snap => {
         const val = snap.val();
         if (val !== null) {
-          if (
-            val.username === this.username &&
-            val.password === this.password
-          ) {
+          if (val.password === this.password) {
             const userSet = val.username;
             const userKey = snap.key;
             const status = val.Permistion;
             this.signIn({ userSet, status, val });
             this.setKey({ userKey });
             this.save();
-            
+
             if (val.Permistion === "Admin") {
               this.$router.push("/Home");
               alert("welcome back Administrator");
@@ -114,6 +110,8 @@ export default {
               this.$router.push("/Home");
               alert("welcome to Online-medical-service");
             }
+          } else {
+            alert("incorrect password !!");
           }
         }
       });
