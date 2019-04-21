@@ -13,6 +13,10 @@ export default {
       type: String,
       default: "",
       description: "User get Key"
+    },
+    department: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -22,7 +26,16 @@ export default {
   },
   mounted() {
     userRef.child(this.userKey).once("value", snap => {
-      this.result = snap.val().name + " " + snap.val().surname;
+      if (this.department) {
+        this.result =
+          snap.val().department +
+          " : " +
+          snap.val().name +
+          " " +
+          snap.val().surname;
+      } else {
+        this.result = snap.val().name + " " + snap.val().surname;
+      }
     });
   }
 };

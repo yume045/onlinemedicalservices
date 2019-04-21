@@ -1,8 +1,14 @@
 <template>
-  <div class="SideChat col-12">
+  <div
+    style="height:550px; overflow-y: scroll;"
+    data-spy="scroll"
+    data-target=".chat"
+    data-offset="10"
+    class="SideChat col-12"
+  >
     <div alternative v-for="(val, key) in showData" :key="key">
       <a href="#/Chat" class="nav-link" @click="setChat(key)">
-        <div class="chat_list">
+        <div :class="(key === selectChat)?'chat_list active_chat':'chat_list'">
           <div class="chat_people">
             <div class="chat_img">
               <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
@@ -12,14 +18,14 @@
                 <user-by-key :userKey="val.user"></user-by-key>
                 <span class="chat_date">{{val.time}} - {{val.totime}}</span>
               </h5>
-              <p>{{new Date(val.date).toDateString()}}</p>
+              <p>{{new Date(val.date).toLocaleDateString()}}</p>
             </div>
             <div v-else class="chat_ib">
               <h5>
                 <user-by-key :userKey="val.doctor"></user-by-key>
                 <span class="chat_date">{{val.time}} - {{val.totime}}</span>
               </h5>
-              <p>{{new Date(val.date).toDateString()}}</p>
+              <p>{{new Date(val.date).toLocaleDateString()}}</p>
             </div>
           </div>
         </div>
@@ -36,13 +42,7 @@ var chatRef = database.ref("/Chats");
 var queueRef = database.ref("/Queues");
 export default {
   name: "SideChat",
-  props: {
-    userKey: {
-      type: String,
-      default: "",
-      description: "user Key"
-    }
-  },
+  props: {},
   data() {
     return {
       showData: {}
@@ -69,23 +69,17 @@ export default {
       chatRef.child(key).on("value", snap => {
         this.actionChatData(snap.val());
       });
+      this.$router.push("/Redirect/Chat/go");
     }
   },
-
   created() {
-    if (this.getUser.type === "Doctor") {
-      chatRef.on("child_added", snap => {
-        if (snap.val().doctor === this.userKey) {
-          this.showData[snap.key] = snap.val();
-        }
-      });
-    } else {
-      chatRef.on("child_added", snap => {
-        if (snap.val().user === this.userKey) {
-          this.showData[snap.key] = snap.val();
-        }
-      });
-    }
+    chatRef.on("child_added", snap => {
+      if (snap.val().doctor === this.profile.userKey) {
+        this.showData[snap.key] = snap.val();
+      } else {
+        this.showData[snap.key] = snap.val();
+      }
+    });
   }
 };
 </script>

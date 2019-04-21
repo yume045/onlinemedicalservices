@@ -9,7 +9,9 @@
         <span></span>
       </div>
     </section>
-    <section class="jumbotron bg-secondary container mt--300">
+    <section
+      class="jumbotron bg-secondary container container-sm container-md container-lg mt--300"
+    >
       <h1 v-if="$route.name === 'News'" class="mb-3">ข่าวประชาสัมพันธ์</h1>
       <h1 v-if="$route.name === 'Medicine'" class="mb-3">ยา</h1>
       <h1 v-if="$route.name === 'Disease'" class="mb-3">โรค</h1>
@@ -30,8 +32,8 @@
           :key="key"
           v-for="(news, key) in showData"
         >
-          <div class="card mb-3 card-lift--hover shadow border-1">
-            <img :src="news.img" style="height: 15rem;margin-left:0%;" class="card-img">
+          <div v-on:click="select(key)" class="card mb-3 card-lift--hover shadow border-1">
+            <img :src="news.img" style="height: 15rem;margin-left:0%;">
             <div class="card-body">
               <h5 class="card-title">{{news.title.slice(0, 50)}}</h5>
               <p class="card-text" v-html="news.content.slice(0, 150)"></p>
@@ -83,10 +85,13 @@ export default {
     return this.$store.getters.user;
   },
   mounted() {
-    homeadminRef.orderByChild("type").equalTo(this.$route.name).on("value", snap => {
-      this.showData = snap.val();
-      console.log(this.showData)
-    });
+    homeadminRef
+      .orderByChild("type")
+      .equalTo(this.$route.name)
+      .on("value", snap => {
+        this.showData = snap.val();
+        console.log(this.showData);
+      });
   },
   methods: {
     ...mapActions({
@@ -97,23 +102,30 @@ export default {
       this.$router.push("/News/" + key);
     },
     filter() {
-      this.showData = []
+      this.showData = [];
       if (this.search.length > 0) {
-        homeadminRef.orderByChild("type").equalTo(this.$route.name).on("child_added", snap => {
-          var val = snap.val();
-          if (val.title.toString().search(this.search) >= 0 || 
-            val.content.toString().search(this.search) >= 0 || 
-            val.tag.toString().search(this.search) >= 0
-          ) {
-            this.showData.push(val);
-          }
-        })
+        homeadminRef
+          .orderByChild("type")
+          .equalTo(this.$route.name)
+          .on("child_added", snap => {
+            var val = snap.val();
+            if (
+              val.title.toString().search(this.search) >= 0 ||
+              val.content.toString().search(this.search) >= 0 ||
+              val.tag.toString().search(this.search) >= 0
+            ) {
+              this.showData.push(val);
+            }
+          });
       } else {
-        homeadminRef.orderByChild("type").equalTo(this.$route.name).on("value", snap => {
-          this.showData = snap.val()
-        })
+        homeadminRef
+          .orderByChild("type")
+          .equalTo(this.$route.name)
+          .on("value", snap => {
+            this.showData = snap.val();
+          });
       }
-      console.log(this.showData)
+      console.log(this.showData);
     }
   }
 };

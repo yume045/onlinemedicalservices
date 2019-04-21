@@ -14,13 +14,23 @@
         <h3>จองคิวหมอ</h3>
       </div>
       <div class="row justify-content-center mt-3">
+        <!-- <div class="col-2 h5">เลือกแผนก :</div>
+        <div class="col-8">
+          <select class="mb-3 form-control form-control-sm" v-model="departmentChecked">
+            <option
+              :key="key"
+              v-for="(dep, key) in department"
+              :value="dep.addOption"
+            >{{dep.addOption}}</option>
+          </select>
+        </div>-->
         <div class="col-10 card" v-for="(data, hkey) in showData" :key="hkey">
           <caption>
-            <user-by-key :userKey="hkey"></user-by-key>
+            <user-by-key :userKey="hkey" :department="true"></user-by-key>
           </caption>
           <table width="100%" class="table table-hover">
             <thead class="thead-light">
-              <tr>
+              <tr class="text-center">
                 <th>ลำดับ</th>
                 <th>วัน/เดือน/ปี ที่นัด</th>
                 <th>เวลา</th>
@@ -28,11 +38,11 @@
                 <th>จองคิว</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="text-center">
               <tr v-for="(val, key, index) in data" :key="key" :hostKey="key">
                 <td>{{index + 1}}</td>
                 <td>{{new Date(val.date).toDateString()}}</td>
-                <td>{{val.time}}</td>
+                <td>{{val.time}} - {{val.totime}}</td>
                 <td>{{usersData[val.user]}}</td>
                 <td>
                   <base-button
@@ -92,7 +102,8 @@ export default {
     return {
       showData: {},
       result: "",
-      usersData: {}
+      usersData: {},
+      department: {}
     };
   },
   components: {

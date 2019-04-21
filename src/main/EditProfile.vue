@@ -10,17 +10,15 @@
       </div>
     </section>
     <section class="section section-skew">
-      <div class="container">
+      <div v-if="users === null">Test</div>
+      <div class="container" v-else>
         <card shadow class="card-profile mt--300" no-body>
           <div class="px-4">
             <div class="row justify-content-center">
               <div class="col-lg-3 order-lg-2">
                 <div class="card-profile-image">
                   <a href="#">
-                    <img
-                      src="./assets/user.png"
-                      class="rounded-circle"
-                    >
+                    <img src="./assets/user.png" class="rounded-circle">
                   </a>
                 </div>
               </div>
@@ -47,32 +45,47 @@
                 </div>
               </div>
             </div>
-            <div class="mt-1">
-              <h3 class="text-center">
-                <span class="font-weight-light"> {{users.name + ' ' + users.surname}}, {{new Date().getFullYear() - users.birthdate.substr(0,4)}}</span>
+            <div class="mt-3 row justify-content-center mb-4">
+              <h3 class="text-center col-12">
+                <span class="font-weight-light">
+                  {{users.name + ' ' + users.surname}} ,
+                  {{new Date().getFullYear() - new Date(users.birthdate).getFullYear()}}
+                </span>
               </h3>
-              <div class="h6 text-center font-weight-300">
-                <i class="ni location_pin mr-2"></i> {{users.type}} , {{users.gen.toUpperCase()}}
+              <div class="h6 text-center font-weight-300 col-12">
+                <i class="ni location_pin mr-2"></i>
+                {{users.type}} , {{users.gen.toUpperCase()}}
               </div>
-              <div class="ml-5 h6 mt-3">
-                แผนก : {{users.department}}
+              <div v-if="users.type !== 'Member'" class="h6 mt-3 col-xs-12 col-sm-10 col-md-7">
+                <b>แผนก</b>
+                : {{users.department}}
               </div>
-              <div class="ml-5 h6 mt-3">
-                <i class="ni ni-building mr-2"></i> Address : {{users.address}}
+              <div class="h6 mt-3 col-xs-12 col-sm-10 col-md-7">
+                <i class="ni ni-building mr-2"></i>
+                <b>Address</b>
+                : {{users.address}}
               </div>
-              <div class="ml-5 h6 mt-3">
-                <i class="ni ni-book-bookmark mr-2"></i>Phone : {{users.numberphone}}
+              <div class="h6 mt-3 col-xs-12 col-sm-10 col-md-7">
+                <i class="ni ni-book-bookmark mr-2"></i>
+                <b>Phone</b>
+                : {{users.numberphone}}
               </div>
-              <div class="ml-5 h6 mt-3">
-                โรคประจำตัว : {{users.disease}}
+              <div class="h6 mt-3 col-xs-12 col-sm-10 col-md-7">
+                <b>โรคประจำตัว</b>
+                : {{users.disease}}
               </div>
-              <div class="ml-5 h6 mt-3">
-                ยาที่แพ้ : {{users.medical}}
+              <div class="h6 mt-3 col-xs-12 col-sm-10 col-md-7">
+                <b>ยาที่แพ้</b>
+                : {{users.medical}}
               </div>
             </div>
-            <div class="mt-3 py-3 border-top text-center">
-              <div v-if="users.type !== 'Member'" class="row justify-content-center">
-                ประสบการณ์การทำงาน : {{users.story}}
+            <div
+              v-if="users.type !== 'Member'"
+              class="mt-3 py-3 border-top border-grey text-center row justify-content-center"
+            >
+              <div>
+                <b>ประสบการณ์การทำงาน</b>
+                : {{users.story}}
               </div>
             </div>
           </div>
@@ -85,7 +98,7 @@
 import firebase from "firebase";
 import { mapGetters } from "vuex";
 var database = firebase.database();
-var editprofile = database.ref("/Users");
+var userRef = database.ref("/Users");
 export default {
   name: "Editprofile",
   data() {
@@ -94,16 +107,12 @@ export default {
       users: {}
     };
   },
-  methods: {
-    
-  },
-  mounted () {
-    editprofile
-      .orderByKey()
-      .equalTo(this.userKey)
-      .once("child_added", snap => {
-        this.users = snap.val();
-      });
+  methods: {},
+  mounted() {
+    userRef.child(this.userKey).once("value", snap => {
+      this.users = snap.val();
+    });
+    console.log(this.users);
   }
 };
 </script>
