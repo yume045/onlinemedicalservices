@@ -13,7 +13,7 @@
       <div class="row">
         <h3>จัดการคิว - กำหนดคิว</h3>
       </div>
-      <div class="row mt-5">
+      <div class="row mt-5 justify-content-center">
         <div class="col-sm-12 col-md-4">
           <base-input alternative addon-left-icon="ni ni-calendar-grid-58">
             <flat-picker
@@ -44,7 +44,17 @@
             v-model="payload.totime"
           ></base-input>
         </div>
-        <div class="col-sm-12 col-md-2">
+        <div class="col-sm-6 col-md-6">
+          <base-input
+            placeholder="Minutes:Queue"
+            addon-left-icon="ni ni-watch-time"
+            alternative
+            class="mb-3"
+            type="number"
+            v-model="payload.minutesperqueqe"
+          ></base-input>
+        </div>
+        <div class="col-sm-6 col-md-2">
           <base-button @click="addQueue()" block type="primary" icon="ni ni-fat-add"></base-button>
         </div>
       </div>
@@ -99,24 +109,40 @@ export default {
       payload: {
         date: Date.now(),
         time: "08:00",
-        totime: "12:00",
-        user: "N/A",
-        status: "ว่าง",
-        rate: 0
+        totime: "11:00",
+        minutesperqueqe: 30
       },
+
       showData: {},
       usersData: {}
     };
   },
   methods: {
     addQueue() {
-      queueRef.child(this.profile.userKey).push(this.payload);
+      var totimeHr = parseInt(this.payload.totime.split(":")[0]) * 60;
+      var totimeM = parseInt(this.payload.totime.split(":")[1]);
+      var timeHr = parseInt(this.payload.time.split(":")[0]) * 60;
+      var timeM = parseInt(this.payload.time.split(":")[1]);
+      var allTime = totimeHr + totimeM - (timeHr + timeM);
+      var time = timeHr + timeM;
+      var totime = timeHr + timeM + parseInt(this.payload.minutesperqueqe);
+      for (var i = allTime / this.payload.minutesperqueqe; i >= 1; i--) {
+        queueRef.child(this.profile.userKey).push({
+          date: this.payload.date,
+          user: "N/A",
+          time: this.convertToTimeString(time / 60),
+          totime: this.convertToTimeString(totime / 60),
+          rate: 0
+        });
+        time = totime;
+        totime = parseInt(time) + parseInt(this.payload.minutesperqueqe);
+      }
+      // queueRef.child(this.profile.userKey).push(this.payload);
       this.payload = {
         date: Date.now(),
         time: "08:00",
-        totime: "12:00",
-        user: "N/A",
-        status: "ว่าง",
+        totime: "11:00",
+        minutesperqueqe: 30,
         rate: 0
       };
     },
@@ -139,6 +165,12 @@ export default {
           chatRef.child(key).remove();
         }
       });
+    },
+    convertToTimeString(time) {
+      var hour = parseInt(time) < 10 ? "0" + parseInt(time) : parseInt(time);
+      var minute = (time % 1) * 60 == 0 ? "00" : Math.round((time % 1) * 60);
+      var timeToString = hour + ":" + minute;
+      return timeToString;
     }
   },
   components: { flatPicker, UserByKey },
