@@ -142,18 +142,23 @@ export default {
       var timeHr = parseInt(this.showData[hkey][key].time.split(":")[0] * 60);
       var timeM = parseInt(this.showData[hkey][key].time.split(":")[1]);
       var timeString = this.convertToTimeString((timeHr + timeM - 30) / 60);
-      axios.get(
-        "http://www.thaibulksms.com/sms_api.php?" +
-          "username=onlinemedic&password=onlinemedic" +
-          "&msisdn=" +
-          this.getUser.numberphone +
-          "&message=Test SMS 00.00" +
-          "&sender=SMS" +
-          "&ScheduledDelivery=" +
-          date +
-          timeString +
-          "&force=standard"
-      );
+      axios
+        .get(
+          "http://www.thaibulksms.com/sms_api.php?" +
+            "username=onlinemedic&password=onlinemedic" +
+            "&msisdn=" +
+            this.getUser.numberphone +
+            "&message=แจ้งเตื่อน !! ใกล้ถึงเวลานัดที่คุณนัดหมอไว้แล้ว โปรดเข้าเว็บ Online Medicial Servicer เพื่อพบหมอ" +
+            "&sender=SMS" +
+            "&ScheduledDelivery=" +
+            date +
+            timeString +
+            "&force=standard"
+        )
+        .then(function(response) {
+          // handle success
+          console.log(response.data);
+        });
     },
     convertToTimeString(time) {
       var hour = parseInt(time) < 10 ? "0" + parseInt(time) : parseInt(time);

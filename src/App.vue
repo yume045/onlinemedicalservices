@@ -19,8 +19,11 @@ export default {
 };
 </script>
 <style>
-  #app {
-    font-family: "Abel", sans-serif, "Mitr", sans-serif;
-  }
+@import url("https://fonts.googleapis.com/css?family=Mitr");
+#app,
+html,
+body {
+  font-family: "Abel", sans-serif, "Mitr", sans-serif !important;
+}
 </style>
 

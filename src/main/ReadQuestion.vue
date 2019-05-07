@@ -10,6 +10,35 @@
       </div>
     </section>
     <section class="jumbotron bg-secondary container mt--300 shadow rounded">
+      <div class="row d-flex d-row">
+        <div class="col-9">
+          <h3 class="mb-3">Subject : {{showData.message}}</h3>
+        </div>
+        <div class="col-3">
+          <base-button
+            v-if="showData.following === undefined"
+            type="info"
+            size="sm"
+            class="float-right"
+            @click="followQuestion()"
+          >Follow</base-button>
+          <base-button
+            v-else-if="!showData.following[profile.userKey]"
+            type="info"
+            size="sm"
+            class="float-right"
+            @click="followQuestion()"
+          >Follow</base-button>
+          <base-button
+            v-else
+            type="danger"
+            size="sm"
+            class="float-right"
+            @click="unFollowQuestion()"
+          >Unfollow</base-button>
+        </div>
+      </div>
+
       <div class="card shadow rounded">
         <div class="row">
           <div class="col-3 border-right text-center">
@@ -28,7 +57,6 @@
             </div>
           </div>
           <div class="col-9 mt-2">
-            <h6>คำถาม ?</h6>
             {{showData.message}}
             <br>
             <h6 class="mt-3">เอกสารที่แนบมา</h6>
@@ -37,7 +65,7 @@
         </div>
       </div>
 
-      <div class="card" v-for="(answer, key) in showData.ans" :key="key">
+      <div class="card shadow rounded" v-for="(answer, key) in showData.ans" :key="key">
         <div class="row">
           <div class="col-3 border-right text-center">
             <div height="80px" width="80px">
@@ -47,7 +75,7 @@
               <img src="./assets/users.svg" height="80px" width="80px" class="doctor">
               <br>
               <h6 class="text-center mb-4">
-                <user-by-key :userKey="answer.users"></user-by-key>
+                <!-- <user-by-key :userKey="answer.user"></user-by-key> -->
               </h6>
               <small
                 class="bottom-time"
@@ -71,7 +99,7 @@
               <img src="./assets/users.svg" height="80px" width="80px" class="doctor">
               <br>
               <h6 class="text-center">
-                <user-by-key :userKey="profile.userKey"></user-by-key>
+                <!-- <user-by-key :userKey="profile.userKey"></user-by-key> -->
               </h6>
             </div>
           </div>
@@ -82,7 +110,7 @@
               placeholder="ตอบกลับ"
               v-model="data.message"
             ></textarea>
-            <base-button type="danger" class="mb-3 float-right" v-on:click="sendAnswer(key)">ตอบกลับ</base-button>
+            <base-button type="danger" class="mb-3 float-right" v-on:click="sendAnswer()">ตอบกลับ</base-button>
           </div>
         </div>
       </div>
@@ -92,6 +120,7 @@
 <script>
 import firebase from "firebase";
 import { mapGetters } from "vuex";
+import axios from "axios";
 import UserByKey from "@/main/components/UserByKey";
 var database = firebase.database();
 var questionRef = database.ref("/Question");
@@ -100,7 +129,10 @@ export default {
   data() {
     return {
       showData: {},
-      data: {}
+      data: {
+        message: ""
+        // user: this.profile.userKey
+      }
     };
   },
   computed: {
@@ -113,10 +145,47 @@ export default {
   components: {
     UserByKey
   },
-  methods: {},
+  methods: {
+    sendAnswer(key) {
+      this.data.timestamp = Date.now();
+      questionRef.child(this.$route.params.key + "/ans").push(this.data);
+      this.data = {
+        message: "",
+        user: this.profile.userKey
+      };
+      for (var values in this.showData.following) {
+        axios
+          .get(
+            "http://www.thaibulksms.com/sms_api.php?" +
+              "username=onlinemedic&password=onlinemedic" +
+              "&msisdn=" +
+              this.showData.following[values] +
+              "&message=" +
+              "มีการตอบกลับบนคำถามที่คุณติดตามไว้" +
+              "คำถาม : " +
+              this.showData.message +
+              "&sender=SMS" +
+              "&force=standard"
+          )
+          .then(function(response) {
+            // handle success
+            console.log(response.data);
+          });
+      }
+    },
+    followQuestion() {
+      questionRef
+        .child(this.$route.params.key + "/following/" + this.profile.userKey)
+        .set(this.getUser.numberphone);
+    },
+    unFollowQuestion() {
+      questionRef
+        .child(this.$route.params.key + "/following/" + this.profile.userKey)
+        .remove();
+    }
+  },
   mounted() {
     questionRef.child(this.$route.params.key).on("value", snap => {
-      console.log(snap.val());
       this.showData = snap.val();
     });
   }

@@ -7,7 +7,7 @@
         <div class="col-md-6">
           <div class="copyright">
             &copy; {{year}}
-            <a href="/home" target="_blank" rel="noopener">Online Medicail Servicer</a>.
+            <a href="/home" target="_blank" rel="noopener">Online Medicial Servicer</a>.
           </div>
         </div>
       </div>

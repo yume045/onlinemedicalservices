@@ -86,7 +86,7 @@
           </div>
         </div>
         <!-- ListBlog -->
-        <div class="mt-4 bg-white table-responsive" id="ListQuestion">
+        <div class="mt-4 bg-white table-responsive shadow rounded" id="ListQuestion">
           <table class="table table-hover">
             <thead class="thead-light">
               <th>หัวเรื่อง - คำถาม</th>
@@ -188,16 +188,6 @@ export default {
         users: this.profile.userKey
       };
       this.file = "";
-    },
-    sendAnswer(key) {
-      this.data.timestamp = Date.now();
-      questionRef.child(key + "/ans").push(this.data);
-      this.data = {
-        message: "",
-        img: "",
-        status: 0,
-        users: this.profile.userKey
-      };
     },
     filterQuestion(type) {
       this.showData = {};

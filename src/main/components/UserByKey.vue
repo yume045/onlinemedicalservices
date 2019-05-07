@@ -11,7 +11,7 @@ export default {
   props: {
     userKey: {
       type: String,
-      default: "null",
+      default: null,
       description: "User get Key"
     },
     department: {

@@ -85,7 +85,10 @@
           <i class="ni ni-send"></i>
         </base-button>
       </div>
-      <div class="col-12 d-flex d-row justify-content-center bg-white" v-if="showRate || rate > 0">
+      <div
+        class="col-12 d-flex d-row justify-content-center bg-white shadow rounded"
+        v-if="showRate || rate > 0"
+      >
         <h5 class="pt-2">คะแนน :</h5>
         <rate :length="5" v-model="rate" :readonly="readOnlyRate"/>
         <h5 class="pt-2">{{rate}}</h5>
@@ -105,7 +108,10 @@
           <i class="ni ni-send"></i>
         </base-button>
       </div>
-      <div class="col-12 d-flex d-row justify-content-center bg-white" v-if="showRate || rate > 0">
+      <div
+        class="col-12 d-flex d-row justify-content-center bg-white shadow rounded"
+        v-if="showRate || rate > 0"
+      >
         <h5 class="pt-2">คะแนน :</h5>
         <rate :length="5" v-model="rate " :readonly="readOnlyRate"/>
         <h5 class="pt-2">{{rate}}</h5>
