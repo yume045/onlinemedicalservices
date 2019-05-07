@@ -52,35 +52,35 @@
             <td>จัดการข้อมูล</td>
           </tr>
           <tbody>
-          <tr :key="key" v-for="(user, key) in (showData.length>0)?showData:users">
-            <td>{{user.HN}}</td>
-            <td>{{user.name}}</td>
-            <td>{{user.surname}}</td>
-            <td>{{user.idpeople}}</td>
-            <td>{{user.gen}}</td>
-            <td>{{user.birthdate}}</td>
-            <td>{{user.weight}}</td>
-            <td>{{user.height}}</td>
-            <td>{{user.bloodtype}}</td>
-            <td>{{user.address}}</td>
-            <td>{{user.numberphone}}</td>
-            <td>{{user.medical}}</td>
-            <td>{{user.disease}}</td>
-            <td>
-              <base-button
-                type="info"
-                size="sm"
-                @click="modal = false, 
+            <tr :key="key" v-for="(user, key) in (showData.length>0)?showData:users">
+              <td>{{user.HN}}</td>
+              <td>{{user.name}}</td>
+              <td>{{user.surname}}</td>
+              <td>{{user.idpeople}}</td>
+              <td>{{user.gen}}</td>
+              <td>{{user.birthdate}}</td>
+              <td>{{user.weight}}</td>
+              <td>{{user.height}}</td>
+              <td>{{user.bloodtype}}</td>
+              <td>{{user.address}}</td>
+              <td>{{user.numberphone}}</td>
+              <td>{{user.medical}}</td>
+              <td>{{user.disease}}</td>
+              <td>
+                <base-button
+                  type="info"
+                  size="sm"
+                  @click="modal = false, 
                 SetUpdate(user)"
-              >Edit</base-button>
-              <base-button type="danger" size="sm" @click="deleteUser(user.key)">Delete</base-button>
-            </td>
-          </tr>
+                >Edit</base-button>
+                <base-button type="danger" size="sm" @click="deleteUser(user.key)">Delete</base-button>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
     </section>
-    <section v-else class="jumbotron bg-secondary container mt--300">
+    <section v-else class="jumbotron bg-secondary container mt--300 shadow rounded">
       <template>
         <div class="text-center text-muted mb-4">
           <h4>Edit User</h4>
@@ -259,7 +259,7 @@ export default {
     dbRefObject.on("child_added", snap => {
       var data = snap.val();
       if (data.type === this.showType) {
-        data.key = snap.key
+        data.key = snap.key;
         this.users.push(data);
         this.showData.push(data);
       }

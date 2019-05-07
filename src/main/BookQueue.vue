@@ -9,7 +9,7 @@
         <span></span>
       </div>
     </section>
-    <section class="jumbotron bg-secondary container mt--300">
+    <section class="jumbotron bg-secondary container mt--300 shadow rounded">
       <div class="row">
         <h3>จองคิวหมอ</h3>
       </div>
@@ -90,6 +90,8 @@
 <script>
 import firebase from "firebase";
 import { mapGetters } from "vuex";
+import axios from "axios";
+import moment from "moment";
 import UserByKey from "@/main/components/UserByKey";
 var database = firebase.database();
 var queueRef = database.ref("/Queues");
@@ -122,6 +124,7 @@ export default {
         user: "N/A"
       });
       chatRef.child(key).remove();
+      0;
     },
     addQueue: function(key, hkey) {
       queueRef.child(hkey + "/" + key).update({
@@ -134,6 +137,29 @@ export default {
         totime: this.showData[hkey][key].totime,
         date: this.showData[hkey][key].date
       });
+      var date = moment(this.showData[hkey][key].date).format("YYMMDD");
+      console.log(date);
+      var timeHr = parseInt(this.showData[hkey][key].time.split(":")[0] * 60);
+      var timeM = parseInt(this.showData[hkey][key].time.split(":")[1]);
+      var timeString = this.convertToTimeString((timeHr + timeM - 30) / 60);
+      axios.get(
+        "http://www.thaibulksms.com/sms_api.php?" +
+          "username=onlinemedic&password=onlinemedic" +
+          "&msisdn=" +
+          this.getUser.numberphone +
+          "&message=Test SMS 00.00" +
+          "&sender=SMS" +
+          "&ScheduledDelivery=" +
+          date +
+          timeString +
+          "&force=standard"
+      );
+    },
+    convertToTimeString(time) {
+      var hour = parseInt(time) < 10 ? "0" + parseInt(time) : parseInt(time);
+      var minute = (time % 1) * 60 == 0 ? "00" : Math.round((time % 1) * 60);
+      var timeToString = hour + "" + minute;
+      return timeToString;
     }
   },
   mounted() {

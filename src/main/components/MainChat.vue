@@ -68,7 +68,7 @@
     </div>
     <div class="row mt-3" v-if="checkTime">
       <div class="col-md-2 col-sm-12 my-auto">
-        <base-button size="sm" type="warning" block>RATE</base-button>
+        <base-button size="sm" type="warning" block @click="showRate = true">RATING</base-button>
       </div>
       <div class="col-md-7 col-sm-8">
         <base-input
@@ -85,11 +85,16 @@
           <i class="ni ni-send"></i>
         </base-button>
       </div>
+      <div class="col-12 d-flex d-row justify-content-center bg-white" v-if="showRate || rate > 0">
+        <h5 class="pt-2">คะแนน :</h5>
+        <rate :length="5" v-model="rate" :readonly="readOnlyRate"/>
+        <h5 class="pt-2">{{rate}}</h5>
+      </div>
     </div>
     <!-- else -->
     <div class="row mt-3" v-else>
       <div class="col-md-2 col-sm-12 my-auto">
-        <base-button size="sm" disabled type="warning" block>RATE</base-button>
+        <base-button size="sm" type="warning" block @click="showRate = true">RATING</base-button>
       </div>
       <div class="col-md-7 col-sm-8">
         <base-input v-model="message" alternative rows="1" placeholder="ไม่ตรงกับเวลานัด" disabled></base-input>
@@ -99,6 +104,11 @@
           Send
           <i class="ni ni-send"></i>
         </base-button>
+      </div>
+      <div class="col-12 d-flex d-row justify-content-center bg-white" v-if="showRate || rate > 0">
+        <h5 class="pt-2">คะแนน :</h5>
+        <rate :length="5" v-model="rate " :readonly="readOnlyRate"/>
+        <h5 class="pt-2">{{rate}}</h5>
       </div>
     </div>
   </div>
@@ -117,13 +127,15 @@ export default {
     return {
       showData: {},
       message: "",
-      rate: 2,
+      rate: 0,
       channel: "",
       baseMode: "avc",
       transcode: "interop",
       attendeeMode: "video",
       videoProfile: "480p_4",
-      checkTime: false
+      checkTime: false,
+      showRate: false,
+      readOnlyRate: true
     };
   },
   components: {
@@ -134,6 +146,15 @@ export default {
       chatRef.child(this.selectChat).on("value", snap => {
         this.showData = snap.val();
       });
+    },
+    rate: function() {
+      console.log(this.rate);
+      queueRef
+        .child(this.chatData.doctor)
+        .child(this.selectChat)
+        .update({
+          rate: this.rate
+        });
     }
   },
   computed: {
@@ -176,24 +197,17 @@ export default {
         .child("chat")
         .push(payload);
       this.message = "";
-    },
-    endRate() {
-      this.$swal({
-        title: "<strong>Rate Doctor ?</strong>",
-        type: "info",
-        html: "<rate :length='5' />",
-        showCloseButton: true,
-        showCancelButton: true,
-        focusConfirm: false,
-        confirmButtonText: '<i class="fa fa-thumbs-up"></i> Great!',
-        confirmButtonAriaLabel: "Thumbs up, great!",
-        cancelButtonText: '<i class="fa fa-thumbs-down"></i>',
-        cancelButtonAriaLabel: "Thumbs down"
-      });
     }
   },
   mounted() {
     this.channel = this.selectChat;
+    this.readOnlyRate = this.getUser.type === "Doctor" ? true : false;
+    queueRef
+      .child(this.chatData.doctor)
+      .child(this.selectChat)
+      .on("value", snap => {
+        this.rate = snap.val().rate;
+      });
     chatRef.child(this.selectChat).on("value", snap => {
       this.showData = snap.val();
     });

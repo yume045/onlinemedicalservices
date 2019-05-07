@@ -9,7 +9,7 @@
         <span></span>
       </div>
     </section>
-    <section class="jumbotron bg-secondary container mt--300">
+    <section class="jumbotron bg-secondary container mt--300 shadow rounded">
       <div class="row">
         <h3>จัดการคิว - กำหนดคิว</h3>
       </div>

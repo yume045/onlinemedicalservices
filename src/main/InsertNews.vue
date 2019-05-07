@@ -9,7 +9,7 @@
         <span></span>
       </div>
     </section>
-    <div class="jumbotron bg-secondary container mt--300">
+    <div class="jumbotron bg-secondary container mt--300 shadow rounded">
       <h1 class="display-4 mb-3">เพิ่มข่าว - ยา - โรค</h1>
       <div class="col-12 float-left mb-3">
         <base-radio name="News" class="mb-3 mr-4 float-left" v-model="type">ข่าวประชาสัมพันธ์</base-radio>

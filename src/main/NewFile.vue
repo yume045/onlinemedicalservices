@@ -9,7 +9,7 @@
         <span></span>
       </div>
     </section>
-    <section class="jumbotron bg-secondary container mt--300">
+    <section class="jumbotron bg-secondary container mt--300 shadow rounded">
       <div class="row">
         <h3>....</h3>
       </div>
@@ -24,9 +24,7 @@ var chatRef = database.ref("/Chats");
 export default {
   name: "Queue",
   data() {
-    return {
-     
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
@@ -35,12 +33,9 @@ export default {
       getUser: "user/getuser"
     })
   },
-  methods: {
-    
-  },
+  methods: {},
   mounted() {}
 };
 </script>
 <style>
-
 </style>

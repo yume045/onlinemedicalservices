@@ -20,6 +20,7 @@ import Chat from "./main/Chat.vue";
 import Queue from "./main/Queue.vue";
 import BookQueue from "./main/BookQueue.vue";
 import VideoCall from "./main/components/VideoCall.vue";
+import ReadQuestion from "./main/ReadQuestion.vue";
 
 Vue.use(Router);
 
@@ -149,6 +150,15 @@ export default new Router({
       components: {
         header: AppHeader,
         default: Question,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/ReadQuestion/:key",
+      name: "ReadQuestion",
+      components: {
+        header: AppHeader,
+        default: ReadQuestion,
         footer: AppFooter
       }
     },

@@ -15,10 +15,11 @@ Vue.use(Vuex)
 Vue.config.productionTip = false;
 Vue.use(Argon)
 Vue.use(VueChatScroll)
+Vue.use(require('vue-moment'));
 
 let storageRef = firebase.storage().ref()
 Vue.directive('url', {
-  async bind (el, binding) {
+  async bind(el, binding) {
     let url = await storageRef.child(binding.value.filename).getDownloadURL()
     el.src = url
     console.log(el.src)

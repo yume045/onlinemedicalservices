@@ -32,6 +32,7 @@
                   addon-left-icon="ni ni-circle-08"
                   type="text"
                   v-model="username"
+                  v-on:keyup.enter="loginWeb()"
                 ></base-input>
                 <base-input
                   alternative
@@ -39,6 +40,7 @@
                   placeholder="รหัสผ่าน"
                   addon-left-icon="ni ni-lock-circle-open"
                   v-model="password"
+                  v-on:keyup.enter="loginWeb()"
                 ></base-input>
                 <div class="text-center">
                   <base-button type="primary" class="my-4" @click="loginWeb()">Login</base-button>
@@ -113,11 +115,13 @@ export default {
           } else {
             alert("incorrect password !!");
           }
+        } else {
+          alert("incorrect username !!");
         }
+        this.hasprofile = {};
+        this.username = "";
+        this.password = "";
       });
-      this.hasprofile = {};
-      this.username = "";
-      this.password = "";
     }
   },
   computed: {

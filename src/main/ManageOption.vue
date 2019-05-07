@@ -9,7 +9,7 @@
         <span></span>
       </div>
     </section>
-    <section class="jumbotron bg-secondary container mt--300">
+    <section class="jumbotron bg-secondary container mt--300 shadow rounded">
       <h4 class="mb-3">จัดการแผนกของแพทย์</h4>
       <div class="row justify-content-center">
         <div class="col-lg-8 col-xl-8 col-md-10 col-sm-12">

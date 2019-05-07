@@ -85,90 +85,33 @@
             </div>
           </div>
         </div>
-
-        <!-- Blog -->
-        <div class="mt-4" id="Question" v-for="(val, key) in showData" :key="key">
-          <div class="card">
-            <div class="row">
-              <div class="col-3 border-right text-center">
-                <div height="80px" width="80px">
-                  <h5>
-                    <i class="ni ni-send float-right text-primary"></i>
-                  </h5>
-                  <img src="./assets/users.svg" height="80px" width="80px" class="doctor">
-                  <br>
-                  <h6 class="text-center mb-4">
-                    <user-by-key :userKey="val.users"></user-by-key>
-                    <small
-                      class="bottom-time"
-                    >{{new Date(val.timestamp).toLocaleTimeString('en-US')}} {{new Date(val.timestamp).toLocaleDateString('en-US')}}</small>
-                  </h6>
-                </div>
-              </div>
-              <div class="col-9 mt-2">
-                <h6>คำถาม ?</h6>
-                {{val.message}}
-                <br>
-                <h6 class="mt-3">เอกสารที่แนบมา</h6>
-                <img :src="val.img" height="250px">
-              </div>
-            </div>
-          </div>
-
-          <div class="card" v-for="(answer, key) in val.ans" :key="key">
-            <div class="row">
-              <div class="col-3 border-right text-center">
-                <div height="80px" width="80px">
-                  <h5>
-                    <i class="ni ni-curved-next float-right text-danger"></i>
-                  </h5>
-                  <img src="./assets/users.svg" height="80px" width="80px" class="doctor">
-                  <br>
-                  <h6 class="text-center mb-4">
-                    <user-by-key :userKey="answer.users"></user-by-key>
-                  </h6>
-                  <small
-                    class="bottom-time"
-                  >{{new Date(answer.timestamp).toLocaleTimeString('en-US')}} {{new Date(val.timestamp).toLocaleDateString('en-US')}}</small>
-                </div>
-              </div>
-              <div class="col-9">
-                <h6>ตอบกลับ</h6>
-                {{answer.message}}
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="row Answer mt-2">
-              <div class="col-3 border-right text-center">
-                <div height="80px" width="80px">
-                  <h5>
-                    <i class="ni ni-curved-next float-right text-danger"></i>
-                  </h5>
-                  <img src="./assets/users.svg" height="80px" width="80px" class="doctor">
-                  <br>
-                  <h6 class="text-center">
-                    <user-by-key :userKey="data.users"></user-by-key>
-                  </h6>
-                </div>
-              </div>
-              <div class="col-9">
-                <textarea
-                  class="form-control form-control mb-1"
-                  rows="3"
-                  placeholder="ตอบกลับ"
-                  v-model="data.message"
-                ></textarea>
-                <base-button
-                  type="danger"
-                  class="mb-3 float-right"
-                  v-on:click="sendAnswer(key)"
-                >ตอบกลับ</base-button>
-              </div>
-            </div>
-          </div>
+        <!-- ListBlog -->
+        <div class="mt-4 bg-white table-responsive" id="ListQuestion">
+          <table class="table table-hover">
+            <thead class="thead-light">
+              <th>หัวเรื่อง - คำถาม</th>
+              <th class="text-center">เจ้าของกระทู้</th>
+              <th class="text-center">การตอบกลับ</th>
+              <th>สร้างเมื่อ</th>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(val, key) in showData"
+                :key="key"
+                @click="$router.push('/ReadQuestion/' + key)"
+              >
+                <td>{{val.message}}</td>
+                <td class="text-center">
+                  <user-by-key :userKey="val.users"></user-by-key>
+                </td>
+                <td class="text-center">{{ansLength(val.ans)}}</td>
+                <td>{{new Date(val.timestamp).toLocaleTimeString('en-US')}} | {{new Date(val.timestamp).toLocaleDateString('en-US')}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        <!-- Blog -->
+        <div class="mt-4" id="Question" v-for="(val, key) in showData" :key="key"></div>
       </div>
     </section>
   </div>
@@ -271,9 +214,8 @@ export default {
           }
         });
       } else {
+        this.active = "nonAnswer";
         questionRef.on("child_added", snap => {
-          this.active = "nonAnswer";
-          console.log(snap.val().ans);
           if (snap.val().ans === undefined) {
             this.showData[snap.key] = snap.val();
           }
@@ -293,6 +235,13 @@ export default {
         questionRef.on("value", snap => {
           this.showData = snap.val();
         });
+      }
+    },
+    ansLength(val) {
+      if (val === undefined) {
+        return 0;
+      } else {
+        return Object.keys(val).length;
       }
     }
   },
