@@ -22,7 +22,7 @@
               <th>วันที่</th>
               <th>สถานะ</th>
               <th>เอกสารยืนยัน</th>
-              <th>Print Order</th>
+              <th>ดูรายละเอียด</th>
               <th>จัดการ</th>
             </thead>
             <tbody>
@@ -37,14 +37,12 @@
                 </td>
                 <td class="text-center">
                   <base-button
-                    v-if="val.status === 'ได้รับการยืนยัน'"
                     block
-                    @click="printBilling(key)"
+                    @click="showOrder(key)"
                     type="success"
                     size="sm"
-                    icon="fa fa-print"
+                    icon="fa fa-search-plus"
                   ></base-button>
-                  <base-button v-else block disabled type="success" size="sm" icon="fa fa-print"></base-button>
                 </td>
                 <td>
                   <base-button
@@ -100,11 +98,17 @@ export default {
     billing(key) {
       this.$router.push("/Billing/" + key);
     },
-    printBilling(key) {
+    showOrder(key) {
       this.$router.push("/showOrder/" + key);
     },
     deleteBilling(key) {
-      billingRef.child(key).remove();
+      if (this.getUser.Permistion === "Admin") {
+        billingRef.child(key).update({
+          status: "ไม่ได้รับการยืนยัน!!"
+        });
+      } else {
+        billingRef.child(key).remove();
+      }
     },
     confirmOrder(key) {
       billingRef.child(key).update({

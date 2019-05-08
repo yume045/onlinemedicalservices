@@ -47,7 +47,7 @@
             <span class="nav-link-inner--text">โรค</span>
           </router-link>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-if="Checklogin">
           <router-link
             class="nav-link nav-link-icon"
             to="/Question"

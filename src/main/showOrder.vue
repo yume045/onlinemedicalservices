@@ -12,11 +12,17 @@
     <section class="jumbotron bg-secondary container mt--300 shadow rounded">
       <div class="row">
         <h3>ปริ้นใบสั่งยา</h3>
-        <ListMedic id="printOrder" :print="true" :userKey="keyBilling"/>
+        <ListMedic id="printOrder" class="mt-3" :print="true" :userKey="keyBilling"/>
       </div>
       <div class="row d-flex justify-content-end">
         <div class="col-4 mt-3">
-          <base-button type="primary" block v-print="'#printOrder'">ปริ้นใบสั่งยา</base-button>
+          <base-button
+            type="primary"
+            block
+            v-print="'#printOrder'"
+            v-if="listMedic.status === 'ได้รับการยืนยัน'"
+          >ปริ้นใบสั่งยา</base-button>
+          <base-button type="primary" disabled block v-else>โปรดรอการตรวจสอบ</base-button>
           <base-button type="info" block @click="orderHistory()">Order History</base-button>
         </div>
       </div>
@@ -45,9 +51,6 @@ export default {
     })
   },
   methods: {
-    printOrder() {
-      window.print();
-    },
     orderHistory() {
       this.$router.push("/OrderHistory");
     }

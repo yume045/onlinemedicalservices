@@ -42,7 +42,7 @@ const mutations = {
   LOAD(state, { user, status, profile, get }) {
     state.user = user
     state.status = status,
-    state.profile = profile
+      state.profile = profile
     state.getuser = get
   },
   logout: (state) => {
@@ -88,7 +88,7 @@ const actions = {
       let status = JSON.parse(GetStatus)
       let profile = JSON.parse(GetProfile)
       let get = JSON.parse(getU)
-      commit('LOAD', { user, status, profile, get})
+      commit('LOAD', { user, status, profile, get })
     }
   },
 }
