@@ -6,15 +6,16 @@
     <div class="row">
       <div class="col-8 d-flex d-row">
         ชื่อผู้ป่วย :
-        <user-by-key :userKey="userKey"/>
+        <user-by-key v-if="print" :userKey="profile.userKey"/>
+        <user-by-key v-else :userKey="userKey"/>
       </div>
       <div class="col-4 d-flex d-row">
         วันที่ :
         {{orderDate}}
       </div>
     </div>
-    <div class="row table-responsive mt-3">
-      <table class="table table-hover">
+    <div class="row table-responsive mt-3 justify-content-center d-flex d-row">
+      <table class="col-11 table table-hover">
         <thead>
           <th class="text-center">ลำดับ</th>
           <th>รายการ</th>
@@ -52,6 +53,7 @@ import { mapGetters } from "vuex";
 import UserByKey from "@/main/components/UserByKey";
 var database = firebase.database();
 var orderRef = database.ref("/OrderMedic");
+var billingRef = database.ref("/Billings");
 export default {
   name: "ListMedic",
   props: {
@@ -59,6 +61,10 @@ export default {
       type: String,
       default: "null",
       description: "User get Key"
+    },
+    print: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -76,10 +82,20 @@ export default {
     }),
     totalPrices: function() {
       this.totalPrice = 0;
-      orderRef.child(this.userKey).on("child_added", snap => {
-        this.totalPrice +=
-          parseFloat(snap.val().count) * parseFloat(snap.val().price);
-      });
+      if (this.print) {
+        billingRef
+          .child(this.userKey + "/listMedic")
+          .on("child_added", snap => {
+            this.totalPrice +=
+              parseFloat(snap.val().count) * parseFloat(snap.val().price);
+          });
+      } else {
+        orderRef.child(this.userKey).on("child_added", snap => {
+          this.totalPrice +=
+            parseFloat(snap.val().count) * parseFloat(snap.val().price);
+        });
+      }
+
       return this.totalPrice;
     }
   },
@@ -94,9 +110,15 @@ export default {
     }
   },
   mounted() {
-    orderRef.child(this.userKey).on("value", snap => {
-      this.showData = snap.val();
-    });
+    if (this.print) {
+      billingRef.child(this.userKey + "/listMedic").on("value", snap => {
+        this.showData = snap.val();
+      });
+    } else {
+      orderRef.child(this.userKey).on("value", snap => {
+        this.showData = snap.val();
+      });
+    }
   },
   components: {
     UserByKey

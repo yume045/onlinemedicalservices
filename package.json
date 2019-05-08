@@ -23,6 +23,7 @@
     "vue-flatpickr-component": "^8.1.1",
     "vue-lazyload": "^1.2.6",
     "vue-moment": "^4.0.0",
+    "vue-print-nb": "^1.0.3",
     "vue-rate": "^2.2.0",
     "vue-router": "^3.0.2",
     "vue-sweetalert2": "^1.6.4",

@@ -62,6 +62,9 @@
             <i class="ni ni-collection"></i>
             จัดการข้อมูล
           </router-link>
+          <router-link to="/OrderHistory" class="dropdown-item">
+            <span class="nav-link-inner--text">จัดการ Billings</span>
+          </router-link>
           <router-link to="/Redirect/Manage/Member" class="dropdown-item">
             <span class="nav-link-inner--text">ข้อมูลผู้ป่วย</span>
           </router-link>

@@ -8,7 +8,9 @@ import firebase from 'firebase'
 import VueSweetalert2 from 'vue-sweetalert2'
 import VueChatScroll from 'vue-chat-scroll'
 import rate from 'vue-rate';
+import Print from 'vue-print-nb'
 
+Vue.use(Print);
 Vue.use(rate)
 Vue.use(VueSweetalert2)
 Vue.use(Vuex)

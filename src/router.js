@@ -25,6 +25,7 @@ import OrderMedic from "./main/OrderMedic.vue";
 import Order from "./main/Order.vue";
 import Billing from "./main/Billing.vue";
 import OrderHistory from "./main/OrderHistory.vue";
+import showOrder from "./main/showOrder.vue";
 
 Vue.use(Router);
 
@@ -235,6 +236,15 @@ export default new Router({
       components: {
         header: AppHeader,
         default: OrderHistory,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/showOrder/:key",
+      name: "showOrder",
+      components: {
+        header: AppHeader,
+        default: showOrder,
         footer: AppFooter
       }
     },

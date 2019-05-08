@@ -11,7 +11,8 @@
     </section>
     <section class="jumbotron bg-secondary container mt--300 shadow rounded">
       <div class="row">
-        <h3>Order History</h3>
+        <h3 v-if="getUser.Permistion === 'Admin'">จัดการ Order Billings</h3>
+        <h3 v-else>Order History</h3>
       </div>
       <div class="row mt-3 d-flex justify-content-center">
         <div class="col-10 table-responsive">
@@ -20,6 +21,8 @@
               <th class="text-center">ลำดับ</th>
               <th>วันที่</th>
               <th>สถานะ</th>
+              <th>เอกสารยืนยัน</th>
+              <th>Print Order</th>
               <th>จัดการ</th>
             </thead>
             <tbody>
@@ -28,11 +31,35 @@
                 <td>{{new Date(val.timestamp).toLocaleDateString('it-IT')}}</td>
                 <td>{{val.status}}</td>
                 <td>
+                  <a :href="val.urlImg" target="_blank">
+                    <i class="ni ni-image"></i> เอกสารยืนยัน
+                  </a>
+                </td>
+                <td class="text-center">
                   <base-button
+                    v-if="val.status === 'ได้รับการยืนยัน'"
+                    block
+                    @click="printBilling(key)"
+                    type="success"
+                    size="sm"
+                    icon="fa fa-print"
+                  ></base-button>
+                  <base-button v-else block disabled type="success" size="sm" icon="fa fa-print"></base-button>
+                </td>
+                <td>
+                  <base-button
+                    v-if="getUser.Permistion !== 'Admin'"
                     @click="billing(key)"
                     type="info"
                     size="sm"
                     icon="ni ni-settings-gear-65"
+                  ></base-button>
+                  <base-button
+                    v-if="getUser.Permistion === 'Admin'"
+                    @click="confirmOrder(key)"
+                    type="success"
+                    size="sm"
+                    icon="ni ni-check-bold"
                   ></base-button>
                   <base-button
                     @click="deleteBilling(key)"
@@ -52,6 +79,7 @@
 <script>
 import firebase from "firebase";
 import { mapGetters } from "vuex";
+import "../assets/vendor/font-awesome/css/font-awesome.css";
 var database = firebase.database();
 var billingRef = database.ref("/Billings");
 export default {
@@ -72,17 +100,31 @@ export default {
     billing(key) {
       this.$router.push("/Billing/" + key);
     },
+    printBilling(key) {
+      this.$router.push("/showOrder/" + key);
+    },
     deleteBilling(key) {
       billingRef.child(key).remove();
+    },
+    confirmOrder(key) {
+      billingRef.child(key).update({
+        status: "ได้รับการยืนยัน"
+      });
     }
   },
   mounted() {
-    billingRef
-      .orderByChild("user")
-      .equalTo(this.profile.userKey)
-      .on("value", snap => {
+    if (this.getUser.Permistion === "Admin") {
+      billingRef.on("value", snap => {
         this.showData = snap.val();
       });
+    } else {
+      billingRef
+        .orderByChild("user")
+        .equalTo(this.profile.userKey)
+        .on("value", snap => {
+          this.showData = snap.val();
+        });
+    }
   }
 };
 </script>
