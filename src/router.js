@@ -22,6 +22,9 @@ import BookQueue from "./main/BookQueue.vue";
 import VideoCall from "./main/components/VideoCall.vue";
 import ReadQuestion from "./main/ReadQuestion.vue";
 import OrderMedic from "./main/OrderMedic.vue";
+import Order from "./main/Order.vue";
+import Billing from "./main/Billing.vue";
+import OrderHistory from "./main/OrderHistory.vue";
 
 Vue.use(Router);
 
@@ -200,11 +203,38 @@ export default new Router({
       }
     },
     {
+      path: "/OrderMedic",
+      name: "OrderMedic",
+      components: {
+        header: AppHeader,
+        default: OrderMedic,
+        footer: AppFooter
+      }
+    },
+    {
       path: "/Order",
       name: "Order",
       components: {
         header: AppHeader,
-        default: OrderMedic,
+        default: Order,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/Billing/:key",
+      name: "Billing",
+      components: {
+        header: AppHeader,
+        default: Billing,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/OrderHistory",
+      name: "OrderHistory",
+      components: {
+        header: AppHeader,
+        default: OrderHistory,
         footer: AppFooter
       }
     },

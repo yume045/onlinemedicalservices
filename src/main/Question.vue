@@ -77,7 +77,11 @@
                   aria-describedby="inputGroupFileAddon01"
                   @change="onFileChange($event.target.files[0])"
                 >
-                <label class="custom-file-label" multiple for="inputGroupFile01">{{file.name}}</label>
+                <label
+                  class="custom-file-label"
+                  multiple
+                  for="inputGroupFile01"
+                >รูปภาพที่เกี่ยวข้อง | {{file.name}}</label>
               </div>
             </div>
             <div class="col-12">
@@ -165,7 +169,6 @@ export default {
       // this.data.img = fileImg.name;
     },
     async createImage() {
-      // const storageRef = firebase.storage().ref('image/' + this.dataImg.name.toLowerCase().split(' ').join('-'))
       await storageRef
         .child(this.file.name)
         .put(this.file)
@@ -173,9 +176,6 @@ export default {
         .then(downloadURL => {
           this.data.img = downloadURL;
         });
-
-      // const uploadTask = storageRef.put(this.dataImg)
-      // return uploadTask
     },
     async sendQuestion() {
       if (this.file != "") await this.createImage();

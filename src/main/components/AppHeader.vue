@@ -119,6 +119,16 @@
           <router-link :to="'/BookQueue'" class="dropdown-item" v-if="getUser.type === 'Member'">
             <span class="nav-link-inner--text">จองคิวหมอ</span>
           </router-link>
+          <router-link :to="'/Order'" class="dropdown-item" v-if="getUser.type === 'Member'">
+            <span class="nav-link-inner--text">ใบสั่งยา</span>
+          </router-link>
+          <router-link
+            :to="'/OrderMedic'"
+            class="dropdown-item"
+            v-if="getUser.type === 'Doctor' || getUser.type === 'Pharmacist'"
+          >
+            <span class="nav-link-inner--text">ออกใบสั่งยา</span>
+          </router-link>
           <a href="#" class="dropdown-item" v-if="Checklogin" v-on:click="logoutWeb">ออกจากระบบ</a>
         </base-dropdown>
       </ul>

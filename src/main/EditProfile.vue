@@ -55,6 +55,10 @@
                 <i class="ni location_pin mr-2"></i>
                 {{users.type}} , {{users.gen.toUpperCase()}}
               </div>
+              <div class="h6 mt-3 col-xs-12 col-sm-10 col-md-7">
+                <b>Hostpital Number :</b>
+                : {{users.HN}}
+              </div>
               <div v-if="users.type !== 'Member'" class="h6 mt-3 col-xs-12 col-sm-10 col-md-7">
                 <b>แผนก</b>
                 : {{users.department}}
