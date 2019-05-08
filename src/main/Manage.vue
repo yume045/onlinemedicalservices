@@ -27,13 +27,14 @@
       <div class="row justify-content-end">
         <div class="col-xl-6 col-lg-6 col-md-8 col-sm-10">
           <h6 class="float-left mr-3">กรองข้อมูลตามกรุ๊ปเลือด :</h6>
+          {{checkboxes}}
           <base-checkbox class="mb-3 float-left mr-3" v-model="checkboxes.A">A</base-checkbox>
           <base-checkbox class="mb-3 float-left mr-3" v-model="checkboxes.B">B</base-checkbox>
           <base-checkbox class="mb-3 float-left mr-3" v-model="checkboxes.AB">AB</base-checkbox>
           <base-checkbox class="mb-3 float-left mr-3" v-model="checkboxes.O">O</base-checkbox>
         </div>
       </div>
-      <div class="row justify-content-center">
+      <div class="row d-flex justify-content-center table-responsive">
         <table class="table table-hover col-xl-10 col-lg-10 col-md-12 col-sm-12">
           <tr>
             <td>Hospital Number</td>
@@ -45,27 +46,21 @@
             <td>น้ำหนัก</td>
             <td>ส่วนสูง</td>
             <td>กรุ๊ปเลือด</td>
-            <td>ที่อยู่</td>
             <td>เบอร์โทร</td>
-            <td>ยาที่แพ้</td>
-            <td>โรคประจำตัว</td>
             <td>จัดการข้อมูล</td>
           </tr>
           <tbody>
-            <tr :key="key" v-for="(user, key) in (showData.length>0)?showData:users">
+            <tr :key="key" v-for="(user, key) in showData">
               <td>{{user.HN}}</td>
               <td>{{user.name}}</td>
               <td>{{user.surname}}</td>
               <td>{{user.idpeople}}</td>
               <td>{{user.gen}}</td>
-              <td>{{user.birthdate}}</td>
+              <td>{{new Date(user.birthdate).toLocaleDateString("it-IT")}}</td>
               <td>{{user.weight}}</td>
               <td>{{user.height}}</td>
               <td>{{user.bloodtype}}</td>
-              <td>{{user.address}}</td>
               <td>{{user.numberphone}}</td>
-              <td>{{user.medical}}</td>
-              <td>{{user.disease}}</td>
               <td>
                 <base-button
                   type="info"
@@ -238,6 +233,7 @@ export default {
   },
   watch: {
     checkboxes: function() {
+      console.log(this.checkboxes);
       this.showData = this.users.filter(user => {
         if (this.checkboxes.A && user.bloodtype === "A") {
           return user;
@@ -318,7 +314,7 @@ export default {
       });
     },
     filterBlood() {
-      console.log(this.checkboxes);
+      console.log(this.checkboxes.length);
       if (this.checkboxes.length > 0) {
         this.showData = this.users.filter(user => {
           if (this.checkboxes.A && user.bloodtype === "A") {
@@ -344,7 +340,6 @@ export default {
             this.showData[this.showData.length] = data2[x];
           }
         }
-        console.log(this.showData);
       }
       if (Search.length == 0) this.showData = [];
     }

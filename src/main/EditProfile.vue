@@ -10,8 +10,7 @@
       </div>
     </section>
     <section class="section section-skew">
-      <div v-if="users === null">Test</div>
-      <div class="container" v-else>
+      <div class="container" v-if="users">
         <card shadow class="card-profile mt--300" no-body>
           <div class="px-4">
             <div class="row justify-content-center">
@@ -104,7 +103,7 @@ export default {
   data() {
     return {
       userKey: this.$route.params.key,
-      users: {}
+      users: false
     };
   },
   methods: {},

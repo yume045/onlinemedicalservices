@@ -39,7 +39,7 @@
         </div>
       </div>
 
-      <div class="card shadow rounded">
+      <div class="card shadow rounded" v-if="showData">
         <div class="row">
           <div class="col-3 border-right text-center">
             <div height="80px" width="80px">
@@ -75,7 +75,7 @@
               <img src="./assets/users.svg" height="80px" width="80px" class="doctor">
               <br>
               <h6 class="text-center mb-4">
-                <!-- <user-by-key :userKey="answer.user"></user-by-key> -->
+                <user-by-key :userKey="answer.user"></user-by-key>
               </h6>
               <small
                 class="bottom-time"
@@ -99,7 +99,7 @@
               <img src="./assets/users.svg" height="80px" width="80px" class="doctor">
               <br>
               <h6 class="text-center">
-                <!-- <user-by-key :userKey="profile.userKey"></user-by-key> -->
+                <user-by-key :userKey="profile.userKey"></user-by-key>
               </h6>
             </div>
           </div>
@@ -124,14 +124,14 @@ import axios from "axios";
 import UserByKey from "@/main/components/UserByKey";
 var database = firebase.database();
 var questionRef = database.ref("/Question");
+var userRef = database.ref("/Users");
 export default {
   name: "ReadQuestion",
   data() {
     return {
-      showData: {},
+      showData: false,
       data: {
         message: ""
-        // user: this.profile.userKey
       }
     };
   },
@@ -148,6 +148,7 @@ export default {
   methods: {
     sendAnswer(key) {
       this.data.timestamp = Date.now();
+      this.data.user = this.profile.userKey;
       questionRef.child(this.$route.params.key + "/ans").push(this.data);
       this.data = {
         message: "",
@@ -184,10 +185,11 @@ export default {
         .remove();
     }
   },
-  mounted() {
+  created() {
     questionRef.child(this.$route.params.key).on("value", snap => {
       this.showData = snap.val();
     });
+    console.log(this.showData);
   }
 };
 </script>

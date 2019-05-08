@@ -21,6 +21,7 @@ import Queue from "./main/Queue.vue";
 import BookQueue from "./main/BookQueue.vue";
 import VideoCall from "./main/components/VideoCall.vue";
 import ReadQuestion from "./main/ReadQuestion.vue";
+import OrderMedic from "./main/OrderMedic.vue";
 
 Vue.use(Router);
 
@@ -195,6 +196,15 @@ export default new Router({
       components: {
         header: AppHeader,
         default: VideoCall,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/Order",
+      name: "Order",
+      components: {
+        header: AppHeader,
+        default: OrderMedic,
         footer: AppFooter
       }
     },
