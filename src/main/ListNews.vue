@@ -25,6 +25,14 @@
             @input="filter()"
           ></base-input>
         </div>
+        <div class="col-xl-6 col-lg-6 col-md-8 col-sm-10" v-if="$route.name === 'Disease'">
+          <div class="d-flex d-row">
+            <h6 class="float-left mr-3">คำค้นหายอดนิยม :</h6>
+            <div class="mr-3" v-for="(pop, key) in popular" :key="key">
+              <a @click="popularSearch(pop.title)"><badge pill type="default" >{{pop.title}}</badge></a>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="row mainNews">
         <div
@@ -60,6 +68,7 @@ import firebase from "firebase";
 import { mapGetters, mapActions } from "vuex";
 var database = firebase.database();
 var homeadminRef = database.ref("/News");
+var popularRef = database.ref("/PopularDisease");
 export default {
   name: "ListNews",
   subadds: "",
@@ -92,6 +101,10 @@ export default {
         this.showData = snap.val();
         console.log(this.showData);
       });
+
+    popularRef.limitToLast(5).on("value", snap => {
+      this.popular = snap.val();
+    });
   },
   methods: {
     ...mapActions({
@@ -117,6 +130,11 @@ export default {
               this.showData.push(val);
             }
           });
+        if ( this.search.length >= 4 && this.showData.length !=0) {
+          popularRef.push({
+            title: this.search
+          });
+        }
       } else {
         homeadminRef
           .orderByChild("type")
@@ -126,6 +144,11 @@ export default {
           });
       }
       console.log(this.showData);
+    },
+    popularSearch(param) {
+      console.log(param);
+      this.search = param;
+      this.filter();
     }
   }
 };

@@ -21,6 +21,14 @@
             @input="filter()"
           ></base-input>
         </div>
+        <div class="col-xl-6 col-lg-6 col-md-8 col-sm-10">
+          <div class="d-flex d-row">
+            <h6 class="float-left mr-3">คำค้นหายอดนิยม :</h6>
+            <div class="mr-3" v-for="(pop, key) in popular" :key="key">
+              <a @click="popularSearch(pop.title)"><badge pill type="default" >{{pop.title}}</badge></a>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="mainQuestion">
         <div class="row">
@@ -128,6 +136,7 @@ import UserByKey from "@/main/components/UserByKey";
 var database = firebase.database();
 var questionRef = database.ref("/Question");
 var userRef = database.ref("/Users");
+var popularRef = database.ref("/PopularQuestion");
 var storageRef = firebase.storage().ref();
 export default {
   name: "Question",
@@ -149,7 +158,8 @@ export default {
         all: 0,
         answer: 0
       },
-      active: "All"
+      active: "All",
+      popular: {}
     };
   },
   computed: {
@@ -221,11 +231,22 @@ export default {
             this.showData.push(val);
           }
         });
+        if ( this.search.length >= 4 && this.showData.length !=0) {
+          popularRef.push({
+            title: this.search
+          });
+        }
       } else {
         questionRef.on("value", snap => {
           this.showData = snap.val();
         });
       }
+      
+    },
+    popularSearch(param) {
+      console.log(param)
+      this.search = param
+      this.filter()
     },
     ansLength(val) {
       if (val === undefined) {
@@ -244,6 +265,9 @@ export default {
       if (snap.val().ans !== undefined) {
         this.countQuestion.answer++;
       }
+    });
+    popularRef.limitToLast(5).on("value", snap => {
+      this.popular = snap.val();
     });
   }
 };

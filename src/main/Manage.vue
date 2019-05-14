@@ -26,12 +26,25 @@
       </div>
       <div class="row justify-content-end">
         <div class="col-xl-6 col-lg-6 col-md-8 col-sm-10">
-          <h6 class="float-left mr-3">กรองข้อมูลตามกรุ๊ปเลือด :</h6>
-          {{checkboxes}}
-          <base-checkbox class="mb-3 float-left mr-3" v-model="checkboxes.A">A</base-checkbox>
-          <base-checkbox class="mb-3 float-left mr-3" v-model="checkboxes.B">B</base-checkbox>
-          <base-checkbox class="mb-3 float-left mr-3" v-model="checkboxes.AB">AB</base-checkbox>
-          <base-checkbox class="mb-3 float-left mr-3" v-model="checkboxes.O">O</base-checkbox>
+          <div class="d-flex d-row">
+            <h6 class="float-left mr-3">กรองข้อมูลตามกรุ๊ปเลือด :</h6>
+            <base-checkbox class="mb-3 mr-3" v-model="checkboxes.A">A</base-checkbox>
+            <base-checkbox class="mb-3 mr-3" v-model="checkboxes.B">B</base-checkbox>
+            <base-checkbox class="mb-3 mr-3" v-model="checkboxes.AB">AB</base-checkbox>
+            <base-checkbox class="mb-3 mr-3" v-model="checkboxes.O">O</base-checkbox>
+          </div>
+          <div class="d-flex d-row">
+            <h6 class="float-left mr-3">กรองข้อมูลตามเพศ :</h6>
+            <base-checkbox class="mb-3 float-left mr-3" v-model="checkboxes.male">Male</base-checkbox>
+            <base-checkbox class="mb-3 float-left mr-3" v-model="checkboxes.female">Female</base-checkbox>
+          </div>
+          <base-button
+            block
+            type="primary"
+            icon="ni ni-check-bold"
+            size="sm"
+            @click="filterBlood()"
+          ></base-button>
         </div>
       </div>
       <div class="row d-flex justify-content-center table-responsive">
@@ -214,7 +227,12 @@ export default {
   data() {
     return {
       modal: true,
-      checkboxes: {},
+      checkboxes: {
+        A: false,
+        B: false,
+        AB: false,
+        O: false
+      },
       users: [],
       Musers: {},
       doctors: {},
@@ -230,22 +248,6 @@ export default {
       indeterminate: false,
       showType: this.$route.params.type
     };
-  },
-  watch: {
-    checkboxes: function() {
-      console.log(this.checkboxes);
-      this.showData = this.users.filter(user => {
-        if (this.checkboxes.A && user.bloodtype === "A") {
-          return user;
-        } else if (this.checkboxes.B && user.bloodtype === "B") {
-          return user;
-        } else if (this.checkboxes.AB && user.bloodtype === "AB") {
-          return user;
-        } else if (this.checkboxes.O && user.bloodtype === "O") {
-          return user;
-        }
-      });
-    }
   },
   mounted() {
     const dbRefObject = firebase
@@ -314,34 +316,30 @@ export default {
       });
     },
     filterBlood() {
-      console.log(this.checkboxes.length);
-      if (this.checkboxes.length > 0) {
-        this.showData = this.users.filter(user => {
+      this.showData = [];
+      let checkbox = this.checkboxes;
+      if (checkbox.A || checkbox.AB || checkbox.B || checkbox.O || checkbox.male || checkbox.female) {
+        this.users.filter(user => {
           if (this.checkboxes.A && user.bloodtype === "A") {
-            return user;
+            console.log(user.bloodtype);
+            this.showData.push(user);
           } else if (this.checkboxes.B && user.bloodtype === "B") {
-            return user;
+            this.showData.push(user);
           } else if (this.checkboxes.AB && user.bloodtype === "AB") {
-            return user;
+            this.showData.push(user);
           } else if (this.checkboxes.O && user.bloodtype === "O") {
-            return user;
+            this.showData.push(user);
+          } 
+          if (this.checkboxes.male && user.gen === "male") {
+            this.showData.push(user);
+          } else if (this.checkboxes.female && user.gen === "female") {
+            this.showData.push(user);
           }
         });
       } else {
-        this.showData = [];
-        var data2 = [];
-        for (var i = 0; i < Search.length; i++) {
-          data2 = this.users.filter(user => {
-            if (user.bloodtype === Search[i] || user.gen === Search[i]) {
-              return user;
-            }
-          });
-          for (var x = 0; x < data2.length; x++) {
-            this.showData[this.showData.length] = data2[x];
-          }
-        }
+        this.showData = this.users;
       }
-      if (Search.length == 0) this.showData = [];
+      console.log(this.showData);
     }
   },
   components: { flatPicker }
