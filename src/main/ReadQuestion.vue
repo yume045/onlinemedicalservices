@@ -157,7 +157,7 @@ export default {
       for (var values in this.showData.following) {
         axios
           .get(
-            "http://www.thaibulksms.com/sms_api.php?" +
+            "https://www.thaibulksms.com/sms_api.php?" +
               "username=onlinemedic&password=onlinemedic" +
               "&msisdn=" +
               this.showData.following[values] +

@@ -1,6 +1,6 @@
 <template>
-<div class="VideoCall">
-  <section class="section-profile-cover section-shaped my-0">
+  <div class="VideoCall">
+    <section class="section-profile-cover section-shaped my-0">
       <div class="shape shape-style-1 shape-primary shape-skew alpha-4">
         <span></span>
         <span></span>
@@ -10,29 +10,43 @@
       </div>
     </section>
     <div class="wrapper meeting mt--300">
-    <div class="ag-header">
-      <div class="ag-header-msg">
-          Room:&nbsp;<span id="room-name">{{channel}}</span>
+      <div class="ag-header">
+        <div class="ag-header-msg text-white">
+          Room:&nbsp;
+          <span id="room-name">{{channel}}</span>
+        </div>
+        <div class="ag-header-msg text-white">
+          <countdown :time="parseInt(chatData.totime)-parseInt(Date.now())">
+            <template
+              slot-scope="props"
+            >Time Remaining：{{ props.days }} days, {{ props.hours }} hours, {{ props.minutes }} minutes, {{ props.seconds }} seconds.</template>
+          </countdown>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6"></div>
+      </div>
+      <div class="ag-main">
+        <div class="ag-container">
+          <AgoraVideoCall
+            style="height:800px"
+            :videoProfile="videoProfile"
+            :channel="channel"
+            :transcode="transcode"
+            :attendeeMode="attendeeMode"
+            :baseMode="baseMode"
+            :appId="appId"
+            :uid="uid"
+          ></AgoraVideoCall>
+        </div>
       </div>
     </div>
-    <div class="ag-main">
-      <div class="ag-container">
-        <AgoraVideoCall style="height:800px"
-          :videoProfile="videoProfile"
-          :channel="channel"
-          :transcode="transcode"
-          :attendeeMode="attendeeMode"
-          :baseMode="baseMode"
-          :appId="appId"
-          :uid="uid"></AgoraVideoCall>
-      </div>  
-    </div>
   </div>
-</div>
 </template>
 
 <script>
 import * as Cookies from "js-cookie";
+import { mapGetters } from "vuex";
 import AgoraVideoCall from "@/main/components/AgoraVideoCall";
 export default {
   components: {
@@ -49,6 +63,11 @@ export default {
       uid: undefined
     };
   },
+  computed: {
+    ...mapGetters({
+      chatData: "chat/chatData"
+    })
+  }
 };
 </script>
 

@@ -13,6 +13,7 @@
         วันที่ :
         {{orderDate}}
       </div>
+      <div class="col-12">ที่อยู่ : {{address}}</div>
     </div>
     <div class="row table-responsive mt-3 justify-content-center d-flex d-row">
       <table class="col-11 table table-hover">
@@ -52,6 +53,7 @@ import firebase from "firebase";
 import { mapGetters } from "vuex";
 import UserByKey from "@/main/components/UserByKey";
 var database = firebase.database();
+var userRef = database.ref("/Users");
 var orderRef = database.ref("/OrderMedic");
 var billingRef = database.ref("/Billings");
 export default {
@@ -71,7 +73,8 @@ export default {
     return {
       orderDate: new Date().toLocaleDateString("it-IT"),
       showData: {},
-      totalPrice: 0
+      totalPrice: 0,
+      address: ""
     };
   },
   computed: {
@@ -110,6 +113,9 @@ export default {
     }
   },
   mounted() {
+    userRef.child(this.userKey).on("value", snap => {
+      this.address = snap.val();
+    });
     if (this.print) {
       billingRef.child(this.userKey + "/listMedic").on("value", snap => {
         this.showData = snap.val();

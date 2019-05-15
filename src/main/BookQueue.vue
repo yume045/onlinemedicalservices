@@ -41,8 +41,8 @@
             <tbody class="text-center">
               <tr v-for="(val, key, index) in data" :key="key" :hostKey="key">
                 <td>{{index + 1}}</td>
-                <td>{{new Date(val.date).toDateString()}}</td>
-                <td>{{val.time}} - {{val.totime}}</td>
+                <td>{{new Date(val.date).toLocaleDateString('it-IT')}}</td>
+                <td>{{parseInt(val.time) | moment('HH:mm')}} - {{parseInt(val.totime) | moment('HH:mm')}}</td>
                 <td>{{usersData[val.user]}}</td>
                 <td>
                   <base-button
@@ -144,7 +144,7 @@ export default {
       var timeString = this.convertToTimeString((timeHr + timeM - 30) / 60);
       axios
         .get(
-          "http://www.thaibulksms.com/sms_api.php?" +
+          "https://www.thaibulksms.com/sms_api.php?" +
             "username=onlinemedic&password=onlinemedic" +
             "&msisdn=" +
             this.getUser.numberphone +

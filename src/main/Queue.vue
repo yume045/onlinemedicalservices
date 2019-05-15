@@ -73,8 +73,8 @@
             <tbody>
               <tr class="text-center" v-for="(val, key, index) in showData" :key="key">
                 <td>{{index + 1}}</td>
-                <td>{{new Date(val.date).toDateString('en-US')}}</td>
-                <td>{{val.time}} - {{val.totime}}</td>
+                <td>{{new Date(val.date).toLocaleDateString('it-IT')}}</td>
+                <td>{{parseInt(val.time) | moment('HH:mm')}} - {{parseInt(val.totime) | moment('HH:mm')}}</td>
                 <td>{{usersData[val.user]}}</td>
                 <td>
                   <base-button
@@ -97,6 +97,7 @@ import firebase from "firebase";
 import { mapGetters } from "vuex";
 import flatPicker from "vue-flatpickr-component";
 import UserByKey from "@/main/components/UserByKey";
+import moment from "moment";
 import "flatpickr/dist/flatpickr.css";
 var database = firebase.database();
 var queueRef = database.ref("/Queues");
@@ -124,20 +125,35 @@ export default {
       var timeHr = parseInt(this.payload.time.split(":")[0]) * 60;
       var timeM = parseInt(this.payload.time.split(":")[1]);
       var allTime = totimeHr + totimeM - (timeHr + timeM);
-      var time = timeHr + timeM;
-      var totime = timeHr + timeM + parseInt(this.payload.minutesperqueqe);
+      // var time = timeHr + timeM;
+      // var totime = timeHr + timeM + parseInt(this.payload.minutesperqueqe);
+      // for (var i = allTime / this.payload.minutesperqueqe; i >= 1; i--) {
+      //   queueRef.child(this.profile.userKey).push({
+      //     date: this.payload.date,
+      //     user: "N/A",
+      //     time: this.convertToTimeString(time / 60),
+      //     totime: this.convertToTimeString(totime / 60),
+      //     rate: 0
+      //   });
+      //   time = totime;
+      //   totime = parseInt(time) + parseInt(this.payload.minutesperqueqe);
+      // }
+      // queueRef.child(this.profile.userKey).push(this.payload);
+      var start = moment(
+        this.payload.date.toString() + " " + this.payload.time
+      ).format("x");
+
       for (var i = allTime / this.payload.minutesperqueqe; i >= 1; i--) {
+        let finish = parseInt(start) + this.payload.minutesperqueqe * 60 * 1000;
         queueRef.child(this.profile.userKey).push({
           date: this.payload.date,
           user: "N/A",
-          time: this.convertToTimeString(time / 60),
-          totime: this.convertToTimeString(totime / 60),
-          rate: 0
+          rate: 0,
+          time: start,
+          totime: finish
         });
-        time = totime;
-        totime = parseInt(time) + parseInt(this.payload.minutesperqueqe);
+        start = finish;
       }
-      // queueRef.child(this.profile.userKey).push(this.payload);
       this.payload = {
         date: Date.now(),
         time: "08:00",

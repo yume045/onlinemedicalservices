@@ -16,16 +16,20 @@
             <div v-if="getUser.type === 'Doctor'" class="chat_ib">
               <h5>
                 <user-by-key :userKey="val.user"></user-by-key>
-                <span class="chat_date">{{val.time}} - {{val.totime}}</span>
+                <span
+                  class="chat_date"
+                >{{parseInt(val.time) | moment('HH:mm')}} - {{parseInt(val.totime) | moment('HH:mm')}}</span>
               </h5>
-              <p>{{new Date(val.date).toLocaleDateString()}}</p>
+              <p>{{new Date(val.date).toLocaleDateString('it-IT')}}</p>
             </div>
             <div v-else class="chat_ib">
               <h5>
                 <user-by-key :userKey="val.doctor"></user-by-key>
-                <span class="chat_date">{{val.time}} - {{val.totime}}</span>
+                <span
+                  class="chat_date"
+                >{{parseInt(val.time) | moment('HH:mm')}} - {{parseInt(val.totime) | moment('HH:mm')}}</span>
               </h5>
-              <p>{{new Date(val.date).toLocaleDateString()}}</p>
+              <p>{{new Date(val.date).toLocaleDateString('it-IT')}}</p>
             </div>
           </div>
         </div>
@@ -36,6 +40,7 @@
 <script>
 import firebase from "firebase";
 import { mapGetters, mapActions } from "vuex";
+import moment from "moment";
 import UserByKey from "@/main/components/UserByKey";
 var database = firebase.database();
 var chatRef = database.ref("/Chats");

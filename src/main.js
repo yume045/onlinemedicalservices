@@ -9,6 +9,9 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import VueChatScroll from 'vue-chat-scroll'
 import rate from 'vue-rate';
 import Print from 'vue-print-nb'
+import VueCountdown from '@chenfengyuan/vue-countdown';
+
+Vue.component(VueCountdown.name, VueCountdown);
 
 Vue.use(Print);
 Vue.use(rate)

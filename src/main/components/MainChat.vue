@@ -122,6 +122,7 @@
 <script>
 import firebase from "firebase";
 import { mapGetters, mapActions } from "vuex";
+import moment from "moment";
 import UserByKey from "@/main/components/UserByKey";
 import * as Cookies from "js-cookie";
 var database = firebase.database();
@@ -217,14 +218,13 @@ export default {
     chatRef.child(this.selectChat).on("value", snap => {
       this.showData = snap.val();
     });
-    console.log(new Date().getHours() + ">=" + this.chatData.time);
+    console.log(moment(this.chatData.date).format("YYYY-MM-DD"));
     if (
-      new Date(this.chatData.date).toLocaleDateString() ===
-        new Date().toLocaleDateString() &&
-      new Date().getHours() + ":" + new Date().getMinutes() >=
-        this.chatData.time &&
-      new Date().getHours() + ":" + new Date().getMinutes() <=
-        this.chatData.totime
+      moment(Date.now()).format("YYYY-MM-DD") ===
+        moment(this.chatData.date).format("YYYY-MM-DD") &&
+      parseInt(Date.now()) >=
+        moment(parseInt(this.chatData.time)).format("x") &&
+      parseInt(Date.now()) < moment(parseInt(this.chatData.totime)).format("x")
     ) {
       this.checkTime = true;
     } else {
