@@ -110,7 +110,7 @@ export default {
 }
 
 .ag-container {
-  width: calc(100% - 60px);
+  width: calc(100%);
   height: 100%;
   margin: 0 auto;
   background: rgba(255, 255, 255, 0.1);

@@ -81,10 +81,9 @@ export default {
     async confirmOrder() {
       if (this.file != "") {
         await this.createImage();
-        console.log("succes upload");
         billingRef.child(this.$route.params.key).update({
           urlImg: this.urlImg,
-          status: "รอการตรวจสอบ"
+          status: "รอการตรวจสอบจากทางเจ้าหน้าที่"
         });
         this.$router.push("/OrderHistory/");
       } else {

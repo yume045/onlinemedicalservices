@@ -48,9 +48,9 @@
 </template>
 
 <script>
-import AgoraRTC from 'agora-rtc-sdk'
+import AgoraRTC from "agora-rtc-sdk";
 import { merge } from "lodash";
-import '@/assets/fonts/css/icons.css'
+import "@/assets/fonts/css/icons.css";
 
 const tile_canvas = {
   "1": ["span 12/span 24"],
@@ -358,7 +358,7 @@ export default {
         } else {
           dom.setAttribute(
             "style",
-            `grid-area: span 3/span 4/${4 + 3 * index}/25;
+            `grid-area: span 3/span 8/${4 + 3 * index}/25;
           z-index:1;width:calc(100% - 20px);height:calc(100% - 20px)`
           );
         }
