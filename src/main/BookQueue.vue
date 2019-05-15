@@ -141,7 +141,7 @@ export default {
       console.log(date);
       var timeHr = parseInt(this.showData[hkey][key].time.split(":")[0] * 60);
       var timeM = parseInt(this.showData[hkey][key].time.split(":")[1]);
-      var timeString = this.convertToTimeString((timeHr + timeM - 30) / 60);
+      var timeString = this.convertToTimeString((timeHr + timeM - 10) / 60);
       axios
         .get(
           "https://www.thaibulksms.com/sms_api.php?" +
