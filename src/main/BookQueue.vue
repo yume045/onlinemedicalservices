@@ -93,6 +93,7 @@ import { mapGetters } from "vuex";
 import axios from "axios";
 import moment from "moment";
 import UserByKey from "@/main/components/UserByKey";
+import { parse } from "path";
 var database = firebase.database();
 var queueRef = database.ref("/Queues");
 var userRef = database.ref("/Users");
@@ -139,9 +140,13 @@ export default {
       });
       var date = moment(this.showData[hkey][key].date).format("YYMMDD");
       console.log(date);
-      var timeHr = parseInt(this.showData[hkey][key].time.split(":")[0] * 60);
-      var timeM = parseInt(this.showData[hkey][key].time.split(":")[1]);
-      var timeString = this.convertToTimeString((timeHr + timeM - 10) / 60);
+
+      // var timeHr = parseInt(this.showData[hkey][key].time.split(":")[0] * 60);
+      // var timeM = parseInt(this.showData[hkey][key].time.split(":")[1]);
+      var timeString = moment(
+        parseInt(this.showData[hkey][key].time) - 10 * 60 * 1000
+      ).format("HHmm");
+      console.log(timeString);
       axios
         .get(
           "https://www.thaibulksms.com/sms_api.php?" +

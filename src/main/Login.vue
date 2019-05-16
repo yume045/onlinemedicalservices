@@ -23,6 +23,8 @@
             <template>
               <div class="text-center text-muted mb-4">
                 <small>Login</small>
+                <br>
+                <img :src="require('../assets/logo.png')" height="40px">
               </div>
               <form role="form">
                 <base-input

@@ -1,11 +1,9 @@
 <template>
   <header class="header-global">
     <base-nav class="navbar-main" transparent type effect="light" expand>
-      <router-link
-        slot="brand"
-        class="navbar-brand mr-lg-5"
-        to="/Redirect/Home/go"
-      >Online-Medical-Servicer</router-link>
+      <router-link slot="brand" class="navbar-brand mr-lg-5" to="/Redirect/Home/go">
+        <img :src="require('../../assets/logo.png')">
+      </router-link>
 
       <div class="row" slot="content-header" slot-scope="{closeMenu}">
         <div class="col-6 collapse-brand">
@@ -191,6 +189,9 @@ export default {
 </script>
 <style>
 .nav-link {
-  font-family: "Abel", sans-serif, "Mitr", sans-serif;
+  font-family: "Abel", sans-serif, "Mitr", sans-serif !important;
+}
+.navbar-brand img {
+  height: 70px !important;
 }
 </style>

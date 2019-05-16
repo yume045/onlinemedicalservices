@@ -19,9 +19,33 @@
           <base-button
             type="primary"
             block
+            @click="delivery('ดำเนินการจัดส่ง')"
+            v-if="listMedic.status === 'ได้รับการยืนยัน'"
+          >บริการจัดส่งถึงที</base-button>
+          <base-button
+            type="primary"
+            block
             v-print="'#printOrder'"
             v-if="listMedic.status === 'ได้รับการยืนยัน'"
           >ปริ้นใบสั่งยา</base-button>
+          <base-button
+            type="primary"
+            @click="delivery('ได้รับยาเรียบร้อยแล้ว')"
+            block
+            v-else-if="listMedic.status === 'ดำเนินการจัดส่ง'"
+          >ได้รับของแล้ว</base-button>
+          <base-button
+            type="primary"
+            disabled
+            block
+            v-else-if="listMedic.status === 'ดำเนินการจัดส่ง'"
+          >ดำเนินการจัดส่ง</base-button>
+          <base-button
+            type="success"
+            disabled
+            block
+            v-else-if="listMedic.status === 'ได้รับยาเรียบร้อยแล้ว'"
+          >จัดสงสำร็จ</base-button>
           <base-button type="primary" disabled block v-else>โปรดรอการตรวจสอบ</base-button>
           <base-button type="info" block @click="orderHistory()">Order History</base-button>
         </div>
@@ -53,6 +77,11 @@ export default {
   methods: {
     orderHistory() {
       this.$router.push("/OrderHistory");
+    },
+    delivery(status) {
+      billingRef.child(this.$route.params.key).update({
+        status: status
+      });
     }
   },
   mounted() {
