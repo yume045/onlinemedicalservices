@@ -29,7 +29,9 @@
           <div class="d-flex d-row">
             <h6 class="float-left mr-3">คำค้นหายอดนิยม :</h6>
             <div class="mr-3" v-for="(pop, key) in popular" :key="key">
-              <a @click="popularSearch(pop.title)"><badge pill type="default" >{{pop.title}}</badge></a>
+              <a @click="popularSearch(pop.title)">
+                <badge pill type="default">{{pop.title}}</badge>
+              </a>
             </div>
           </div>
         </div>
@@ -130,7 +132,7 @@ export default {
               this.showData.push(val);
             }
           });
-        if ( this.search.length >= 4 && this.showData.length !=0) {
+        if (this.search.length >= 4 && this.showData.length != 0) {
           popularRef.push({
             title: this.search
           });

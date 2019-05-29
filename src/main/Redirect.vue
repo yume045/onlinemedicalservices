@@ -5,7 +5,6 @@
 </template>
 
 <script>
-
 export default {
   name: "Redirect",
   data() {
@@ -15,12 +14,13 @@ export default {
     };
   },
   mounted() {
-    if(this.type === 'go') {
+    if (this.type === "go") {
       this.$router.push("/" + this.path);
     } else if (this.type === undefined) {
-      this.$router.push("/" + this.path + '/Home');
+      if (this.path === undefined) this.$router.push("/Home");
+      else this.$router.push("/" + this.path + "/Home");
     } else {
-      this.$router.push("/" + this.path + '/' + this.type);
+      this.$router.push("/" + this.path + "/" + this.type);
     }
   }
 };

@@ -37,7 +37,7 @@ export default new Router({
       name: "Home",
       components: {
         header: AppHeader,
-        default: ListNews,
+        default: Redirect,
         footer: AppFooter
       }
     },

@@ -44,7 +44,7 @@
             v-model="payload.totime"
           ></base-input>
         </div>
-        <div class="col-sm-6 col-md-6">
+        <div class="col-sm-4 col-md-4">
           <base-input
             placeholder="Minutes:Queue"
             addon-left-icon="ni ni-watch-time"
@@ -52,6 +52,16 @@
             class="mb-3"
             type="number"
             v-model="payload.minutesperqueqe"
+          ></base-input>
+        </div>
+        <div class="col-sm-4 col-md-4">
+          <base-input
+            placeholder="Break Time / เวลาพัก"
+            addon-left-icon="ni ni-watch-time"
+            alternative
+            class="mb-3"
+            type="number"
+            v-model="payload.breakTime"
           ></base-input>
         </div>
         <div class="col-sm-6 col-md-2">
@@ -108,10 +118,11 @@ export default {
   data() {
     return {
       payload: {
-        date: Date.now(),
+        date: new Date(),
         time: "08:00",
         totime: "11:00",
-        minutesperqueqe: 30
+        minutesperqueqe: null,
+        breakTime: null
       },
 
       showData: {},
@@ -120,47 +131,47 @@ export default {
   },
   methods: {
     addQueue() {
-      var totimeHr = parseInt(this.payload.totime.split(":")[0]) * 60;
-      var totimeM = parseInt(this.payload.totime.split(":")[1]);
-      var timeHr = parseInt(this.payload.time.split(":")[0]) * 60;
-      var timeM = parseInt(this.payload.time.split(":")[1]);
-      var allTime = totimeHr + totimeM - (timeHr + timeM);
-      // var time = timeHr + timeM;
-      // var totime = timeHr + timeM + parseInt(this.payload.minutesperqueqe);
-      // for (var i = allTime / this.payload.minutesperqueqe; i >= 1; i--) {
-      //   queueRef.child(this.profile.userKey).push({
-      //     date: this.payload.date,
-      //     user: "N/A",
-      //     time: this.convertToTimeString(time / 60),
-      //     totime: this.convertToTimeString(totime / 60),
-      //     rate: 0
-      //   });
-      //   time = totime;
-      //   totime = parseInt(time) + parseInt(this.payload.minutesperqueqe);
-      // }
-      // queueRef.child(this.profile.userKey).push(this.payload);
       var start = moment(
         this.payload.date.toString() + " " + this.payload.time
       ).format("x");
-
-      for (var i = allTime / this.payload.minutesperqueqe; i >= 1; i--) {
-        let finish = parseInt(start) + this.payload.minutesperqueqe * 60 * 1000;
-        queueRef.child(this.profile.userKey).push({
-          date: this.payload.date,
-          user: "N/A",
-          rate: 0,
-          time: start,
-          totime: finish
+      var end = moment(
+        this.payload.date.toString() + " " + this.payload.totime
+      ).format("x");
+      let finish = parseInt(start) + this.payload.minutesperqueqe * 60 * 1000;
+      if (this.checkTime(start)) {
+        while (finish <= end) {
+          queueRef.child(this.profile.userKey).push({
+            date: this.payload.date,
+            user: "N/A",
+            rate: 0,
+            time: start,
+            totime: finish
+          });
+          start = finish + this.payload.breakTime * 60 * 1000;
+          finish = parseInt(start) + this.payload.minutesperqueqe * 60 * 1000;
+        }
+      } else {
+        this.$swal({
+          type: "error",
+          title: "Oops...",
+          text: "กำหนดวันเวลาไม่ถูกต้อง โปรดตรวจสอบวันเวลาของท่าน"
         });
-        start = finish;
       }
       this.payload = {
-        date: Date.now(),
+        date: new Date(),
         time: "08:00",
         totime: "11:00",
         minutesperqueqe: 30,
+        breakTime: null,
         rate: 0
       };
+    },
+    checkTime(date) {
+      let result = false;
+      if (date >= moment(new Date()).format("x")) {
+        result = true;
+      }
+      return result;
     },
     deleteQueue(key) {
       this.$swal({

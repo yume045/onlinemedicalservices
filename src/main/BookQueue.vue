@@ -34,7 +34,7 @@
                 <th>ลำดับ</th>
                 <th>วัน/เดือน/ปี ที่นัด</th>
                 <th>เวลา</th>
-                <th>ผู้ป่วย</th>
+                <!-- <th>ผู้ป่วย</th> -->
                 <th>จองคิว</th>
               </tr>
             </thead>
@@ -43,7 +43,7 @@
                 <td>{{index + 1}}</td>
                 <td>{{new Date(val.date).toLocaleDateString('it-IT')}}</td>
                 <td>{{parseInt(val.time) | moment('HH:mm')}} - {{parseInt(val.totime) | moment('HH:mm')}}</td>
-                <td>{{usersData[val.user]}}</td>
+                <!-- <td>{{usersData[val.user]}}</td> -->
                 <td>
                   <base-button
                     v-if="val.user === profile.userKey"
@@ -128,48 +128,59 @@ export default {
       0;
     },
     addQueue: function(key, hkey) {
-      queueRef.child(hkey + "/" + key).update({
-        user: this.profile.userKey
-      });
-      chatRef.child(key).set({
-        doctor: hkey,
-        user: this.profile.userKey,
-        time: this.showData[hkey][key].time,
-        totime: this.showData[hkey][key].totime,
-        date: this.showData[hkey][key].date
-      });
-      var date = moment(this.showData[hkey][key].date).format("YYMMDD");
-      console.log(date);
-
-      // var timeHr = parseInt(this.showData[hkey][key].time.split(":")[0] * 60);
-      // var timeM = parseInt(this.showData[hkey][key].time.split(":")[1]);
-      var timeString = moment(
-        parseInt(this.showData[hkey][key].time) - 10 * 60 * 1000
-      ).format("HHmm");
-      console.log(timeString);
-      axios
-        .get(
-          "https://www.thaibulksms.com/sms_api.php?" +
-            "username=onlinemedic&password=onlinemedic" +
-            "&msisdn=" +
-            this.getUser.numberphone +
-            "&message=แจ้งเตื่อน !! ใกล้ถึงเวลานัดที่คุณนัดหมอไว้แล้ว โปรดเข้าเว็บ Online Medicial Servicer เพื่อพบหมอ" +
-            "&sender=SMS" +
-            "&ScheduledDelivery=" +
-            date +
-            timeString +
-            "&force=standard"
-        )
-        .then(function(response) {
-          // handle success
-          console.log(response.data);
+      if (this.checkQueue(this.showData[hkey][key].date)) {
+        queueRef.child(hkey + "/" + key).update({
+          user: this.profile.userKey
         });
+        chatRef.child(key).set({
+          doctor: hkey,
+          user: this.profile.userKey,
+          time: this.showData[hkey][key].time,
+          totime: this.showData[hkey][key].totime,
+          date: this.showData[hkey][key].date
+        });
+        var date = moment(this.showData[hkey][key].date).format("YYMMDD");
+        var timeString = moment(
+          parseInt(this.showData[hkey][key].time) - 10 * 60 * 1000
+        ).format("HHmm");
+        axios
+          .get(
+            "https://www.thaibulksms.com/sms_api.php?" +
+              "username=onlinemedic&password=onlinemedic" +
+              "&msisdn=" +
+              this.getUser.numberphone +
+              "&message=แจ้งเตื่อน !! ใกล้ถึงเวลานัดที่คุณนัดหมอไว้แล้ว โปรดเข้าเว็บ Online Medicial Servicer เพื่อพบหมอ" +
+              "&sender=SMS" +
+              "&ScheduledDelivery=" +
+              date +
+              timeString +
+              "&force=standard"
+          )
+          .then(function(response) {
+            // handle success
+            console.log(response.data);
+          });
+      } else {
+        this.$swal({
+          type: "error",
+          title: "Oops...",
+          text: "สามารถจองคิวได้วันละ 1 คิวเท่านั้น"
+        });
+      }
     },
-    convertToTimeString(time) {
-      var hour = parseInt(time) < 10 ? "0" + parseInt(time) : parseInt(time);
-      var minute = (time % 1) * 60 == 0 ? "00" : Math.round((time % 1) * 60);
-      var timeToString = hour + "" + minute;
-      return timeToString;
+    checkQueue(date) {
+      let result = true;
+      queueRef.on("child_added", snap => {
+        snap.forEach(element => {
+          if (
+            this.profile.userKey === element.val().user &&
+            element.val().date === date
+          ) {
+            result = false;
+          }
+        });
+      });
+      return result;
     }
   },
   mounted() {
