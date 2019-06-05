@@ -68,7 +68,14 @@
     </div>
     <div class="row mt-3" v-if="checkTime">
       <div class="col-md-2 col-sm-12 my-auto">
-        <base-button size="sm" type="warning" block @click="showRate = true">RATING</base-button>
+        <base-button
+          size="sm"
+          type="info"
+          block
+          @click="$router.push('/OrderMedic?id='+ chatData.user )"
+          v-if="getUser.type === 'Doctor'"
+        >จ่ายยา</base-button>
+        <base-button size="sm" type="warning" block @click="showRate = !showRate">RATING</base-button>
       </div>
       <div class="col-md-7 col-sm-8">
         <base-input
@@ -97,7 +104,14 @@
     <!-- else -->
     <div class="row mt-3" v-else>
       <div class="col-md-2 col-sm-12 my-auto">
-        <base-button size="sm" type="warning" block @click="showRate = true">RATING</base-button>
+        <base-button
+          size="sm"
+          type="info"
+          block
+          @click="$router.push('/OrderMedic?id='+ chatData.user )"
+          v-if="getUser.type === 'Doctor'"
+        >จ่ายยา</base-button>
+        <base-button size="sm" type="warning" block @click="showRate = !showRate">RATING</base-button>
       </div>
       <div class="col-md-7 col-sm-8">
         <base-input v-model="message" alternative rows="1" placeholder="ไม่ตรงกับเวลานัด" disabled></base-input>

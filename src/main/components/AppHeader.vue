@@ -79,6 +79,14 @@
           >
             <span class="nav-link-inner--text">จัดการแผนกของแพทย์</span>
           </router-link>
+          <a
+            v-if="Checklogin && permission === 'Admin'"
+            class="dropdown-item"
+            href="https://statcounter.com/p12003860/summary/daily-psvn-labels-bar-last30days?account_id=7264051&login_id=3&code=ecf68ec2a685d17435f36cd5ddd291e5"
+            target="_blank"
+          >
+            <span class="nav-link-inner--text">Report</span>
+          </a>
         </base-dropdown>
         <base-dropdown tag="li" class="nav-item" v-if="Checklogin && permission === 'Admin'">
           <router-link slot="title" to="#" class="nav-link" data-toggle="dropdown" role="button">

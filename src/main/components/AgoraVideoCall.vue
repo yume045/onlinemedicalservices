@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import AgoraRTC from "agora-rtc-sdk";
 import { merge } from "lodash";
 import "@/assets/fonts/css/icons.css";
@@ -110,7 +111,15 @@ export default {
     "appId",
     "uid"
   ],
-
+  computed: {
+    ...mapGetters({
+      Checklogin: "user/isLoggedIn",
+      profile: "user/profile",
+      getUser: "user/getuser",
+      selectChat: "chat/selectChat",
+      chatData: "chat/chatData"
+    })
+  },
   methods: {
     streamInit(uid, attendeeMode, videoProfile, config) {
       let defaultConfig = {
@@ -278,7 +287,9 @@ export default {
         this.client = null;
         this.localStream = null;
         // redirect to index
-        this.$router.push("/Chat");
+        if (this.getUser.type === "Doctor")
+          this.$router.push("/OrderMedic?id=" + this.chatData.user);
+        else this.$router.push("/Chat");
       }
     }
   },

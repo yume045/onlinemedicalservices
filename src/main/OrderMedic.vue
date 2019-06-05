@@ -111,7 +111,9 @@ export default {
       this.count = "";
     }
   },
-  mounted() {},
+  mounted() {
+    this.user = this.$route.query.id;
+  },
   components: {
     ListMedic
   }

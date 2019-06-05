@@ -1,17 +1,17 @@
 <template>
-  <div class="ListMedic col-12 border border-dark rounded">
+  <div class="ListMedic col-12 border border-dark rounded" v-if="showData && user">
     <div class="row justify-content-center d-flex mt-3">
       <div class="col-8 h2 text-center">ใบสั่งยา</div>
     </div>
     <div class="row">
-      <div class="col-8 d-flex d-row" v-if="showData">
+      <div class="col-8 d-flex d-row">
         ชื่อผู้ป่วย :
-        <user-by-key v-if="print" :userKey="showData.user"/>
+        <user-by-key v-if="print" :userKey="user.key"/>
         <user-by-key v-else :userKey="userKey"/>
       </div>
       <div class="col-4 d-flex d-row">
         วันที่ :
-        {{orderDate}}
+        {{orderDate | moment('DD/MM/Y')}}
       </div>
       <div class="col-12">ที่อยู่ : {{user.address}}</div>
     </div>
@@ -25,7 +25,7 @@
           <th class="text-center" v-if="getUser.type !== 'Member'">จัดการข้อมูล</th>
         </thead>
         <tbody>
-          <tr v-for="(val, key, index) in showData.listMedic" :key="key">
+          <tr v-for="(val, key, index) in showData" :key="key">
             <td class="text-center">{{index + 1}}</td>
             <td>{{val.medicName}}</td>
             <td class="text-center">{{val.count}}</td>
@@ -113,18 +113,23 @@ export default {
     }
   },
   mounted() {
+    userRef.child(this.userKey).on("value", snap => {
+      this.user = snap.val();
+    });
     if (this.print) {
       billingRef.child(this.userKey).on("value", snap => {
-        this.showData = snap.val();
+        this.orderDate = snap.val().timestamp;
+        this.showData = snap.val().listMedic;
+        userRef.child(snap.val().user).on("value", snap => {
+          this.user = snap.val();
+        });
       });
     } else {
       orderRef.child(this.userKey).on("value", snap => {
         this.showData = snap.val();
       });
     }
-    userRef.child(this.showData.user).on("value", snap => {
-      this.user = snap.val();
-    });
+    console.log(this.showData, this.user);
   },
   components: {
     UserByKey

@@ -26,6 +26,7 @@ import Order from "./main/Order.vue";
 import Billing from "./main/Billing.vue";
 import OrderHistory from "./main/OrderHistory.vue";
 import showOrder from "./main/showOrder.vue";
+import Report from "./main/Report.vue";
 
 Vue.use(Router);
 
@@ -34,7 +35,7 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "Home",
+      name: "Main",
       components: {
         header: AppHeader,
         default: Redirect,
@@ -43,7 +44,7 @@ export default new Router({
     },
     {
       path: "/Home",
-      name: "News",
+      name: "Home",
       components: {
         header: AppHeader,
         default: ListNews,
@@ -245,6 +246,15 @@ export default new Router({
       components: {
         header: AppHeader,
         default: showOrder,
+        footer: AppFooter
+      }
+    },
+    {
+      path: "/Report",
+      name: "Report",
+      components: {
+        header: AppHeader,
+        default: Report,
         footer: AppFooter
       }
     },

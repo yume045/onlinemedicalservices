@@ -1,5 +1,5 @@
 <template>
-  <div class="Question">
+  <div class="Question" v-if="showData">
     <section class="section-profile-cover section-shaped my-0">
       <div class="shape shape-style-1 shape-primary shape-skew alpha-4">
         <span></span>
@@ -25,7 +25,9 @@
           <div class="d-flex d-row">
             <h6 class="float-left mr-3">คำค้นหายอดนิยม :</h6>
             <div class="mr-3" v-for="(pop, key) in popular" :key="key">
-              <a @click="popularSearch(pop.title)"><badge pill type="default" >{{pop.title}}</badge></a>
+              <a @click="popularSearch(pop.title)">
+                <badge pill type="default">{{pop.title}}</badge>
+              </a>
             </div>
           </div>
         </div>
@@ -109,21 +111,44 @@
             <tbody>
               <tr
                 v-for="(val, key) in showData"
-                :key="key"
-                @click="$router.push('/ReadQuestion/' + key)"
+                :key="val.key"
+                @click="$router.push('/ReadQuestion/' + val.key)"
+                v-if="key < page * 10 && key >= page * 10 - 10"
               >
-                <td>{{val.message}}</td>
+                <td>{{val.value.message}}</td>
                 <td class="text-center">
-                  <user-by-key :userKey="val.users"></user-by-key>
+                  <user-by-key :userKey="val.value.users"></user-by-key>
                 </td>
                 <td class="text-center">{{ansLength(val.ans)}}</td>
-                <td>{{new Date(val.timestamp).toLocaleTimeString('en-US')}} | {{new Date(val.timestamp).toLocaleDateString('en-US')}}</td>
+                <td>{{new Date(val.value.timestamp).toLocaleTimeString('en-US')}} | {{new Date(val.value.timestamp).toLocaleDateString('en-US')}}</td>
               </tr>
             </tbody>
           </table>
         </div>
         <!-- Blog -->
-        <div class="mt-4" id="Question" v-for="(val, key) in showData" :key="key"></div>
+        <div class="col-12 text-center">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item">
+                <a class="page-link" @click="page--" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li
+                :class="(val === page)?'page-item active':'page-item'"
+                v-for="val in totalPage"
+                :key="val"
+              >
+                <a class="page-link" @click="page = val">{{val}}</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" @click="page++" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </section>
   </div>
@@ -159,7 +184,9 @@ export default {
         answer: 0
       },
       active: "All",
-      popular: {}
+      popular: {},
+      totalPage: [1],
+      page: 1
     };
   },
   computed: {
@@ -200,53 +227,90 @@ export default {
       this.file = "";
     },
     filterQuestion(type) {
-      this.showData = {};
+      this.showData = [];
+      let count = 1;
+      let index = 1;
+      this.totalPage = [1];
       if (type === "All") {
         this.active = "All";
-        questionRef.on("value", snap => {
-          this.showData = snap.val();
+        questionRef.on("child_added", snap => {
+          this.showData.push({ value: snap.val(), key: snap.key });
+          if (index % 10 === 0) {
+            count++;
+            this.totalPage.push(count);
+          }
+          index++;
         });
       } else if (type === "answer") {
         this.active = "answer";
         questionRef.on("child_added", snap => {
           if (snap.val().ans !== undefined) {
-            this.showData[snap.key] = snap.val();
+            this.showData.push({ value: snap.val(), key: snap.key });
+            if (index % 10 === 0) {
+              count++;
+              this.totalPage.push(count);
+            }
+            index++;
           }
         });
       } else {
         this.active = "nonAnswer";
         questionRef.on("child_added", snap => {
           if (snap.val().ans === undefined) {
-            this.showData[snap.key] = snap.val();
+            this.showData.push({ value: snap.val(), key: snap.key });
+            if (index % 10 === 0) {
+              count++;
+              this.totalPage.push(count);
+            }
+            index++;
           }
         });
       }
     },
     filter() {
       this.showData = [];
+      let count = 1;
+      let index = 1;
+      this.totalPage = [1];
       if (this.search.length > 0) {
         questionRef.on("child_added", snap => {
           var val = snap.val();
           if (val.message.toString().search(this.search) >= 0) {
-            this.showData.push(val);
+            this.showData.push({ value: val, key: snap.key });
+            if (index % 10 === 0) {
+              count++;
+              this.totalPage.push(count);
+            }
+            index++;
           }
         });
-        if ( this.search.length >= 4 && this.showData.length !=0) {
+        if (this.search.length >= 4 && this.showData.length != 0) {
           popularRef.push({
             title: this.search
           });
         }
       } else {
-        questionRef.on("value", snap => {
-          this.showData = snap.val();
+        let count = 1;
+        let index = 1;
+        this.totalPage = [1];
+        this.showData = [];
+        questionRef.on("child_added", snap => {
+          this.showData.push({ value: snap.val(), key: snap.key });
+          if (index % 10 === 0) {
+            count++;
+            this.totalPage.push(count);
+          }
+          index++;
         });
       }
-      
+      this.showData.sort((a, b) => {
+        return a.value.timestamp < b.value.timestamp ? 1 : -1;
+      });
     },
     popularSearch(param) {
-      console.log(param)
-      this.search = param
-      this.filter()
+      console.log(param);
+      this.search = param;
+      this.filter();
     },
     ansLength(val) {
       if (val === undefined) {
@@ -257,18 +321,30 @@ export default {
     }
   },
   mounted() {
-    questionRef.on("value", snap => {
-      this.showData = snap.val();
-      this.countQuestion.all = snap.numChildren();
-    });
+    let count = 1;
+    let index = 1;
+    this.totalPage = [1];
+    this.showData = [];
     questionRef.on("child_added", snap => {
+      this.showData.push({ value: snap.val(), key: snap.key });
+      if (index % 10 === 0) {
+        count++;
+        this.totalPage.push(count);
+      }
+      index++;
+      this.countQuestion.all++;
       if (snap.val().ans !== undefined) {
         this.countQuestion.answer++;
       }
     });
+
+    this.showData.sort((a, b) => {
+      return a.value.timestamp < b.value.timestamp ? 1 : -1;
+    });
     popularRef.limitToLast(5).on("value", snap => {
       this.popular = snap.val();
     });
+    console.log(this.showData);
   }
 };
 </script>

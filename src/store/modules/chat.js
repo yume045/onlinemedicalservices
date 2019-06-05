@@ -18,7 +18,6 @@ const mutations = {
     state.selectChat = payload
   },
   setChatData: (state, payload) => {
-    console.log(payload)
     state.chatData = payload
   },
 }

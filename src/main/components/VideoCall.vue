@@ -16,7 +16,7 @@
           <span id="room-name">{{channel}}</span>
         </div>
         <div class="ag-header-msg text-white">
-          <countdown :time="parseInt(chatData.totime)-parseInt(Date.now())">
+          <countdown :time="parseInt(chatData.totime)-parseInt(Date.now())" @end="countdownend">
             <template
               slot-scope="props"
             >Time Remaining：{{ props.days }} days, {{ props.hours }} hours, {{ props.minutes }} minutes, {{ props.seconds }} seconds.</template>
@@ -67,6 +67,17 @@ export default {
     ...mapGetters({
       chatData: "chat/chatData"
     })
+  },
+  methods: {
+    countdownend: function() {
+      this.counting = false;
+      this.$swal({
+        type: "error",
+        title: "Oops...",
+        text: "หมดเวลาแล้ว"
+      });
+      this.$router.push("/Chat");
+    }
   }
 };
 </script>
