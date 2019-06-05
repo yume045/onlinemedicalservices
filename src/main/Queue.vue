@@ -81,14 +81,19 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="text-center" v-for="(val, key, index) in showData" :key="key">
-                <td>{{index + 1}}</td>
-                <td>{{new Date(val.date).toLocaleDateString('it-IT')}}</td>
-                <td>{{parseInt(val.time) | moment('HH:mm')}} - {{parseInt(val.totime) | moment('HH:mm')}}</td>
-                <td>{{usersData[val.user]}}</td>
+              <tr
+                class="text-center"
+                v-for="(val, key) in showData"
+                :key="key"
+                v-if="key < page * 10 && key >= page * 10 - 10"
+              >
+                <td>{{key + 1}}</td>
+                <td>{{(val.value.date) | moment('DD-MM-Y')}}</td>
+                <td>{{parseInt(val.value.time) | moment('HH:mm')}} - {{parseInt(val.value.totime) | moment('HH:mm')}}</td>
+                <td>{{usersData[val.value.user]}}</td>
                 <td>
                   <base-button
-                    @click="deleteQueue(key)"
+                    @click="deleteQueue(val.key)"
                     type="danger"
                     size="sm"
                     icon="ni ni-fat-remove"
@@ -98,6 +103,29 @@
             </tbody>
           </table>
         </div>
+      </div>
+      <div class="col-12">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+              <a class="page-link" @click="page--" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li
+              :class="(val === page)?'page-item active':'page-item'"
+              v-for="val in totalPage"
+              :key="val"
+            >
+              <a class="page-link" @click="page = val">{{val}}</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" @click="page++" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </section>
   </div>
@@ -124,7 +152,8 @@ export default {
         minutesperqueqe: null,
         breakTime: null
       },
-
+      page: 1,
+      totalPage: [1],
       showData: {},
       usersData: {}
     };
@@ -190,6 +219,18 @@ export default {
             .child(key)
             .remove();
           chatRef.child(key).remove();
+          let count = 1;
+          let index = 1;
+          this.totalPage = [1];
+          this.showData = [];
+          queueRef.child(this.profile.userKey).on("child_added", snap => {
+            this.showData.push({ value: snap.val(), key: snap.key });
+            if (index % 10 === 0) {
+              count++;
+              this.totalPage.push(count);
+            }
+            index++;
+          });
         }
       });
     },
@@ -211,15 +252,26 @@ export default {
     })
   },
   mounted() {
+    let count = 1;
+    let index = 1;
+    this.totalPage = [1];
+    this.showData = [];
     userRef.on("child_added", snap => {
       this.usersData[snap.key] = snap.val().name + " " + snap.val().surname;
     });
-    queueRef
-      .child(this.profile.userKey)
-      .orderByChild("time")
-      .on("value", snap => {
-        this.showData = snap.val();
-      });
+    queueRef.child(this.profile.userKey).on("child_added", snap => {
+      this.showData.push({ value: snap.val(), key: snap.key });
+      if (index % 10 === 0) {
+        count++;
+        this.totalPage.push(count);
+      }
+      index++;
+    });
+    this.showData.sort((a, b) => {
+      return moment(a.value.date).format("x") < moment(b.value.date).format("x")
+        ? 1
+        : -1;
+    });
   }
 };
 </script>

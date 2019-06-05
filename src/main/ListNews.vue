@@ -133,7 +133,7 @@ export default {
       .equalTo(this.type)
       .on("child_added", snap => {
         this.showData.push({ value: snap.val(), key: snap.key });
-        if (index % 10 === 0) {
+        if (index % 9 === 0) {
           count++;
           this.totalPage.push(count);
         }
@@ -185,7 +185,7 @@ export default {
           .equalTo(this.type)
           .on("child_added", snap => {
             this.showData.push({ value: snap.val(), key: snap.key });
-            if (index % 10 === 0) {
+            if (index % 9 === 0) {
               count++;
               this.totalPage.push(count);
             }

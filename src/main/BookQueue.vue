@@ -24,11 +24,11 @@
             >{{dep.addOption}}</option>
           </select>
         </div>-->
-        <div class="col-10 card" v-for="(data, hkey) in showData" :key="hkey">
-          <caption>
-            <user-by-key :userKey="hkey" :department="true"></user-by-key>
+        <div class="col-10 card" v-for="(data) in showData" :key="data.key">
+          <caption @click="selectDoctor(data.key)">
+            <user-by-key :userKey="data.key" :department="true"></user-by-key>
           </caption>
-          <table width="100%" class="table table-hover">
+          <table width="100%" class="table table-hover" v-if="dataQueue && select === data.key">
             <thead class="thead-light">
               <tr class="text-center">
                 <th>ลำดับ</th>
@@ -39,21 +39,25 @@
               </tr>
             </thead>
             <tbody class="text-center">
-              <tr v-for="(val, key, index) in data" :key="key" :hostKey="key">
-                <td>{{index + 1}}</td>
-                <td>{{new Date(val.date).toLocaleDateString('it-IT')}}</td>
-                <td>{{parseInt(val.time) | moment('HH:mm')}} - {{parseInt(val.totime) | moment('HH:mm')}}</td>
+              <tr
+                v-for="(val, key) in dataQueue"
+                :key="key"
+                v-if="key < page * 5 && key >= page * 5 - 5"
+              >
+                <td>{{key + 1}}</td>
+                <td>{{(val.value.date) | moment('DD-MM-Y')}}</td>
+                <td>{{parseInt(val.value.time) | moment('HH:mm')}} - {{parseInt(val.value.totime) | moment('HH:mm')}}</td>
                 <!-- <td>{{usersData[val.user]}}</td> -->
                 <td>
                   <base-button
-                    v-if="val.user === profile.userKey"
+                    v-if="val.value.user === profile.userKey"
                     type="success"
                     size="sm"
                     icon="ni ni-check-bold"
-                    @click="removeQueue(key, hkey)"
+                    @click="removeQueue(val.key, data.key)"
                   ></base-button>
                   <base-button
-                    v-else-if="val.user !== 'N/A'"
+                    v-else-if="val.value.user !== 'N/A'"
                     type="danger"
                     size="sm"
                     disabled
@@ -64,12 +68,35 @@
                     type
                     size="sm"
                     icon="ni ni-fat-add"
-                    @click="addQueue(key, hkey)"
+                    @click="addQueue(val.key, data.key, val.value.date, val.value.time, val.value.totime)"
                   ></base-button>
                 </td>
               </tr>
             </tbody>
           </table>
+          <div class="col-12" v-if="dataQueue && select === data.key">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-center">
+                <li class="page-item">
+                  <a class="page-link" @click="page--" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li
+                  :class="(val === page)?'page-item active':'page-item'"
+                  v-for="val in totalPage"
+                  :key="val"
+                >
+                  <a class="page-link" @click="page = val">{{val}}</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" @click="page++" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -106,7 +133,10 @@ export default {
       showData: {},
       result: "",
       usersData: {},
-      department: {}
+      department: {},
+      dataQueue: null,
+      select: null,
+      page: 1
     };
   },
   components: {
@@ -121,28 +151,35 @@ export default {
   },
   methods: {
     removeQueue: function(key, hkey) {
-      queueRef.child(hkey + "/" + key).update({
-        user: "N/A"
-      });
-      chatRef.child(key).remove();
-      0;
-    },
-    addQueue: function(key, hkey) {
-      if (this.checkQueue(this.showData[hkey][key].date)) {
-        queueRef.child(hkey + "/" + key).update({
-          user: this.profile.userKey
+      queueRef
+        .child(hkey)
+        .child(key)
+        .update({
+          user: "N/A"
         });
+      chatRef.child(key).remove();
+      // queueRef.on("child_added", snap => {
+      //   this.showData.push({ value: snap.val(), key: snap.key });
+      // });
+      this.selectDoctor(hkey);
+    },
+    addQueue: function(key, hkey, date, time, totime) {
+      if (this.checkQueue(date)) {
+        queueRef
+          .child(hkey)
+          .child(key)
+          .update({
+            user: this.profile.userKey
+          });
         chatRef.child(key).set({
           doctor: hkey,
           user: this.profile.userKey,
-          time: this.showData[hkey][key].time,
-          totime: this.showData[hkey][key].totime,
-          date: this.showData[hkey][key].date
+          time: time,
+          totime: totime,
+          date: date
         });
-        var date = moment(this.showData[hkey][key].date).format("YYMMDD");
-        var timeString = moment(
-          parseInt(this.showData[hkey][key].time) - 10 * 60 * 1000
-        ).format("HHmm");
+        var date = moment(date).format("YYMMDD");
+        var timeString = moment(parseInt(time) - 10 * 60 * 1000).format("HHmm");
         axios
           .get(
             "https://www.thaibulksms.com/sms_api.php?" +
@@ -167,6 +204,10 @@ export default {
           text: "สามารถจองคิวได้วันละ 1 คิวเท่านั้น"
         });
       }
+      // queueRef.on("child_added", snap => {
+      //   this.showData.push({ value: snap.val(), key: snap.key });
+      // });
+      this.selectDoctor(hkey);
     },
     checkQueue(date) {
       let result = true;
@@ -181,15 +222,41 @@ export default {
         });
       });
       return result;
+    },
+    selectDoctor(key) {
+      let count = 1;
+      let index = 1;
+      this.totalPage = [1];
+      this.dataQueue = [];
+      this.select = key;
+      queueRef.child(key).on("child_added", snap => {
+        this.dataQueue.push({ value: snap.val(), key: snap.key });
+        if (index % 5 === 0) {
+          count++;
+          this.totalPage.push(count);
+        }
+        index++;
+      });
+      this.dataQueue.sort((a, b) => {
+        return moment(a.value.date).format("x") <
+          moment(b.value.date).format("x")
+          ? 1
+          : -1;
+      });
     }
   },
   mounted() {
+    this.showData = [];
     userRef.on("child_added", snap => {
       this.usersData[snap.key] = snap.val().name + " " + snap.val().surname;
     });
-    queueRef.on("value", snap => {
-      this.showData = snap.val();
+    queueRef.on("child_added", snap => {
+      this.showData.push({ value: snap.val(), key: snap.key });
     });
+    console.log(this.showData);
+    // this.showData.sort((a, b) => {
+    //   return a.timestamp < b.timestamp ? 1 : -1;
+    // });
     const dbRefObject = firebase
       .database()
       .ref()
