@@ -95,6 +95,7 @@
           </router-link>
           <router-link to="/Insert/Member" class="dropdown-item">เพิ่มข้อมูลผู้ใช้</router-link>
           <router-link to="/InsertNews" class="dropdown-item">เพิ่มข่าว - ยา - โรค</router-link>
+          <router-link to="/InsertMedic" class="dropdown-item">เพิ่มข้อมูลยา</router-link>
         </base-dropdown>
       </ul>
       <ul class="navbar-nav align-items-lg-center ml-lg-auto navbar-nav-hover">

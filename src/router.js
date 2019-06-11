@@ -27,7 +27,7 @@ import Billing from "./main/Billing.vue";
 import OrderHistory from "./main/OrderHistory.vue";
 import showOrder from "./main/showOrder.vue";
 import Report from "./main/Report.vue";
-
+import InsertMedic from "./main/InsertMedic.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -258,7 +258,15 @@ export default new Router({
         footer: AppFooter
       }
     },
-
+    {
+      path: "/InsertMedic",
+      name: "InsertMedic",
+      components: {
+        header: AppHeader,
+        default: InsertMedic,
+        footer: AppFooter
+      }
+    }
   ],
   scrollBehavior: to => {
     if (to.hash) {

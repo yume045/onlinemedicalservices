@@ -14,7 +14,7 @@
         <h3>ออกใบสั่งยา</h3>
       </div>
       <div class="row d-flex justify-content-center">
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-md-6">
           <base-input
             alternative
             class="mb-3"
@@ -29,17 +29,10 @@
         </div>
       </div>
       <div class="row d-flex justify-content-center" v-if="reRender">
-        <div class="col-6 col-md-6">
-          <base-input
-            alternative
-            class="mb-3"
-            placeholder="ชื่อยา"
-            addon-left-icon="fa fa-medkit"
-            type="text"
-            v-model="medicName"
-          />
+        <div class="col-8 col-md-4">
+          <model-select :options="options" v-model="item" placeholder="เลือกยา"></model-select>
         </div>
-        <div class="col-3 col-md-3">
+        <div class="col-4 col-md-2">
           <base-input
             alternative
             class="mb-3"
@@ -47,16 +40,6 @@
             addon-left-icon="fa fa-hashtag"
             type="number"
             v-model="count"
-          />
-        </div>
-        <div class="col-3 col-md-3">
-          <base-input
-            alternative
-            class="mb-3"
-            placeholder="ราคาต่อชิ้น"
-            addon-left-icon="fa fa-hashtag"
-            type="number"
-            v-model="price"
           />
         </div>
       </div>
@@ -74,19 +57,25 @@
 <script>
 import firebase from "firebase";
 import { mapGetters } from "vuex";
+import { ModelSelect } from "vue-search-select";
 import ListMedic from "@/main/components/ListMedic";
 import "../assets/vendor/font-awesome/css/font-awesome.css";
 var database = firebase.database();
 var orderRef = database.ref("/OrderMedic");
+var medicRef = database.ref("/Medics");
 export default {
   name: "OrderMedic",
   data() {
     return {
       user: "",
-      medicName: "",
       count: "",
-      price: "",
-      reRender: false
+      reRender: false,
+      options: [],
+      item: {
+        value: "",
+        text: "",
+        price: ""
+      }
     };
   },
   watch: {
@@ -101,11 +90,20 @@ export default {
   },
   methods: {
     addOrder() {
-      orderRef.child(this.user).push({
-        medicName: this.medicName,
-        price: this.price,
-        count: this.count
-      });
+      if (this.item.value != "") {
+        orderRef.child(this.user).push({
+          medicName: this.item.text,
+          price: this.item.price,
+          count: this.count
+        });
+      } else {
+        this.$swal({
+          type: "error",
+          title: "Oops...",
+          text: "กรุณาเลือกยา"
+        });
+      }
+
       this.medicName = "";
       this.price = "";
       this.count = "";
@@ -113,9 +111,18 @@ export default {
   },
   mounted() {
     this.user = this.$route.query.id;
+    medicRef.on("child_added", snap => {
+      this.options.push({
+        value: snap.key,
+        text: snap.val().medicName,
+        price: snap.val().price
+      });
+    });
+    console.log(this.options);
   },
   components: {
-    ListMedic
+    ListMedic,
+    ModelSelect
   }
 };
 </script>
