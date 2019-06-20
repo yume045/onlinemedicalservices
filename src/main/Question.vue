@@ -215,6 +215,10 @@ export default {
         });
     },
     async sendQuestion() {
+      database.ref("/stats/question").push({
+        user: this.getUser.username,
+        timestamp: Date.now()
+      });
       if (this.file != "") await this.createImage();
       this.data.timestamp = Date.now();
       questionRef.push(this.data);

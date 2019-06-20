@@ -46,6 +46,7 @@
 
 <script>
 import * as Cookies from "js-cookie";
+import firebase from "firebase";
 import { mapGetters } from "vuex";
 import AgoraVideoCall from "@/main/components/AgoraVideoCall";
 export default {
@@ -65,7 +66,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      chatData: "chat/chatData"
+      chatData: "chat/chatData",
+      getUser: "user/getuser"
     })
   },
   methods: {
@@ -78,6 +80,15 @@ export default {
       });
       this.$router.push("/Chat");
     }
+  },
+  mounted() {
+    firebase
+      .database()
+      .ref("/stats/videocall")
+      .push({
+        user: this.getUser.username,
+        timestamp: Date.now()
+      });
   }
 };
 </script>

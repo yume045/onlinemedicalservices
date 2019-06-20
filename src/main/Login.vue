@@ -86,8 +86,8 @@ export default {
       setKey: "user/setKey",
       save: "user/save"
     }),
-    async loginWeb(e) {
-      const dbRefObject = await firebase
+    async loginWeb() {
+      const dbRefObject = firebase
         .database()
         .ref()
         .child("Users");
@@ -101,7 +101,13 @@ export default {
             this.signIn({ userSet, status, val });
             this.setKey({ userKey });
             this.save();
-
+            firebase
+              .database()
+              .ref("/stats/viewer")
+              .push({
+                user: this.username,
+                timestamp: Date.now()
+              });
             if (val.Permistion === "Admin") {
               this.$router.push("/Home");
               alert("welcome back Administrator");

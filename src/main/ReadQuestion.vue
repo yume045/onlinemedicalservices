@@ -147,6 +147,10 @@ export default {
   },
   methods: {
     sendAnswer(key) {
+      database.ref("/stats/answer").push({
+        user: this.getUser.username,
+        timestamp: Date.now()
+      });
       this.data.timestamp = Date.now();
       this.data.user = this.profile.userKey;
       questionRef.child(this.$route.params.key + "/ans").push(this.data);

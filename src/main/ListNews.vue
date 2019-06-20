@@ -122,6 +122,11 @@ export default {
     return this.$store.getters.user;
   },
   mounted() {
+    var stat;
+    database.ref("/stat/viewer").on("value", snap => {
+      stat = snap.val();
+    });
+    database.ref("/stat/viewer").set(stat + 1);
     let count = 1;
     let index = 1;
     this.totalPage = [1];
