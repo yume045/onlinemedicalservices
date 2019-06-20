@@ -14,6 +14,40 @@
         <h3 v-if="getUser.Permistion === 'Admin'">จัดการ Order Billings</h3>
         <h3 v-else>Order History</h3>
       </div>
+      <div class="row mt-3" v-if="getUser.Permistion === 'Admin'">
+        <div class="col-3">
+          <h5>กรองข้อมูล :</h5>
+        </div>
+        <div class="col-6">
+          <ul class="list-group nav nav-pills">
+            <li
+              href="#"
+              @click="filterStatus('All')"
+              :class="(active === 'All')?'list-group-item d-flex justify-content-between align-items-center nav-link active':'list-group-item d-flex justify-content-between align-items-center nav-link'"
+            >ข้อมูลทั้งหมด</li>
+            <li
+              href="#"
+              @click="filterStatus('ได้รับการยืนยัน')"
+              :class="(active === 'ได้รับการยืนยัน')?'list-group-item d-flex justify-content-between align-items-center nav-link active':'list-group-item d-flex justify-content-between align-items-center nav-link'"
+            >สถานะจ่ายแล้ว</li>
+            <li
+              href="#"
+              @click="filterStatus('กำลังดำเนินการ')"
+              :class="(active === 'กำลังดำเนินการ')?'list-group-item d-flex justify-content-between align-items-center nav-link active':'list-group-item d-flex justify-content-between align-items-center nav-link'"
+            >สถานะยังไม่จ่าย</li>
+            <li
+              href="#"
+              @click="filterStatus('ดำเนินการจัดส่ง')"
+              :class="(active === 'ดำเนินการจัดส่ง')?'list-group-item d-flex justify-content-between align-items-center nav-link active':'list-group-item d-flex justify-content-between align-items-center nav-link'"
+            >สถานะดำเนินการจัดส่ง</li>
+            <li
+              href="#"
+              @click="filterStatus('ได้รับยาเรียบร้อยแล้ว')"
+              :class="(active === 'ได้รับยาเรียบร้อยแล้ว')?'list-group-item d-flex justify-content-between align-items-center nav-link active':'list-group-item d-flex justify-content-between align-items-center nav-link'"
+            >สถานะสำเร็จ</li>
+          </ul>
+        </div>
+      </div>
       <div class="row mt-3 d-flex justify-content-center">
         <div class="col-10 table-responsive">
           <table class="table table-hover">
@@ -84,6 +118,7 @@ export default {
   name: "OrderHistory",
   data() {
     return {
+      active: "All",
       showData: false
     };
   },
@@ -114,6 +149,30 @@ export default {
       billingRef.child(key).update({
         status: "ได้รับการยืนยัน"
       });
+    },
+    filterStatus(active) {
+      this.active = active;
+
+      if (this.getUser.Permistion === "Admin") {
+        billingRef
+          .orderByChild("status")
+          .equalTo(active)
+          .on("value", snap => {
+            this.showData = snap.val();
+          });
+        if (active === "All") {
+          billingRef.on("value", snap => {
+            this.showData = snap.val();
+          });
+        }
+      } else {
+        billingRef
+          .orderByChild("user")
+          .equalTo(this.profile.userKey)
+          .on("value", snap => {
+            this.showData = snap.val();
+          });
+      }
     }
   },
   mounted() {

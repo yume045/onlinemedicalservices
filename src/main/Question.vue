@@ -94,8 +94,17 @@
                 >รูปภาพที่เกี่ยวข้อง | {{file.name}}</label>
               </div>
             </div>
+            <div class="col-12 mt-2">
+              <select class="custom-select mb-3" v-model="data.department">
+                <option
+                  :key="key"
+                  v-for="(dep, key) in department"
+                  :value="dep.addOption"
+                >{{dep.addOption}}</option>
+              </select>
+            </div>
             <div class="col-12">
-              <base-button type="primary" class="my-4" v-on:click="sendQuestion()">ส่งคำถาม</base-button>
+              <base-button type="primary" class="my-2" v-on:click="sendQuestion()">ส่งคำถาม</base-button>
             </div>
           </div>
         </div>
@@ -103,7 +112,8 @@
         <div class="mt-4 bg-white table-responsive shadow rounded" id="ListQuestion">
           <table class="table table-hover">
             <thead class="thead-light">
-              <th>หัวเรื่อง - คำถาม</th>
+              <th width="35%">หัวเรื่อง - คำถาม</th>
+              <th>แผนก</th>
               <th class="text-center">เจ้าของกระทู้</th>
               <th class="text-center">การตอบกลับ</th>
               <th>สร้างเมื่อ</th>
@@ -116,6 +126,7 @@
                 v-if="key < page * 10 && key >= page * 10 - 10"
               >
                 <td>{{val.value.message}}</td>
+                <td>{{val.value.department}}</td>
                 <td class="text-center">
                   <user-by-key :userKey="val.value.users"></user-by-key>
                 </td>
@@ -171,7 +182,8 @@ export default {
         message: "",
         img: "",
         users: JSON.parse(localStorage.getItem("profile")).userKey,
-        status: "0"
+        status: "0",
+        department: "แผนกฉุกเฉินและอุบัติเหตุ (Emergency Room)"
       },
       ans: "",
       updatekey: "",
@@ -186,7 +198,8 @@ export default {
       active: "All",
       popular: {},
       totalPage: [1],
-      page: 1
+      page: 1,
+      department: null
     };
   },
   computed: {
@@ -226,7 +239,8 @@ export default {
         message: "",
         img: "",
         status: 0,
-        users: this.profile.userKey
+        users: this.profile.userKey,
+        department: "แผนกฉุกเฉินและอุบัติเหตุ (Emergency Room)"
       };
       this.file = "";
     },
@@ -279,7 +293,10 @@ export default {
       if (this.search.length > 0) {
         questionRef.on("child_added", snap => {
           var val = snap.val();
-          if (val.message.toString().search(this.search) >= 0) {
+          if (
+            val.message.toString().search(this.search) >= 0 ||
+            val.department.toString().search(this.search) >= 0
+          ) {
             this.showData.push({ value: val, key: snap.key });
             if (index % 10 === 0) {
               count++;
@@ -347,6 +364,13 @@ export default {
     });
     popularRef.limitToLast(5).on("value", snap => {
       this.popular = snap.val();
+    });
+    const dbRefObject = firebase
+      .database()
+      .ref()
+      .child("Manageoption");
+    dbRefObject.on("value", snap => {
+      this.department = snap.val();
     });
     console.log(this.showData);
   }
