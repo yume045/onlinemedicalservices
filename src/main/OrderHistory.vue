@@ -60,19 +60,23 @@
               <th>จัดการ</th>
             </thead>
             <tbody>
-              <tr v-for="(val, key, index) in showData" :key="key">
-                <td class="text-center">{{index + 1}}</td>
-                <td>{{new Date(val.timestamp).toLocaleDateString('it-IT')}}</td>
-                <td>{{val.status}}</td>
+              <tr
+                v-for="(val, key, index) in showData"
+                :key="key"
+                v-if="key < page * 10 && key >= page * 10 - 10"
+              >
+                <td class="text-center">{{key + 1}}</td>
+                <td>{{new Date(val.value.timestamp).toLocaleDateString('it-IT')}}</td>
+                <td>{{val.value.status}}</td>
                 <td>
-                  <a :href="val.urlImg" target="_blank">
+                  <a :href="val.value.urlImg" target="_blank">
                     <i class="ni ni-image"></i> เอกสารยืนยัน
                   </a>
                 </td>
                 <td class="text-center">
                   <base-button
                     block
-                    @click="showOrder(key)"
+                    @click="showOrder(val.key)"
                     type="success"
                     size="sm"
                     icon="fa fa-search-plus"
@@ -81,20 +85,20 @@
                 <td>
                   <base-button
                     v-if="getUser.Permistion !== 'Admin'"
-                    @click="billing(key)"
+                    @click="billing(val.key)"
                     type="info"
                     size="sm"
                     icon="ni ni-settings-gear-65"
                   ></base-button>
                   <base-button
                     v-if="getUser.Permistion === 'Admin'"
-                    @click="confirmOrder(key)"
+                    @click="confirmOrder(val.key)"
                     type="success"
                     size="sm"
                     icon="ni ni-check-bold"
                   ></base-button>
                   <base-button
-                    @click="deleteBilling(key)"
+                    @click="deleteBilling(val.key)"
                     type="danger"
                     size="sm"
                     icon="ni ni-fat-remove"
@@ -103,6 +107,29 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="col-12 text-center">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item">
+                <a class="page-link" @click="page--" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li
+                :class="(val === page)?'page-item active':'page-item'"
+                v-for="val in totalPage"
+                :key="val"
+              >
+                <a class="page-link" @click="page = val">{{val}}</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" @click="page++" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </section>
@@ -119,7 +146,9 @@ export default {
   data() {
     return {
       active: "All",
-      showData: false
+      showData: false,
+      page: 1,
+      totalPage: [1]
     };
   },
   computed: {
@@ -144,48 +173,110 @@ export default {
       } else {
         billingRef.child(key).remove();
       }
+      this.resetUI();
     },
     confirmOrder(key) {
       billingRef.child(key).update({
         status: "ได้รับการยืนยัน"
       });
+      this.resetUI();
     },
     filterStatus(active) {
       this.active = active;
-
+      let count = 1;
+      let index = 1;
+      this.totalPage = [1];
+      this.showData = [];
       if (this.getUser.Permistion === "Admin") {
         billingRef
           .orderByChild("status")
           .equalTo(active)
-          .on("value", snap => {
-            this.showData = snap.val();
+          .on("child_added", snap => {
+            this.showData.push({ value: snap.val(), key: snap.key });
+            if (index % 10 === 0) {
+              count++;
+              this.totalPage.push(count);
+            }
+            index++;
           });
         if (active === "All") {
-          billingRef.on("value", snap => {
-            this.showData = snap.val();
+          billingRef.on("child_added", snap => {
+            this.showData.push({ value: snap.val(), key: snap.key });
+            if (index % 10 === 0) {
+              count++;
+              this.totalPage.push(count);
+            }
+            index++;
           });
         }
       } else {
         billingRef
           .orderByChild("user")
           .equalTo(this.profile.userKey)
-          .on("value", snap => {
-            this.showData = snap.val();
+          .on("child_added", snap => {
+            this.showData.push({ value: snap.val(), key: snap.key });
+            if (index % 10 === 0) {
+              count++;
+              this.totalPage.push(count);
+            }
+            index++;
+          });
+      }
+    },
+    resetUI() {
+      let count = 1;
+      let index = 1;
+      this.totalPage = [1];
+      this.showData = [];
+      if (this.getUser.Permistion === "Admin") {
+        billingRef.on("child_added", snap => {
+          this.showData.push({ value: snap.val(), key: snap.key });
+          if (index % 10 === 0) {
+            count++;
+            this.totalPage.push(count);
+          }
+          index++;
+        });
+      } else {
+        billingRef
+          .orderByChild("user")
+          .equalTo(this.profile.userKey)
+          .on("child_added", snap => {
+            this.showData.push({ value: snap.val(), key: snap.key });
+            if (index % 10 === 0) {
+              count++;
+              this.totalPage.push(count);
+            }
+            index++;
           });
       }
     }
   },
   mounted() {
+    let count = 1;
+    let index = 1;
+    this.totalPage = [1];
+    this.showData = [];
     if (this.getUser.Permistion === "Admin") {
-      billingRef.on("value", snap => {
-        this.showData = snap.val();
+      billingRef.on("child_added", snap => {
+        this.showData.push({ value: snap.val(), key: snap.key });
+        if (index % 10 === 0) {
+          count++;
+          this.totalPage.push(count);
+        }
+        index++;
       });
     } else {
       billingRef
         .orderByChild("user")
         .equalTo(this.profile.userKey)
-        .on("value", snap => {
-          this.showData = snap.val();
+        .on("child_added", snap => {
+          this.showData.push({ value: snap.val(), key: snap.key });
+          if (index % 10 === 0) {
+            count++;
+            this.totalPage.push(count);
+          }
+          index++;
         });
     }
   }
