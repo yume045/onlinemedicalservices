@@ -86,7 +86,7 @@
                   id="inputGroupFile01"
                   aria-describedby="inputGroupFileAddon01"
                   @change="onFileChange($event.target.files[0])"
-                >
+                />
                 <label
                   class="custom-file-label"
                   multiple
@@ -230,7 +230,8 @@ export default {
     async sendQuestion() {
       database.ref("/stats/question").push({
         user: this.getUser.username,
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        department: this.data.department
       });
       if (this.file != "") await this.createImage();
       this.data.timestamp = Date.now();
@@ -242,6 +243,11 @@ export default {
         users: this.profile.userKey,
         department: "แผนกฉุกเฉินและอุบัติเหตุ (Emergency Room)"
       };
+      this.$swal({
+        title: "สำเร็จ",
+        text: "เพิ่มข้อมูลคำถามเรียบร้อย",
+        type: "success"
+      });
       this.file = "";
     },
     filterQuestion(type) {

@@ -22,7 +22,7 @@
         </div>
       </div>
       <div id="chart" class="row justify-content-center" v-if="piechartData">
-        <h4>{{"4 อันดับ USER ที่ใช้งานบ่อยที่สุด"}}</h4>
+        <h4>{{"คำถามแผนกต่างๆ"}}</h4>
         <pie-chart :data="piechartData"></pie-chart>
       </div>
       <div class="row mt-4">
@@ -228,12 +228,13 @@ export default {
     setTimeout(() => {
       loader.hide();
     }, 5000);
-    statRef.child("viewer").on("child_added", snap => {
-      if (this.userstat[snap.val().user] === undefined) {
-        this.userstat.push(snap.val().user);
-        this.userstat[snap.val().user] = 1;
+    let count = 0;
+    statRef.child("question").on("child_added", snap => {
+      if (this.userstat[snap.val().department] === undefined) {
+        this.userstat.push(snap.val().department);
+        this.userstat[snap.val().department] = 1;
       }
-      this.userstat[snap.val().user]++;
+      this.userstat[snap.val().department]++;
     });
     console.log(this.userstat);
     statRef.child("answer").on("value", snap => {
@@ -274,17 +275,34 @@ export default {
         this.userstat[0],
         this.userstat[1],
         this.userstat[2],
-        this.userstat[3]
+        this.userstat[3],
+        this.userstat[4],
+        this.userstat[5],
+        this.userstat[6],
+        this.userstat[7]
       ],
       datasets: [
         {
           label: "Data One",
-          backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#3578E5"],
+          backgroundColor: [
+            "#41B883",
+            "#E46651",
+            "#00D8FF",
+            "#3578E5",
+            "#211882",
+            "#F45631",
+            "#50D7F1",
+            "#157AE5"
+          ],
           data: [
             this.userstat[this.userstat[0]],
             this.userstat[this.userstat[1]],
             this.userstat[this.userstat[2]],
-            this.userstat[this.userstat[3]]
+            this.userstat[this.userstat[3]],
+            this.userstat[this.userstat[4]],
+            this.userstat[this.userstat[5]],
+            this.userstat[this.userstat[6]],
+            this.userstat[this.userstat[7]]
           ]
         }
       ]
