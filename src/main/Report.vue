@@ -17,9 +17,13 @@
       </div>
       <div class="row mt-3">
         <h4>{{"สถิติข้อมูลทั้งหมด"}}</h4>
-        <div class="col-12">
+        <div class="col-12" v-if="chartData">
           <GChart type="ColumnChart" :data="chartData" :options="chartOptions"></GChart>
         </div>
+      </div>
+      <div id="chart" class="row justify-content-center" v-if="piechartData">
+        <h4>{{"4 อันดับ USER ที่ใช้งานบ่อยที่สุด"}}</h4>
+        <pie-chart :data="piechartData"></pie-chart>
       </div>
       <div class="row mt-4">
         <div class="col-6">
@@ -93,6 +97,7 @@ import flatPicker from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import momentjs from "moment";
 import { mapGetters } from "vuex";
+import PieChart from "./components/PieChart.js";
 var database = firebase.database();
 var statRef = database.ref("/stats");
 var statsRef = database.ref("/stat");
@@ -118,23 +123,15 @@ export default {
       stat: {
         viewer: null
       },
-      chartData: [
-        [
-          "ALL-TIME",
-          "Viewer",
-          "Videocall",
-          "ตอบคำถาม",
-          "ถามคำถาม",
-          "ผู้เข้าชมเว็บไซต์ทั้งหมด"
-        ],
-        ["ALL-TIME", 1000, 400, 200, 300, 100]
-      ],
+      chartData: null,
       chartOptions: {
         chart: {
           title: "Stats"
         }
       },
-      showData: null
+      piechartData: null,
+      showData: null,
+      userstat: null
     };
   },
   watch: {
@@ -209,7 +206,8 @@ export default {
   },
   components: {
     GChart,
-    flatPicker
+    flatPicker,
+    PieChart
   },
   computed: {
     ...mapGetters({
@@ -226,13 +224,18 @@ export default {
       canCancel: true,
       onCancel: this.onCancel
     });
+    this.userstat = [];
     setTimeout(() => {
       loader.hide();
     }, 5000);
-    statsRef.child("viewer").on("value", snap => {
-      this.stat.viewer = snap.val();
-      console.log(this.stat.viewer);
+    statRef.child("viewer").on("child_added", snap => {
+      if (this.userstat[snap.val().user] === undefined) {
+        this.userstat.push(snap.val().user);
+        this.userstat[snap.val().user] = 1;
+      }
+      this.userstat[snap.val().user]++;
     });
+    console.log(this.userstat);
     statRef.child("answer").on("value", snap => {
       this.stats.answer = snap.numChildren();
     });
@@ -241,6 +244,9 @@ export default {
     });
     statRef.child("viewer").on("value", snap => {
       this.stats.viewer = snap.numChildren();
+    });
+    statRef.child("videocall").on("value", snap => {
+      this.stats.videocall = snap.numChildren();
     });
     statRef.child("videocall").on("value", snap => {
       this.stats.videocall = snap.numChildren();
@@ -263,6 +269,26 @@ export default {
         this.viewer
       ]
     ];
+    this.piechartData = {
+      labels: [
+        this.userstat[0],
+        this.userstat[1],
+        this.userstat[2],
+        this.userstat[3]
+      ],
+      datasets: [
+        {
+          label: "Data One",
+          backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#3578E5"],
+          data: [
+            this.userstat[this.userstat[0]],
+            this.userstat[this.userstat[1]],
+            this.userstat[this.userstat[2]],
+            this.userstat[this.userstat[3]]
+          ]
+        }
+      ]
+    };
   }
 };
 </script>
