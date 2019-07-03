@@ -115,6 +115,9 @@ export default {
         videocall: null,
         viewer: null
       },
+      stat: {
+        viewer: null
+      },
       chartData: [
         [
           "ALL-TIME",
@@ -217,8 +220,18 @@ export default {
   },
   methods: {},
   mounted() {
+    let loader = this.$loading.show({
+      // Optional parameters
+      container: this.fullPage ? null : this.$refs.formContainer,
+      canCancel: true,
+      onCancel: this.onCancel
+    });
+    setTimeout(() => {
+      loader.hide();
+    }, 5000);
     statsRef.child("viewer").on("value", snap => {
-      this.viewer = snap.val();
+      this.stat.viewer = snap.val();
+      console.log(this.stat.viewer);
     });
     statRef.child("answer").on("value", snap => {
       this.stats.answer = snap.numChildren();

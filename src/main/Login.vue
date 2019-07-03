@@ -23,8 +23,8 @@
             <template>
               <div class="text-center text-muted mb-4">
                 <small>Login</small>
-                <br>
-                <img :src="require('../assets/logo.png')" height="40px">
+                <br />
+                <img :src="require('../assets/logo.png')" height="40px" />
               </div>
               <form role="form">
                 <base-input
@@ -87,6 +87,12 @@ export default {
       save: "user/save"
     }),
     async loginWeb() {
+      let loader = this.$loading.show({
+        // Optional parameters
+        container: this.fullPage ? null : this.$refs.formContainer,
+        canCancel: true,
+        onCancel: this.onCancel
+      });
       const dbRefObject = firebase
         .database()
         .ref()
@@ -108,6 +114,7 @@ export default {
                 user: this.username,
                 timestamp: Date.now()
               });
+            loader.hide();
             if (val.Permistion === "Admin") {
               this.$router.push("/Home");
               alert("welcome back Administrator");
