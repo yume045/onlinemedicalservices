@@ -166,20 +166,46 @@ export default {
       this.$router.push("/showOrder/" + key);
     },
     deleteBilling(key) {
-      if (this.getUser.Permistion === "Admin") {
-        billingRef.child(key).update({
-          status: "ไม่ได้รับการยืนยัน!!"
-        });
-      } else {
-        billingRef.child(key).remove();
-      }
-      this.resetUI();
+      this.$swal({
+        title: "ยกเลิก ?",
+        text: "ต้องการยกเลิก ORDER นี่ใช่หรือไม",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes"
+      }).then(result => {
+        if (result.value) {
+          this.$swal("ยกเลิก!", "ยกเลิก ORDER สำเร็จ.", "success");
+          if (this.getUser.Permistion === "Admin") {
+            billingRef.child(key).update({
+              status: "ไม่ได้รับการยืนยัน!!"
+            });
+          } else {
+            billingRef.child(key).remove();
+          }
+          this.resetUI();
+        }
+      });
     },
     confirmOrder(key) {
-      billingRef.child(key).update({
-        status: "ได้รับการยืนยัน"
+      this.$swal({
+        title: "ยืนยัน",
+        text: "ต้องการยืนยัน ORDER นี่ใช่หรือไม่",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes"
+      }).then(result => {
+        if (result.value) {
+          this.$swal("ยืนยัน!", "ยืนยัน ORDER สำเร็จ.", "success");
+          billingRef.child(key).update({
+            status: "ได้รับการยืนยัน"
+          });
+          this.resetUI();
+        }
       });
-      this.resetUI();
     },
     filterStatus(active) {
       this.active = active;
