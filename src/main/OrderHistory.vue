@@ -66,8 +66,26 @@
                 v-if="key < page * 10 && key >= page * 10 - 10"
               >
                 <td class="text-center">{{key + 1}}</td>
-                <td>{{new Date(val.value.timestamp).toLocaleDateString('it-IT')}}</td>
-                <td>{{val.value.status}}</td>
+                <td>{{val.value.timestamp | moment("DD/MM/YY")}}</td>
+                <td>
+                  <badge
+                    type="success"
+                    v-if="val.value.status === 'ได้รับยาเรียบร้อยแล้ว'"
+                  >{{val.value.status}}</badge>
+                  <badge
+                    type="warning"
+                    v-else-if="val.value.status === 'ดำเนินการจัดส่ง'"
+                  >{{val.value.status}}</badge>
+                  <badge
+                    type="danger"
+                    v-else-if="val.value.status === 'ไม่ได้รับการยืนยัน!!'"
+                  >{{val.value.status}}</badge>
+                  <badge
+                    type="info"
+                    v-else-if="val.value.status === 'ได้รับการยืนยัน'"
+                  >{{val.value.status}}</badge>
+                  <badge type="default" v-else>{{val.value.status}}</badge>
+                </td>
                 <td>
                   <a :href="val.value.urlImg" target="_blank">
                     <i class="ni ni-image"></i> เอกสารยืนยัน
@@ -84,20 +102,33 @@
                 </td>
                 <td>
                   <base-button
-                    v-if="getUser.Permistion !== 'Admin'"
+                    v-if="val.value.status === 'ได้รับยาเรียบร้อยแล้ว'"
+                    type="success"
+                    size="sm"
+                    disabled
+                  >เรียบร้อยแล้ว</base-button>
+                  <base-button
+                    v-else-if="val.value.status === 'ดำเนินการจัดส่ง'"
+                    type="warning"
+                    size="sm"
+                    disabled
+                  >ดำเนินการจัดส่ง</base-button>
+                  <base-button
+                    v-else-if="getUser.Permistion !== 'Admin'"
                     @click="billing(val.key)"
                     type="info"
                     size="sm"
                     icon="ni ni-settings-gear-65"
                   ></base-button>
                   <base-button
-                    v-if="getUser.Permistion === 'Admin'"
+                    v-else-if="getUser.Permistion === 'Admin'"
                     @click="confirmOrder(val.key)"
                     type="success"
                     size="sm"
                     icon="ni ni-check-bold"
                   ></base-button>
                   <base-button
+                    v-if="val.value.status !== 'ได้รับยาเรียบร้อยแล้ว' && val.value.status !== 'ดำเนินการจัดส่ง'"
                     @click="deleteBilling(val.key)"
                     type="danger"
                     size="sm"
@@ -248,6 +279,9 @@ export default {
             index++;
           });
       }
+      this.showData.sort((a, b) =>
+        a.value.timestamp < b.value.timestamp ? 1 : -1
+      );
     },
     resetUI() {
       let count = 1;
@@ -276,6 +310,9 @@ export default {
             index++;
           });
       }
+      this.showData.sort((a, b) =>
+        a.value.timestamp < b.value.timestamp ? 1 : -1
+      );
     }
   },
   mounted() {
@@ -305,6 +342,9 @@ export default {
           index++;
         });
     }
+    this.showData.sort((a, b) =>
+      a.value.timestamp < b.value.timestamp ? 1 : -1
+    );
   }
 };
 </script>
