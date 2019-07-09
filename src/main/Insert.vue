@@ -57,6 +57,8 @@
                     type="text"
                     placeholder="รหัสประจำตัวประชาชน"
                     v-model="idpeople"
+                    maxlength="13"
+                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                   ></base-input>
                   <base-input
                     alternative
@@ -92,6 +94,8 @@
                     type="number"
                     placeholder="ส่วนสูง"
                     v-model="height"
+                    min="0"
+                    max="300"
                   ></base-input>
                   <base-input
                     alternative
@@ -99,6 +103,8 @@
                     type="number"
                     placeholder="น้ำหนัก"
                     v-model="weight"
+                    min="0"
+                    max="300"
                   ></base-input>
                   <base-input
                     alternative
@@ -113,6 +119,8 @@
                     type="text"
                     placeholder="เบอร์โทรศัพท์"
                     v-model="numberphone"
+                    maxlength="10"
+                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                   ></base-input>
                   <textarea
                     class="mb-3 form-control form-control-alternative"

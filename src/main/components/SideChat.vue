@@ -11,7 +11,7 @@
         <div :class="(key === selectChat)?'chat_list active_chat':'chat_list'">
           <div class="chat_people">
             <div class="chat_img">
-              <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+              <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil" />
             </div>
             <div v-if="getUser.type === 'Doctor'" class="chat_ib">
               <h5>
@@ -79,12 +79,17 @@ export default {
   },
   created() {
     chatRef.on("child_added", snap => {
-      if (snap.val().doctor === this.profile.userKey) {
-        this.showData[snap.key] = snap.val();
+      if (this.getUser.Permistion === "doctor") {
+        if (snap.val().doctor === this.profile.userKey) {
+          this.showData[snap.key] = snap.val();
+        }
       } else {
-        this.showData[snap.key] = snap.val();
+        if (snap.val().user === this.profile.userKey) {
+          this.showData[snap.key] = snap.val();
+        }
       }
     });
+    console.log(this.showData);
   }
 };
 </script>

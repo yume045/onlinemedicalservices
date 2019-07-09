@@ -163,51 +163,64 @@ export default {
       // });
       this.selectDoctor(hkey);
     },
-    addQueue: function(key, hkey, date, time, totime) {
-      if (this.checkQueue(date)) {
-        queueRef
-          .child(hkey)
-          .child(key)
-          .update({
-            user: this.profile.userKey
-          });
-        chatRef.child(key).set({
-          doctor: hkey,
-          user: this.profile.userKey,
-          time: time,
-          totime: totime,
-          date: date
+    insertQueue(key, hkey, date, time, totime) {
+      queueRef
+        .child(hkey)
+        .child(key)
+        .update({
+          user: this.profile.userKey
         });
-        var date = moment(date).format("YYMMDD");
-        var timeString = moment(parseInt(time) - 10 * 60 * 1000).format("HHmm");
-        axios
-          .get(
-            "https://www.thaibulksms.com/sms_api.php?" +
-              "username=onlinemedic&password=onlinemedic" +
-              "&msisdn=" +
-              this.getUser.numberphone +
-              "&message=แจ้งเตื่อน !! ใกล้ถึงเวลานัดที่คุณนัดหมอไว้แล้ว โปรดเข้าเว็บ Online Medicial Servicer เพื่อพบหมอ" +
-              "&sender=SMS" +
-              "&ScheduledDelivery=" +
-              date +
-              timeString +
-              "&force=standard"
-          )
-          .then(function(response) {
-            // handle success
-            console.log(response.data);
-          });
+      chatRef.child(key).set({
+        doctor: hkey,
+        user: this.profile.userKey,
+        time: time,
+        totime: totime,
+        date: date
+      });
+      console.log(key);
+
+      var date = moment(date).format("YYMMDD");
+      var timeString = moment(parseInt(time) - 10 * 60 * 1000).format("HHmm");
+      axios.get(
+        "https://www.thaibulksms.com/sms_api.php?" +
+          "username=onlinemedic&password=onlinemedic" +
+          "&msisdn=" +
+          this.getUser.numberphone +
+          "&message=แจ้งเตื่อน !! ใกล้ถึงเวลานัดที่คุณนัดหมอไว้แล้ว โปรดเข้าเว็บ Online Medicial Servicer เพื่อพบหมอ" +
+          "&sender=SMS" +
+          "&ScheduledDelivery=" +
+          date +
+          timeString +
+          "&force=standard"
+      );
+      this.selectDoctor(hkey);
+    },
+    addQueue(key, hkey, date, time, totime) {
+      if (this.checkQueue(date)) {
+        this.$swal({
+          title: "จองคิว ?",
+          text: "ต้องการจองคิวหรือไม่ ?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "จองคิว"
+        }).then(result => {
+          if (result.value) {
+            this.$swal("จองคิว!", "จองคิวสำเร็จ.", "success");
+            this.insertQueue(key, hkey, date, time, totime);
+          }
+        });
       } else {
         this.$swal({
           type: "error",
-          title: "Oops...",
+          title: "ไม่สามารถจองคิวได้",
           text: "สามารถจองคิวได้วันละ 1 คิวเท่านั้น"
         });
       }
       // queueRef.on("child_added", snap => {
       //   this.showData.push({ value: snap.val(), key: snap.key });
       // });
-      this.selectDoctor(hkey);
     },
     checkQueue(date) {
       let result = true;
