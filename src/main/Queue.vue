@@ -14,7 +14,7 @@
         <h3>จัดการคิว - กำหนดคิว</h3>
       </div>
       <div class="row mt-5 justify-content-center">
-        <div class="col-sm-12 col-md-4">
+        <div class="col-sm-12 col-md-6">
           <base-input alternative addon-left-icon="ni ni-calendar-grid-58">
             <flat-picker
               slot-scope="{focus, blur}"
@@ -23,6 +23,18 @@
               :config="{allowInput: true}"
               class="form-control datepicker"
               v-model="payload.date"
+            ></flat-picker>
+          </base-input>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <base-input alternative addon-left-icon="ni ni-calendar-grid-58">
+            <flat-picker
+              slot-scope="{focus, blur}"
+              @on-open="focus"
+              @on-close="blur"
+              :config="{allowInput: true}"
+              class="form-control datepicker"
+              v-model="payload.toDate"
             ></flat-picker>
           </base-input>
         </div>
@@ -44,7 +56,7 @@
             v-model="payload.totime"
           ></base-input>
         </div>
-        <div class="col-sm-4 col-md-4">
+        <div class="col-sm-4 col-md-3">
           <base-input
             placeholder="Minutes:Queue"
             addon-left-icon="ni ni-watch-time"
@@ -54,7 +66,7 @@
             v-model="payload.minutesperqueqe"
           ></base-input>
         </div>
-        <div class="col-sm-4 col-md-4">
+        <div class="col-sm-4 col-md-3">
           <base-input
             placeholder="Break Time / เวลาพัก"
             addon-left-icon="ni ni-watch-time"
@@ -88,7 +100,7 @@
                 v-if="key < page * 10 && key >= page * 10 - 10"
               >
                 <td>{{key + 1}}</td>
-                <td>{{(val.value.date) | moment('DD-MM-Y')}}</td>
+                <td>{{(val.value.date) | moment('DD/MM/Y')}}</td>
                 <td>{{parseInt(val.value.time) | moment('HH:mm')}} - {{parseInt(val.value.totime) | moment('HH:mm')}}</td>
                 <td>{{usersData[val.value.user]}}</td>
                 <td>
@@ -147,6 +159,7 @@ export default {
     return {
       payload: {
         date: new Date(),
+        toDate: new Date(),
         time: "08:00",
         totime: "11:00",
         minutesperqueqe: null,
@@ -154,7 +167,6 @@ export default {
       },
       page: 1,
       totalPage: [1],
-      showData: {},
       usersData: {}
     };
   },
@@ -167,27 +179,44 @@ export default {
         this.payload.date.toString() + " " + this.payload.totime
       ).format("x");
       let finish = parseInt(start) + this.payload.minutesperqueqe * 60 * 1000;
+      var startDate = parseInt(moment(this.payload.date).format("x"));
+      var toDate = parseInt(moment(this.payload.toDate).format("x"));
+      var finishDate = startDate;
+      console.log("todate", toDate);
       if (this.checkTime(start)) {
-        while (finish <= end) {
-          queueRef.child(this.profile.userKey).push({
-            date: this.payload.date,
-            user: "N/A",
-            rate: 0,
-            time: start,
-            totime: finish
-          });
-          start = finish + this.payload.breakTime * 60 * 1000;
+        while (finishDate <= toDate) {
+          start = moment(
+            this.payload.date.toString() + " " + this.payload.time
+          ).format("x");
+          end = moment(
+            this.payload.date.toString() + " " + this.payload.totime
+          ).format("x");
           finish = parseInt(start) + this.payload.minutesperqueqe * 60 * 1000;
+          while (finish <= end) {
+            console.log("count");
+            queueRef.child(this.profile.userKey).push({
+              date: finishDate,
+              user: "N/A",
+              rate: 0,
+              time: start,
+              totime: finish
+            });
+            start = finish + this.payload.breakTime * 60 * 1000;
+            finish = parseInt(start) + this.payload.minutesperqueqe * 60 * 1000;
+          }
+          startDate = finishDate;
+          finishDate = startDate + 24 * 60 * 60 * 1000;
         }
       } else {
         this.$swal({
           type: "error",
-          title: "Oops...",
-          text: "กำหนดวันเวลาไม่ถูกต้อง โปรดตรวจสอบวันเวลาของท่าน"
+          title: "กำหนดวันเวลาไม่ถูกต้อง",
+          text: "โปรดตรวจสอบวันเวลาของท่าน"
         });
       }
       this.payload = {
         date: new Date(),
+        toDate: new Date(),
         time: "08:00",
         totime: "11:00",
         minutesperqueqe: 30,

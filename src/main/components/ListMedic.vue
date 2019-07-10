@@ -6,8 +6,8 @@
     <div class="row">
       <div class="col-8 d-flex d-row">
         ชื่อผู้ป่วย :
-        <user-by-key v-if="print" :userKey="user.key"/>
-        <user-by-key v-else :userKey="userKey"/>
+        <user-by-key v-if="print" :userKey="user.key" />
+        <user-by-key v-else :userKey="userKey" />
       </div>
       <div class="col-4 d-flex d-row">
         วันที่ :
@@ -28,7 +28,7 @@
           <tr v-for="(val, key, index) in showData" :key="key">
             <td class="text-center">{{index + 1}}</td>
             <td>{{val.medicName}}</td>
-            <td class="text-center">{{val.count}}</td>
+            <td class="text-center">{{val.count}} {{val.unit}}</td>
             <td class="text-center">{{parseFloat(val.count) * parseFloat(val.price)}}</td>
             <td class="text-center" v-if="getUser.type !== 'Member'">
               <base-button

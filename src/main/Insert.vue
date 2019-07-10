@@ -252,7 +252,7 @@ export default {
       ) {
         this.$swal({
           type: "error",
-          title: "Oops...",
+          title: "ผิดพลาด",
           text: "กรุณากรอกข้อมูลให้ครบ",
           footer: "<a href>Why do I have this issue?</a>"
         });

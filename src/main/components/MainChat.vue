@@ -50,7 +50,7 @@
         </div>
         <div v-if="val.userKey !== profile.userKey" class="incoming_msg">
           <div class="incoming_msg_img">
-            <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+            <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil" />
           </div>
           <div class="received_msg">
             <div class="received_withd_msg">
@@ -97,7 +97,7 @@
         v-if="showRate || rate > 0"
       >
         <h5 class="pt-2">คะแนน :</h5>
-        <rate :length="5" v-model="rate" :readonly="readOnlyRate"/>
+        <rate :length="5" v-model="rate" :readonly="readOnlyRate" />
         <h5 class="pt-2">{{rate}}</h5>
       </div>
     </div>
@@ -127,7 +127,7 @@
         v-if="showRate || rate > 0"
       >
         <h5 class="pt-2">คะแนน :</h5>
-        <rate :length="5" v-model="rate " :readonly="readOnlyRate"/>
+        <rate :length="5" v-model="rate " :readonly="readOnlyRate" />
         <h5 class="pt-2">{{rate}}</h5>
       </div>
     </div>

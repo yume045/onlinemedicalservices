@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="row d-flex justify-content-center" v-if="reRender">
-        <div class="col-8 col-md-4">
+        <div class="col-4 col-md-4">
           <model-select :options="options" v-model="item" placeholder="เลือกยา"></model-select>
         </div>
         <div class="col-4 col-md-2">
@@ -42,14 +42,18 @@
             v-model="count"
           />
         </div>
+        <div class="col-4 col-md-4">
+          <model-select :options="optionsUnit" v-model="itemUnit" placeholder="เลือกหน่วยนับ"></model-select>
+        </div>
       </div>
+
       <div class="row d-flex justify-content-center" v-if="reRender">
         <div class="col-12 col-md-6">
           <base-button type="primary" block @click="addOrder()">เพิ่มยา</base-button>
         </div>
       </div>
       <div class="row d-flex justify-content-center mt-5">
-        <ListMedic :userKey="user" v-if="reRender"/>
+        <ListMedic :userKey="user" v-if="reRender" />
       </div>
     </section>
   </div>
@@ -71,7 +75,34 @@ export default {
       count: "",
       reRender: false,
       options: [],
+      optionsUnit: [
+        {
+          value: "เม็ด",
+          text: "เม็ด"
+        },
+        {
+          value: "แคปซูล",
+          text: "แคปซูล"
+        },
+        {
+          value: "กล่อง",
+          text: "กล่อง"
+        },
+        {
+          value: "ขวด",
+          text: "ขวด"
+        },
+        {
+          value: "ชุด",
+          text: "ชุด"
+        }
+      ],
       item: {
+        value: "",
+        text: "",
+        price: ""
+      },
+      itemUnit: {
         value: "",
         text: "",
         price: ""
@@ -94,12 +125,13 @@ export default {
         orderRef.child(this.user).push({
           medicName: this.item.text,
           price: this.item.price,
-          count: this.count
+          count: this.count,
+          unit: this.itemUnit.text
         });
       } else {
         this.$swal({
           type: "error",
-          title: "Oops...",
+          title: "ผิดพลาด",
           text: "กรุณาเลือกยา"
         });
       }
@@ -118,6 +150,7 @@ export default {
         price: snap.val().price
       });
     });
+
     console.log(this.options);
   },
   components: {

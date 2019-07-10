@@ -22,9 +22,16 @@
         </div>
       </div>
       <div id="chart" class="row justify-content-center" v-if="piechartData">
-        <h4>{{"คำถามแผนกต่างๆ"}}</h4>
-        <pie-chart :data="piechartData"></pie-chart>
+        <div class="col-7">
+          <h4>{{"คำถามแผนกต่างๆ"}}</h4>
+          <pie-chart :data="piechartData"></pie-chart>
+        </div>
+        <div class="col-6">
+          <h4>{{"ข้อมูลการใช้งาน"}}</h4>
+          <pie-chart :data="piechartData2"></pie-chart>
+        </div>
       </div>
+
       <div class="row mt-4">
         <div class="col-6">
           <base-input alternative addon-left-icon="ni ni-calendar-grid-58">
@@ -130,6 +137,7 @@ export default {
         }
       },
       piechartData: null,
+      piechartData2: null,
       showData: null,
       userstat: null
     };
@@ -281,6 +289,7 @@ export default {
         this.userstat[6],
         this.userstat[7]
       ],
+      width: "500",
       datasets: [
         {
           label: "Data One",
@@ -303,6 +312,38 @@ export default {
             this.userstat[this.userstat[5]],
             this.userstat[this.userstat[6]],
             this.userstat[this.userstat[7]]
+          ]
+        }
+      ]
+    };
+
+    this.piechartData2 = {
+      labels: [
+        "Member Viewer",
+        "Videocall",
+        "ตอบคำถาม",
+        "ถามคำถาม",
+        "ผู้เข้าชมเว็บไซต์ทั้งหมด"
+      ],
+      datasets: [
+        {
+          label: "Data One",
+          backgroundColor: [
+            "#41B883",
+            "#E46651",
+            "#00D8FF",
+            "#3578E5",
+            "#211882",
+            "#F45631",
+            "#50D7F1",
+            "#157AE5"
+          ],
+          data: [
+            this.stats.viewer,
+            this.stats.videocall,
+            this.stats.answer,
+            this.stats.question,
+            this.viewer
           ]
         }
       ]

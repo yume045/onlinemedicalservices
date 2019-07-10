@@ -75,7 +75,7 @@ export default {
       this.counting = false;
       this.$swal({
         type: "error",
-        title: "Oops...",
+        title: "หมดเวลา",
         text: "หมดเวลาแล้ว"
       });
       this.$router.push("/Chat");
