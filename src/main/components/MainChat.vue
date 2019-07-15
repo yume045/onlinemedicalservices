@@ -75,7 +75,7 @@
           @click="$router.push('/OrderMedic?id='+ chatData.user )"
           v-if="getUser.type === 'Doctor'"
         >จ่ายยา</base-button>
-        <base-button size="sm" type="warning" block @click="showRate = !showRate">RATING</base-button>
+        <base-button size="sm" type="warning" block @click="showRate = !showRate">Review</base-button>
       </div>
       <div class="col-md-7 col-sm-8">
         <base-input
@@ -111,7 +111,7 @@
           @click="$router.push('/OrderMedic?id='+ chatData.user )"
           v-if="getUser.type === 'Doctor'"
         >จ่ายยา</base-button>
-        <base-button size="sm" type="warning" block @click="showRate = !showRate">RATING</base-button>
+        <base-button size="sm" type="warning" block @click="showRate = !showRate">Review</base-button>
       </div>
       <div class="col-md-7 col-sm-8">
         <base-input v-model="message" alternative rows="1" placeholder="ไม่ตรงกับเวลานัด" disabled></base-input>

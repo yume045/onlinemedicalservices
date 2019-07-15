@@ -11,7 +11,7 @@
     </section>
     <section class="jumbotron bg-secondary container mt--300 shadow rounded">
       <div class="row">
-        <h3>จองคิวหมอ</h3>
+        <h3>จองคิวแพทย์</h3>
       </div>
       <div class="row justify-content-center mt-3">
         <!-- <div class="col-2 h5">เลือกแผนก :</div>
@@ -197,10 +197,10 @@ export default {
           "username=onlinemedic&password=onlinemedic" +
           "&msisdn=" +
           this.getUser.numberphone +
-          "&message=แจ้งเตื่อน !! ใกล้ถึงเวลานัดที่คุณนัดหมอไว้แล้ว เวลา : " +
+          "&message=แจ้งเตื่อน !! ใกล้ถึงเวลานัดที่คุณนัดแพทย์ไว้แล้ว เวลา : " +
           moment(date).format("DD/MM/YY") +
           " " +
-          moment(time).format("hh:mm") +
+          moment(time).format("HH:mm") +
           " โปรดเข้าเว็บ Online Medicial Servicer เพื่อพบ: " +
           this.usersData[hkey] +
           "&sender=SMS" +

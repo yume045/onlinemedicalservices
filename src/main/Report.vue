@@ -17,8 +17,8 @@
       </div>
       <div class="row mt-3">
         <h4>{{"สถิติข้อมูลทั้งหมด"}}</h4>
-        <div class="col-12" v-if="chartData">
-          <GChart type="ColumnChart" :data="chartData" :options="chartOptions"></GChart>
+        <div class="col-12" v-if="datacollection">
+          <line-chart :chart-data="datacollection"></line-chart>
         </div>
       </div>
       <div id="chart" class="row justify-content-center" v-if="piechartData">
@@ -105,6 +105,7 @@ import "flatpickr/dist/flatpickr.css";
 import momentjs from "moment";
 import { mapGetters } from "vuex";
 import PieChart from "./components/PieChart.js";
+import LineChart from "./components/LineChart.js";
 var database = firebase.database();
 var statRef = database.ref("/stats");
 var statsRef = database.ref("/stat");
@@ -139,7 +140,8 @@ export default {
       piechartData: null,
       piechartData2: null,
       showData: null,
-      userstat: null
+      userstat: null,
+      datacollection: null
     };
   },
   watch: {
@@ -215,7 +217,8 @@ export default {
   components: {
     GChart,
     flatPicker,
-    PieChart
+    PieChart,
+    LineChart
   },
   computed: {
     ...mapGetters({
@@ -224,7 +227,11 @@ export default {
       getUser: "user/getuser"
     })
   },
-  methods: {},
+  methods: {
+    getRandomInt() {
+      return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
+    }
+  },
   mounted() {
     let loader = this.$loading.show({
       // Optional parameters
@@ -257,9 +264,7 @@ export default {
     statRef.child("videocall").on("value", snap => {
       this.stats.videocall = snap.numChildren();
     });
-    statRef.child("videocall").on("value", snap => {
-      this.stats.videocall = snap.numChildren();
-    });
+
     this.chartData = [
       [
         "ALL-TIME",
@@ -344,6 +349,22 @@ export default {
             this.stats.answer,
             this.stats.question,
             this.viewer
+          ]
+        }
+      ]
+    };
+
+    this.datacollection = {
+      labels: ["ยอด Videocall ", "ยอดผู้เข้าชม", "ยอดตอบคำถาม", "ยอดคำถาม"],
+      datasets: [
+        {
+          label: "สถิติข้อมูลทั้งหมด",
+          backgroundColor: "#5e72e4",
+          data: [
+            this.stats.videocall,
+            this.stats.viewer,
+            this.stats.answer,
+            this.stats.question
           ]
         }
       ]

@@ -11,7 +11,7 @@
     </section>
     <section v-if="modal" class="jumbotron bg-secondary mt--300">
       <h2 class="mb-3" v-if="showType === 'Member'">ข้อมูลผู้ป่วย</h2>
-      <h2 class="mb-3" v-if="showType === 'Doctor'">ข้อมูลหมอ</h2>
+      <h2 class="mb-3" v-if="showType === 'Doctor'">ข้อมูลแพทย์</h2>
       <h2 class="mb-3" v-if="showType === 'Pharmacist'">ข้อมูลเภสัชกร</h2>
       <div class="row justify-content-end">
         <div class="col-xl-6 col-lg-6 col-md-8 col-sm-10">
@@ -194,7 +194,7 @@
             v-model="editData.disease"
           ></textarea>
           <div class="col-6">
-            <base-radio name="Doctor" class="mb-3 mr-4 float-left" v-model="editData.type">หมอ</base-radio>
+            <base-radio name="Doctor" class="mb-3 mr-4 float-left" v-model="editData.type">แพทย์</base-radio>
             <base-radio
               name="Pharmacist"
               class="mb-3 mr-4 float-left"

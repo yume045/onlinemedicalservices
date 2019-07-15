@@ -79,7 +79,8 @@ export default {
   },
   created() {
     chatRef.on("child_added", snap => {
-      if (this.getUser.Permistion === "doctor") {
+      console.log(snap.val());
+      if (this.getUser.type === "Doctor") {
         if (snap.val().doctor === this.profile.userKey) {
           this.showData[snap.key] = snap.val();
         }
