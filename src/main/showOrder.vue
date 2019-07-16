@@ -11,7 +11,7 @@
     </section>
     <section class="jumbotron bg-secondary container mt--300 shadow rounded">
       <div class="row">
-        <h3>ปริ้นใบสั่งยา</h3>
+        <h3>พิมพ์ใบสั่งยา</h3>
         <ListMedic id="printOrder" class="mt-3" :print="true" :userKey="keyBilling"/>
       </div>
       <div class="row d-flex justify-content-end">
@@ -27,7 +27,7 @@
             block
             v-print="'#printOrder'"
             v-if="listMedic.status === 'ได้รับการยืนยัน'"
-          >ปริ้นใบสั่งยา</base-button>
+          >พิมพ์ใบสั่งยา</base-button>
           <base-button
             type="primary"
             @click="delivery('ได้รับยาเรียบร้อยแล้ว')"
