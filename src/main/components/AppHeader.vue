@@ -126,7 +126,7 @@
             <span class="nav-link-inner--text">จัดการคิว</span>
           </router-link>
           <router-link :to="'/BookQueue'" class="dropdown-item" v-if="getUser.type === 'Member'">
-            <span class="nav-link-inner--text">จองคิวหมอ</span>
+            <span class="nav-link-inner--text">จองคิวแพทย์</span>
           </router-link>
           <router-link :to="'/Order'" class="dropdown-item" v-if="getUser.type === 'Member'">
             <span class="nav-link-inner--text">ใบสั่งยา</span>

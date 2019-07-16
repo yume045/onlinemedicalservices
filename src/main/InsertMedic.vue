@@ -128,6 +128,18 @@ export default {
         medicName: "",
         price: 0
       };
+      let count = 1;
+      let index = 1;
+      this.totalPage = [1];
+      this.showData = [];
+      medicRef.on("child_added", snap => {
+        this.showData.push({ value: snap.val(), key: snap.key });
+        if (index % 10 === 0) {
+          count++;
+          this.totalPage.push(count);
+        }
+        index++;
+      });
     },
     deleteMedic(key) {
       this.$swal({

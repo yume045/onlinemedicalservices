@@ -15,7 +15,7 @@
       </div>
       <div class="row mt-3 justify-content-center d-flex">
         <div class="col-4">
-          <img class="img-responsive" src="../../src/assets/images/promtpay.jpg">
+          <img class="img-responsive" src="../../src/assets/images/promtpay.jpg" />
         </div>
         <div class="col-6">
           <p>1. แสกน QR CODE เพื่อจ่าย ตามจำนวนเงินที่ระบุ</p>
@@ -26,7 +26,7 @@
               class="custom-file-input"
               id="validatedCustomFile"
               @change="onFileChange($event.target.files[0])"
-            >
+            />
             <label
               class="custom-file-label"
               for="validatedCustomFile"
@@ -70,6 +70,8 @@ export default {
       // this.data.img = fileImg.name;
     },
     async createImage() {
+      console.log(this.file);
+      await storageRef.child(this.file.name).put(this.file);
       await storageRef
         .child(this.file.name)
         .put(this.file)
@@ -79,12 +81,19 @@ export default {
         });
     },
     async confirmOrder() {
+      let loader = this.$loading.show({
+        // Optional parameters
+        container: this.fullPage ? null : this.$refs.formContainer,
+        canCancel: true,
+        onCancel: this.onCancel
+      });
       if (this.file != "") {
         await this.createImage();
         billingRef.child(this.$route.params.key).update({
           urlImg: this.urlImg,
           status: "รอการตรวจสอบจากทางเจ้าหน้าที่"
         });
+        loader.hide();
         this.$router.push("/OrderHistory/");
       } else {
         alert("กรุณาเลือกไฟล์ที่ต้องการ");

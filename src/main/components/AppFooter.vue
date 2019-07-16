@@ -2,12 +2,12 @@
   <footer class="footer has-cards">
     <div class="container container-lg"></div>
     <div class="container">
-      <hr>
+      <hr />
       <div class="row align-items-center justify-content-md-between">
         <div class="col-md-6">
           <div class="copyright">
             &copy; {{year}}
-            <a href="/home" target="_blank" rel="noopener">Online Medicial Servicer</a>.
+            <a href="/home" target="_blank" rel="noopener">Online Medicial Services</a>.
           </div>
         </div>
       </div>

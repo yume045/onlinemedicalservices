@@ -27,7 +27,7 @@
                 </div>
                 <form role="form">
                   <div class="col-12 float-left mb-4">
-                    <base-radio name="Doctor" class="mb-3 mr-4 float-left" v-model="type">หมอ</base-radio>
+                    <base-radio name="Doctor" class="mb-3 mr-4 float-left" v-model="type">แพทย์</base-radio>
                     <base-radio
                       name="Pharmacist"
                       class="mb-3 mr-4 float-left"
@@ -38,7 +38,7 @@
                   <base-input
                     alternative
                     class="mb-3 col-6 float-left"
-                    placeholder="๊Username"
+                    placeholder="๊Username (*)"
                     addon-left-icon="ni ni-circle-08"
                     type="text"
                     v-model="username"
@@ -47,7 +47,7 @@
                     alternative
                     class="mb-3 col-6 float-left"
                     type="password"
-                    placeholder="Password"
+                    placeholder="Password (*)"
                     addon-left-icon="ni ni-lock-circle-open"
                     v-model="password"
                   ></base-input>
@@ -55,7 +55,7 @@
                     alternative
                     class="mb-3 col-12 float-left"
                     type="text"
-                    placeholder="รหัสประจำตัวประชาชน"
+                    placeholder="รหัสประจำตัวประชาชน (*)"
                     v-model="idpeople"
                     maxlength="13"
                     onkeypress="return event.charCode >= 48 && event.charCode <= 57"
@@ -64,14 +64,14 @@
                     alternative
                     class="mb-3 col-6 float-left"
                     type="text"
-                    placeholder="ชื่อ"
+                    placeholder="ชื่อ (*)"
                     v-model="name"
                   ></base-input>
                   <base-input
                     alternative
                     class="mb-3 col-6 float-left"
                     type="text"
-                    placeholder="นามสกุล"
+                    placeholder="นามสกุล (*)"
                     v-model="surname"
                   ></base-input>
                   <div class="col-6 float-left">
@@ -92,7 +92,7 @@
                     alternative
                     class="mb-3 col-6 float-left"
                     type="number"
-                    placeholder="ส่วนสูง"
+                    placeholder="ส่วนสูง (*)"
                     v-model="height"
                     min="0"
                     max="300"
@@ -101,7 +101,7 @@
                     alternative
                     class="mb-3 col-6 float-left"
                     type="number"
-                    placeholder="น้ำหนัก"
+                    placeholder="น้ำหนัก (*)"
                     v-model="weight"
                     min="0"
                     max="300"
@@ -110,14 +110,14 @@
                     alternative
                     class="mb-3 col-6 float-left"
                     type="text"
-                    placeholder="กรุ๊ปเลือด A, B, AB, O"
+                    placeholder="กรุ๊ปเลือด A, B, AB, O (*)"
                     v-model="bloodtype"
                   ></base-input>
                   <base-input
                     alternative
                     class="mb-3 col-6 float-left"
                     type="text"
-                    placeholder="เบอร์โทรศัพท์"
+                    placeholder="เบอร์โทรศัพท์ (*)"
                     v-model="numberphone"
                     maxlength="10"
                     onkeypress="return event.charCode >= 48 && event.charCode <= 57"
@@ -125,7 +125,7 @@
                   <textarea
                     class="mb-3 form-control form-control-alternative"
                     rows="3"
-                    placeholder="ที่อยู่"
+                    placeholder="ที่อยู่ (*)"
                     v-model="address"
                   ></textarea>
                   <textarea

@@ -128,9 +128,11 @@ export default {
               alert("welcome to Online-medical-service");
             }
           } else {
+            loader.hide();
             alert("incorrect password !!");
           }
         } else {
+          loader.hide();
           alert("incorrect username !!");
         }
         this.hasprofile = {};
