@@ -54,6 +54,7 @@
             <thead>
               <th class="text-center">ลำดับ</th>
               <th>วันที่</th>
+              <th>ชื่อผู้รับยา</th>
               <th>สถานะ</th>
               <th>เอกสารยืนยัน</th>
               <th>ดูรายละเอียด</th>
@@ -67,6 +68,7 @@
               >
                 <td class="text-center">{{key + 1}}</td>
                 <td>{{val.value.timestamp | moment("DD/MM/YY")}}</td>
+                <td v-if="usersData">{{usersData[val.value.user]}}</td>
                 <td>
                   <badge
                     type="success"
@@ -172,6 +174,7 @@ import { mapGetters } from "vuex";
 import "../assets/vendor/font-awesome/css/font-awesome.css";
 var database = firebase.database();
 var billingRef = database.ref("/Billings");
+var userRef = database.ref("/Users");
 export default {
   name: "OrderHistory",
   data() {
@@ -179,7 +182,8 @@ export default {
       active: "All",
       showData: false,
       page: 1,
-      totalPage: [1]
+      totalPage: [1],
+      usersData: null
     };
   },
   computed: {
@@ -320,6 +324,12 @@ export default {
     let index = 1;
     this.totalPage = [1];
     this.showData = [];
+    this.usersData = [];
+    userRef.on("child_added", snap => {
+      this.usersData[snap.key] = snap.val().name + " " + snap.val().surname;
+      console.log(this.usersData[snap.key]);
+    });
+    console.log(this.usersData);
     if (this.getUser.Permistion === "Admin") {
       billingRef.on("child_added", snap => {
         this.showData.push({ value: snap.val(), key: snap.key });

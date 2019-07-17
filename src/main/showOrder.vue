@@ -12,7 +12,7 @@
     <section class="jumbotron bg-secondary container mt--300 shadow rounded">
       <div class="row">
         <h3>พิมพ์ใบสั่งยา</h3>
-        <ListMedic id="printOrder" class="mt-3" :print="true" :userKey="keyBilling"/>
+        <ListMedic id="printOrder" class="mt-3" :print="true" :userKey="keyBilling" />
       </div>
       <div class="row d-flex justify-content-end">
         <div class="col-4 mt-3">
@@ -21,7 +21,7 @@
             block
             @click="delivery('ดำเนินการจัดส่ง')"
             v-if="listMedic.status === 'ได้รับการยืนยัน'"
-          >บริการจัดส่งถึงที</base-button>
+          >บริการจัดส่งยาทางไปรษณีย์</base-button>
           <base-button
             type="primary"
             block
