@@ -28,7 +28,7 @@
     "vue-google-charts": "^0.3.2",
     "vue-lazyload": "^1.2.6",
     "vue-loading-overlay": "^3.2.0",
-    "vue-moment": "^4.0.0",
+    "vue-moment": "^4.1.0",
     "vue-print-nb": "^1.0.3",
     "vue-rate": "^2.2.0",
     "vue-router": "^3.0.2",
